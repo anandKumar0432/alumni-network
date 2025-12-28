@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+    ADMIN
+    STUDENT
+    ALUMNI
+}
+
+enum Status {
+  PENDING
+  REJECTED
+  VERIFIED
+}
+
+model User {
+  id              String  @id @default(uuid())
+  email           String  @unique
+  password        String
+  name            String
+  regNo           String  @unique
+  branch          String
+  session         String
+  college         String  @default("Katihar Engineering College")
+  role            Role
+
+  alumni          Alumni?
+  student         Student?
+  approvalLog     ApprovalLog[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Alumni {
+  id              String   @id @default(uuid())
+  currentJob      String?
+  currentCompany  String?
+  linkedIn        String?
+  instagram       String?
+  portfolio       String?
+  status          Status  @default(PENDING)
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String  @unique
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Student {
+  id             String  @id @default(uuid())
+  currentYear    String
+  interest       String?
+  status         Status  @default(PENDING)
+ 
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String  @unique
+ 
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ApprovalLog {
+  id             String @id @default(uuid())
+  targetType     Role
+  targetId       String
+  oldStatus      Status
+  newStatus      Status
+  actionById     String?
+  actionBy       User? @relation(fields: [actionById], references: [id], onDelete: SetNull)
+
+  createdAt      DateTime @default(now())
+}
