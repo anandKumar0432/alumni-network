@@ -1,6 +1,6 @@
 import express , {Router} from "express";
 import userRouter from "./user.js"
-import aluminiRouter from "./alumini.js"
+import aluminiRouter from "./alumni.js"
 import adminRouter from "./admin.js"
 import authRouter from "./auth.js"
 

@@ -68,7 +68,10 @@ export const JsonNull = runtime.JsonNull;
  */
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
-    User: 'User'
+    User: 'User',
+    Alumni: 'Alumni',
+    Student: 'Student',
+    ApprovalLog: 'ApprovalLog'
 };
 /**
  * Enums
@@ -83,7 +86,44 @@ export const UserScalarFieldEnum = {
     id: 'id',
     email: 'email',
     password: 'password',
-    name: 'name'
+    name: 'name',
+    regNo: 'regNo',
+    branch: 'branch',
+    session: 'session',
+    college: 'college',
+    role: 'role',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const AlumniScalarFieldEnum = {
+    id: 'id',
+    currentJob: 'currentJob',
+    currentCompany: 'currentCompany',
+    linkedIn: 'linkedIn',
+    instagram: 'instagram',
+    portfolio: 'portfolio',
+    status: 'status',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const StudentScalarFieldEnum = {
+    id: 'id',
+    currentYear: 'currentYear',
+    interest: 'interest',
+    status: 'status',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ApprovalLogScalarFieldEnum = {
+    id: 'id',
+    targetType: 'targetType',
+    targetId: 'targetId',
+    oldStatus: 'oldStatus',
+    newStatus: 'newStatus',
+    actionById: 'actionById',
+    createdAt: 'createdAt'
 };
 export const SortOrder = {
     asc: 'asc',

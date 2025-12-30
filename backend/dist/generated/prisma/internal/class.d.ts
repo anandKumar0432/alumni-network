@@ -122,6 +122,39 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get user(): Prisma.UserDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    /**
+     * `prisma.alumni`: Exposes CRUD operations for the **Alumni** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Alumni
+      * const alumni = await prisma.alumni.findMany()
+      * ```
+      */
+    get alumni(): Prisma.AlumniDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.student`: Exposes CRUD operations for the **Student** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Students
+      * const students = await prisma.student.findMany()
+      * ```
+      */
+    get student(): Prisma.StudentDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.approvalLog`: Exposes CRUD operations for the **ApprovalLog** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ApprovalLogs
+      * const approvalLogs = await prisma.approvalLog.findMany()
+      * ```
+      */
+    get approvalLog(): Prisma.ApprovalLogDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;
 //# sourceMappingURL=class.d.ts.map

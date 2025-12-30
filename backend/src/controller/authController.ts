@@ -50,7 +50,6 @@ const loginSchema = z.object({
     password: z.string().min(6)
 })
 
-
 const signup = async (req : Request, res: Response)=>{
     try{
         const parsed = signupSchema.safeParse(req.body);
@@ -141,14 +140,14 @@ const login = async (req : Request, res : Response)=>{
         // checking the status
         if(
             (user.role === "STUDENT" && user.student?.status !== "VERIFIED") ||
-            (user.role === "ADMIN" && user.alumni?.status !== "VERIFIED")
+            (user.role === "ALUMNI" && user.alumni?.status !== "VERIFIED")
         ){
             return res.status(403).json({
                 msg: "account not verified by admin"
             })
         }
 
-        const passMatched = await bcrypt.compare(user.password, data.password);
+        const passMatched = await bcrypt.compare(data.password, user.password);
         if(!passMatched){
             return res.status(400).json({
                 msg: "email or password incorrect",
@@ -170,7 +169,6 @@ const login = async (req : Request, res : Response)=>{
 
         return res.status(200).json({
             msg: "login successfully",
-            token : token,
         })
     }catch(e){
         return res.status(500).json({
@@ -179,4 +177,20 @@ const login = async (req : Request, res : Response)=>{
     }
 }
 
-export {signup, login}
+const logout = (req: Request, res: Response)=>{
+    res.clearCookie("token" , {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "producttion",
+        sameSite: "strict",
+    })
+
+    return res.status(200).json({
+        msg: "logout successfully"
+    })
+}
+
+// const updatePassword = (req: Request, res: Response)=>{
+
+// }
+
+export {signup, login, logout,};

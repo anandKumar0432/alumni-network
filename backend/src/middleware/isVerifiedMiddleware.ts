@@ -7,6 +7,7 @@ export const isVerified = async (req: Request, res: Response, next: NextFunction
             where: {id : req.user.id},
             include: {student: true, alumni: true},
         })
+        
         if(!user){
             return res.status(404).json({
                 msg : "user not found",

@@ -2,20 +2,19 @@ import type { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 
-const verifyUserParamsSchema = z.object({
-  userId: z.string().uuid(),
-});
-
+// const verifyUserParamsSchema = z.object({
+//   id: z.string().uuid(),
+// });
 
 const verifyUser =async (req: Request, res: Response)=>{
     try{
-        const parsed = verifyUserParamsSchema.safeParse(req.params.id);
-        if(!parsed.success){
+        console.log(req.params.id);
+        const userId = req.params.id;
+        if(!userId){
             return res.status(400).json({
                 msg : "Invalid userId"
             })
         }
-        const {userId} = parsed.data;
 
         const user = await prisma.user.findUnique({
             where: {
@@ -56,7 +55,6 @@ const verifyUser =async (req: Request, res: Response)=>{
                 }
             })
         }
-
         // audit log
         await prisma.approvalLog.create({
             data : {

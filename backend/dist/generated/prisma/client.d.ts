@@ -24,4 +24,19 @@ export { Prisma };
  *
  */
 export type User = Prisma.UserModel;
+/**
+ * Model Alumni
+ *
+ */
+export type Alumni = Prisma.AlumniModel;
+/**
+ * Model Student
+ *
+ */
+export type Student = Prisma.StudentModel;
+/**
+ * Model ApprovalLog
+ *
+ */
+export type ApprovalLog = Prisma.ApprovalLogModel;
 //# sourceMappingURL=client.d.ts.map

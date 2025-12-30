@@ -1,17 +1,13 @@
 import express from 'express';
-import { prisma } from './lib/prisma.js';
+import cors from 'cors';
+import mainRouter from "../src/router/index.js";
+import cookieParser from 'cookie-parser';
+const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(express.json());
-app.get("/", async (req, res) => {
-    await prisma.user.create({
-        data: {
-            name: "BRIJ",
-            email: "BRIJ@gmail.com",
-            password: "kumar"
-        }
-    });
-    res.status(200).json({
-        msg: "hii there"
-    });
+app.use(cors());
+app.use(cookieParser());
+app.use("/api/v1", mainRouter);
+app.listen(PORT, () => {
+    console.log(`app is listening on port ${PORT}`);
 });
-app.listen(3000);
