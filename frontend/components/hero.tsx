@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 export const Hero = () => (
-  <div className="w-full py-20 px-5 lg:py-25 lg: px-0">
+  <div className="w-full pt-20 lg:pt-25 pb-5 px-5 lg:px-0">
     <div className="container mx-auto">
       <div className="grid grid-cols-1 gap-8 items-center md:grid-cols-2">
         <div className="flex gap-4 flex-col">

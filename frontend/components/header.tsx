@@ -88,7 +88,7 @@ return (
         </NavigationMenu>
         </div>
         <div className="flex lg:justify-center">
-        <p className="font-semibold">KEC CONNECT</p>
+        <p className="font-semibold px-2">KEC CONNECT</p>
         </div>
         <div className="flex justify-end w-full gap-4">
         <Button variant="outline">Sign in</Button>
