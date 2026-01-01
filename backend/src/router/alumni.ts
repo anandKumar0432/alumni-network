@@ -3,9 +3,11 @@ import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controll
 import { auth } from "../middleware/authMiddleware.js";
 import { isVerified } from "../middleware/isVerifiedMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
+import { isActive } from "../middleware/isActiveMiddleware.js";
 
 const router : Router = express.Router();
 router.use(auth);
+router.use(isActive);
 router.use(isVerified); // if admin change the status
 router.use(requiredRole("ALUMNI"))
 
@@ -16,10 +18,10 @@ router.get("/me/:id", findUser);
 router.patch("/update", updateUser);
 
 // /all-student
-router.get("/bulk/student", findAllStudent);
+router.get("/students", findAllStudent);
 
 // /all-alumni
-router.get("/bulk/alumni", findAllAlumni);
+router.get("/alumnis", findAllAlumni);
 
 
 export default router;

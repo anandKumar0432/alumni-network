@@ -35,6 +35,7 @@ model User {
   session         String
   college         String  @default("Katihar Engineering College")
   role            Role
+  isActive        Boolean @default(true)
 
   alumni          Alumni?
   student         Student?

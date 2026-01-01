@@ -1,11 +1,13 @@
 import express, {Router} from "express";
-import { changRole, unverifiedUser, verifyUser } from "../controller/adminController.js";
+import { changRole, deleteUser, unverifiedUser, verifyUser } from "../controller/adminController.js";
 import { auth } from "../middleware/authMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
 import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
+import { isActive } from "../middleware/isActiveMiddleware.js";
 
 const router : Router = express.Router();
 router.use(auth);
+router.use(isActive);
 router.use(requiredRole("ADMIN"));
 
 // /verify-user
@@ -24,7 +26,7 @@ router.get("/me/:id", findUser);
 router.patch("/update", updateUser);
 
 // /create-user
-
+// router.post("/create-user", signup);
 
 // find all student
 router.get("/bulk/student",findAllStudent);
@@ -33,9 +35,6 @@ router.get("/bulk/student",findAllStudent);
 router.get("/bulk/alumni",findAllAlumni);
 
 // delete-student
-
-
-// delete-alumni
-
+router.put("/delete", deleteUser);
 
 export default router;

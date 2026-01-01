@@ -145,8 +145,5 @@ const logout = (req: Request, res: Response)=>{
     })
 }
 
-// const updatePassword = (req: Request, res: Response)=>{
-
-// }
 
 export {signup, login, logout,};
