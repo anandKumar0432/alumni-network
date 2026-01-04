@@ -1,47 +1,8 @@
-import z from "zod";
 import bcrypt from "bcrypt";
 import { prisma } from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
+import { signupSchema, loginSchema } from "../types/zodSchema.js";
 const JWT_SECRET = process.env.JWT_SECRET;
-const baseSignupSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-    name: z.string(),
-    regNo: z.string(),
-    branch: z.string(),
-    session: z.string(),
-});
-const studentSchema = z.object({
-    role: z.literal("STUDENT"),
-    student: z.object({
-        currentYear: z.string(),
-        interest: z.string().optional(),
-    })
-});
-const alumniSchema = z.object({
-    role: z.literal("ALUMNI"),
-    alumni: z.object({
-        currentJob: z.string().optional(),
-        currentCompany: z.string().optional(),
-        linkedIn: z.string().optional(),
-        instagram: z.string().optional(),
-        portfolio: z.string().optional(),
-    })
-});
-const signupSchema = z.discriminatedUnion("role", [
-    z.object({
-        ...baseSignupSchema.shape,
-        ...studentSchema.shape,
-    }),
-    z.object({
-        ...baseSignupSchema.shape,
-        ...alumniSchema.shape,
-    })
-]);
-const loginSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6)
-});
 const signup = async (req, res) => {
     try {
         const parsed = signupSchema.safeParse(req.body);
@@ -164,6 +125,4 @@ const logout = (req, res) => {
         msg: "logout successfully"
     });
 };
-// const updatePassword = (req: Request, res: Response)=>{
-// }
 export { signup, login, logout, };

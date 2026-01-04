@@ -21,6 +21,7 @@ export type UserMinAggregateOutputType = {
     session: string | null;
     college: string | null;
     role: $Enums.Role | null;
+    isActive: boolean | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -34,6 +35,7 @@ export type UserMaxAggregateOutputType = {
     session: string | null;
     college: string | null;
     role: $Enums.Role | null;
+    isActive: boolean | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -47,6 +49,7 @@ export type UserCountAggregateOutputType = {
     session: number;
     college: number;
     role: number;
+    isActive: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -61,6 +64,7 @@ export type UserMinAggregateInputType = {
     session?: true;
     college?: true;
     role?: true;
+    isActive?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -74,6 +78,7 @@ export type UserMaxAggregateInputType = {
     session?: true;
     college?: true;
     role?: true;
+    isActive?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -87,6 +92,7 @@ export type UserCountAggregateInputType = {
     session?: true;
     college?: true;
     role?: true;
+    isActive?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -163,6 +169,7 @@ export type UserGroupByOutputType = {
     session: string;
     college: string;
     role: $Enums.Role;
+    isActive: boolean;
     createdAt: Date;
     updatedAt: Date;
     _count: UserCountAggregateOutputType | null;
@@ -185,6 +192,7 @@ export type UserWhereInput = {
     session?: Prisma.StringFilter<"User"> | string;
     college?: Prisma.StringFilter<"User"> | string;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
+    isActive?: Prisma.BoolFilter<"User"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     alumni?: Prisma.XOR<Prisma.AlumniNullableScalarRelationFilter, Prisma.AlumniWhereInput> | null;
@@ -201,6 +209,7 @@ export type UserOrderByWithRelationInput = {
     session?: Prisma.SortOrder;
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     alumni?: Prisma.AlumniOrderByWithRelationInput;
@@ -220,6 +229,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     session?: Prisma.StringFilter<"User"> | string;
     college?: Prisma.StringFilter<"User"> | string;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
+    isActive?: Prisma.BoolFilter<"User"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     alumni?: Prisma.XOR<Prisma.AlumniNullableScalarRelationFilter, Prisma.AlumniWhereInput> | null;
@@ -236,6 +246,7 @@ export type UserOrderByWithAggregationInput = {
     session?: Prisma.SortOrder;
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.UserCountOrderByAggregateInput;
@@ -255,6 +266,7 @@ export type UserScalarWhereWithAggregatesInput = {
     session?: Prisma.StringWithAggregatesFilter<"User"> | string;
     college?: Prisma.StringWithAggregatesFilter<"User"> | string;
     role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role;
+    isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
 };
@@ -268,6 +280,7 @@ export type UserCreateInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniCreateNestedOneWithoutUserInput;
@@ -284,6 +297,7 @@ export type UserUncheckedCreateInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniUncheckedCreateNestedOneWithoutUserInput;
@@ -300,6 +314,7 @@ export type UserUpdateInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUpdateOneWithoutUserNestedInput;
@@ -316,6 +331,7 @@ export type UserUncheckedUpdateInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUncheckedUpdateOneWithoutUserNestedInput;
@@ -332,6 +348,7 @@ export type UserCreateManyInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -345,6 +362,7 @@ export type UserUpdateManyMutationInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -358,6 +376,7 @@ export type UserUncheckedUpdateManyInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -371,6 +390,7 @@ export type UserCountOrderByAggregateInput = {
     session?: Prisma.SortOrder;
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -384,6 +404,7 @@ export type UserMaxOrderByAggregateInput = {
     session?: Prisma.SortOrder;
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -397,6 +418,7 @@ export type UserMinOrderByAggregateInput = {
     session?: Prisma.SortOrder;
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -413,6 +435,9 @@ export type StringFieldUpdateOperationsInput = {
 };
 export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role;
+};
+export type BoolFieldUpdateOperationsInput = {
+    set?: boolean;
 };
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
@@ -465,6 +490,7 @@ export type UserCreateWithoutAlumniInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     student?: Prisma.StudentCreateNestedOneWithoutUserInput;
@@ -480,6 +506,7 @@ export type UserUncheckedCreateWithoutAlumniInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput;
@@ -508,6 +535,7 @@ export type UserUpdateWithoutAlumniInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     student?: Prisma.StudentUpdateOneWithoutUserNestedInput;
@@ -523,6 +551,7 @@ export type UserUncheckedUpdateWithoutAlumniInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput;
@@ -538,6 +567,7 @@ export type UserCreateWithoutStudentInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniCreateNestedOneWithoutUserInput;
@@ -553,6 +583,7 @@ export type UserUncheckedCreateWithoutStudentInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniUncheckedCreateNestedOneWithoutUserInput;
@@ -581,6 +612,7 @@ export type UserUpdateWithoutStudentInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUpdateOneWithoutUserNestedInput;
@@ -596,6 +628,7 @@ export type UserUncheckedUpdateWithoutStudentInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUncheckedUpdateOneWithoutUserNestedInput;
@@ -611,6 +644,7 @@ export type UserCreateWithoutApprovalLogInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniCreateNestedOneWithoutUserInput;
@@ -626,6 +660,7 @@ export type UserUncheckedCreateWithoutApprovalLogInput = {
     session: string;
     college?: string;
     role: $Enums.Role;
+    isActive?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniUncheckedCreateNestedOneWithoutUserInput;
@@ -654,6 +689,7 @@ export type UserUpdateWithoutApprovalLogInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUpdateOneWithoutUserNestedInput;
@@ -669,6 +705,7 @@ export type UserUncheckedUpdateWithoutApprovalLogInput = {
     session?: Prisma.StringFieldUpdateOperationsInput | string;
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUncheckedUpdateOneWithoutUserNestedInput;
@@ -708,6 +745,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     session?: boolean;
     college?: boolean;
     role?: boolean;
+    isActive?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     alumni?: boolean | Prisma.User$alumniArgs<ExtArgs>;
@@ -725,6 +763,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     session?: boolean;
     college?: boolean;
     role?: boolean;
+    isActive?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
@@ -738,6 +777,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     session?: boolean;
     college?: boolean;
     role?: boolean;
+    isActive?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
@@ -751,10 +791,11 @@ export type UserSelectScalar = {
     session?: boolean;
     college?: boolean;
     role?: boolean;
+    isActive?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "regNo" | "branch" | "session" | "college" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "regNo" | "branch" | "session" | "college" | "role" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     alumni?: boolean | Prisma.User$alumniArgs<ExtArgs>;
     student?: boolean | Prisma.User$studentArgs<ExtArgs>;
@@ -780,6 +821,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         session: string;
         college: string;
         role: $Enums.Role;
+        isActive: boolean;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["user"]>;
@@ -1148,6 +1190,7 @@ export interface UserFieldRefs {
     readonly session: Prisma.FieldRef<"User", 'String'>;
     readonly college: Prisma.FieldRef<"User", 'String'>;
     readonly role: Prisma.FieldRef<"User", 'Role'>;
+    readonly isActive: Prisma.FieldRef<"User", 'Boolean'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
 }

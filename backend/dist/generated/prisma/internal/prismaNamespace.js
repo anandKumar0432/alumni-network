@@ -92,6 +92,7 @@ export const UserScalarFieldEnum = {
     session: 'session',
     college: 'college',
     role: 'role',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

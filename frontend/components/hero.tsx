@@ -47,7 +47,7 @@ export const Hero = () => (
           priority
         />
         {/* Top Gradient */}
-        <div className="absolute top-0  left-0 right-0 h-10 bg-linear-to-b from-background/80 to-transparent pointer-events-none" />
+        <div className="absolute top-0  left-0 right-0 h-12 bg-linear-to-b from-background/80 to-transparent pointer-events-none" />
         {/* Bottom Gradient */}
         <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-background/80 to-transparent pointer-events-none" />
         {/* Text Overlay */}

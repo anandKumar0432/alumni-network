@@ -12,6 +12,7 @@ NavigationMenuTrigger,
 import { Menu, MoveRight, X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const Header = () => {
 const navigationItems = [
@@ -21,8 +22,8 @@ const navigationItems = [
     description: "",
     },
     {
-    title: "Company",
-    description: "Managing a small business today is already tough.",
+    title: "College",
+    description: "All the alumni assembles here.",
     items: [
         {
         title: "About us",
@@ -37,6 +38,14 @@ const navigationItems = [
 ];
 
 const [isOpen, setOpen] = useState(false);
+const router = useRouter();
+
+const HandleSignin = ()=>{
+    router.push('/login');
+}
+const HandleRegister = ()=>{
+    router.push('/register')
+}
 return (
     <header className="w-full z-40 fixed top-0 left-0 bg-background border-b">
     <div className="container relative mx-auto min-h-8 flex gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
@@ -46,11 +55,11 @@ return (
             {navigationItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                 {item.href ? (
-                    <>
-                    <NavigationMenuLink>
-                        <Button variant="ghost">{item.title}</Button>
-                    </NavigationMenuLink>
-                    </>
+                    <Link href={item.href}>
+                        <NavigationMenuLink>
+                            <Button variant="ghost">{item.title}</Button>
+                        </NavigationMenuLink>
+                    </Link>
                 ) : (
                     <>
                     <NavigationMenuTrigger className="font-medium text-sm">
@@ -91,8 +100,8 @@ return (
         <p className="font-semibold px-2">KEC CONNECT</p>
         </div>
         <div className="flex justify-end w-full gap-4">
-        <Button variant="outline">Sign in</Button>
-        <Button>Get started</Button>
+        <Button variant="outline" onClick={HandleSignin}>Sign in</Button>
+        <Button onClick={HandleRegister}>Get started</Button>
         </div>
         <div className="flex w-12 shrink lg:hidden items-end justify-end">
         <Button variant="ghost" onClick={() => setOpen(!isOpen)}>

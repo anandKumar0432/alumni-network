@@ -1,27 +1,29 @@
 import express, { Router } from "express";
-import { verifyUser } from "../controller/adminController.js";
+import { changRole, deleteUser, unverifiedUser, verifyUser } from "../controller/adminController.js";
 import { auth } from "../middleware/authMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
-import { findAllAlumni, findAllStudent } from "../controller/userController.js";
-import { logout } from "../controller/authController.js";
+import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
+import { isActive } from "../middleware/isActiveMiddleware.js";
 const router = express.Router();
-console.log("HII THERE");
 router.use(auth);
+router.use(isActive);
 router.use(requiredRole("ADMIN"));
 // /verify-user
 router.patch("/verify-user/:id", verifyUser);
 // fetch user which is unverified
-// /role = admin    //role changes
-// /role = student
-// /role = alumni
+router.get("/unverified/user", unverifiedUser);
+//role changes
+router.put("/change-role/:id", changRole);
 // /me
-// /update-password
+router.get("/me/:id", findUser);
+// /update
+router.patch("/update", updateUser);
 // /create-user
-// /create-admin
+// router.post("/create-user", signup);
 // find all student
 router.get("/bulk/student", findAllStudent);
 //find all alumni
 router.get("/bulk/alumni", findAllAlumni);
-// logout
-router.post("/logout", logout);
+// delete-student
+router.put("/delete", deleteUser);
 export default router;

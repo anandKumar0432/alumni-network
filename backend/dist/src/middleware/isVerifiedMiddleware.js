@@ -1,6 +1,11 @@
 import { prisma } from "../lib/prisma.js";
 export const isVerified = async (req, res, next) => {
     try {
+        if (!req.user.id) {
+            return res.status(400).json({
+                msg: "user Id not found"
+            });
+        }
         const user = await prisma.user.findUnique({
             where: { id: req.user.id },
             include: { student: true, alumni: true },
