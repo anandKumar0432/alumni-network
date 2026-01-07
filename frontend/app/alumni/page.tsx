@@ -5,8 +5,11 @@ import { Footer } from "@/components/footer";
 
 export default function AlumniProfilePage() {
   // 🔹 MOCK DATA (replace with API later)
+
+
+  
   const alumni = {
-    name: "Rahul Kumar",
+    name: "Anand Kumar",
     email: "rahul@gmail.com",
     regNo: "KEC25CSE045",
     branch: "CSE",

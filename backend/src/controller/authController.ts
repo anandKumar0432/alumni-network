@@ -145,5 +145,4 @@ const logout = (req: Request, res: Response)=>{
     })
 }
 
-
 export {signup, login, logout,};
