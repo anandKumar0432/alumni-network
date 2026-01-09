@@ -2,26 +2,98 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { useEffect, useState } from "react";
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+type AlumniProfile = {
+  name: string;
+  email: string;
+  regNo: string;
+  branch: string;
+  session: string;
+  college: string;
+  currentJob?: string;
+  currentCompany?: string;
+  linkedIn?: string;
+  instagram?: string;
+  portfolio?: string;
+  status: "PENDING" | "VERIFIED" | "REJECTED";
+};
 
 export default function AlumniProfilePage() {
-  // 🔹 MOCK DATA (replace with API later)
 
+  const [alumni, setAlumni] = useState<AlumniProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+
+  // 🔹 TEMP, later store in local
+  const userId = "795b7fe1-3575-42de-9f1f-9b641646594e";
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(
+          `${BACKEND_URL}/alumini/me/${userId}`,
+          {
+            credentials: "include",
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
+        const data = await res.json();
+
+        setAlumni({
+          name: data.user.name,
+          email: data.user.email,
+          regNo: data.user.regNo,
+          branch: data.user.branch,
+          session: data.user.session,
+          college: data.user.college,
+          currentJob: data.alumni?.currentJob,
+          currentCompany: data.alumni?.currentCompany,
+          linkedIn: data.alumni?.linkedIn,
+          instagram: data.alumni?.instagram,
+          portfolio: data.alumni?.portfolio,
+          status: data.alumni?.status,
+        });
+      } catch (err: any) {
+        setError(err.message || "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [userId]);  
 
   
-  const alumni = {
-    name: "Anand Kumar",
-    email: "rahul@gmail.com",
-    regNo: "KEC25CSE045",
-    branch: "CSE",
-    session: "2021-20225",
-    college: "Katihar Engineering College",
-    currentJob: "Software Engineer",
-    currentCompany: "TCS",
-    linkedIn: "https://linkedin.com/in/rahulkumar",
-    instagram: "https://instagram.com/rahulkumar",
-    portfolio: "https://rahul.dev",
-    status: "VERIFIED", // PENDING | VERIFIED | REJECTED
-  };
+  if (loading) {
+    return (
+      <div>
+        <Header />
+        <main className="pt-20 min-h-screen flex items-center justify-center">
+          <p className="text-muted-foreground">Loading profile...</p>
+        </main>
+      </div>
+    );
+  }
+
+  if (error || !alumni) {
+    return (
+      <div>
+        <Header />
+        <main className="pt-20 min-h-screen flex items-center justify-center">
+          <p className="text-red-600">{error || "Profile not found"}</p>
+        </main>
+      </div>
+    );
+  }
+
 
   return (
     <div>
@@ -42,7 +114,7 @@ export default function AlumniProfilePage() {
               className={`px-4 py-1 rounded-full text-sm font-medium w-fit
                 ${
                   alumni.status === "VERIFIED"
-                    ? "bg-green-100 text-green-700"
+                    ? "bg-green-100 text-green-700" 
                     : alumni.status === "REJECTED"
                     ? "bg-red-100 text-red-700"
                     : "bg-yellow-100 text-yellow-700"
