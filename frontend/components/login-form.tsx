@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+console.log(BACKEND_URL);
 export function LoginForm({
   className,
   ...props
