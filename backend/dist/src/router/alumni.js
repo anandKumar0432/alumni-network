@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(auth);
 router.use(isActive);
 router.use(isVerified); // if admin change the status
-router.use(requiredRole("ALUMNI"));
+//router.use(requiredRole("ALUMNI"))  //I am chaning it to allow students, aluinis and admin to see all the listed aluminis
 // /me
 router.get("/me/:id", findUser);
 // /update-profile
@@ -16,5 +16,7 @@ router.patch("/update", updateUser);
 // /all-student
 router.get("/students", findAllStudent);
 // /all-alumni
-router.get("/alumnis", findAllAlumni);
+// router.get("/alumnis", findAllAlumni);
+//correction
+router.get("/alumnis", requiredRole("ALUMNI", "STUDENT", "ADMIN"), findAllAlumni);
 export default router;

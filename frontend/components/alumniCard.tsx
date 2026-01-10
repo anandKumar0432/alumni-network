@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin, FaTwitter, FaReddit } from "react-icons/fa";
+import { FaLinkedin, FaTwitter, FaReddit, FaEnvelope } from "react-icons/fa";
 
 interface AlumniCardProps {
   name: string;
@@ -9,6 +9,7 @@ interface AlumniCardProps {
   linkedin?: string;
   twitter?: string;
   reddit?: string;
+  email?: string;
 }
 
 const AlumniCard: React.FC<AlumniCardProps> = ({
@@ -19,10 +20,11 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
   linkedin,
   twitter,
   reddit,
+  email,
 }) => {
   return (
     <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-md">
-        {/* image */}
+      {/* image */}
       <div className="group relative h-44 w-full overflow-hidden">
         {image ? (
           <img
@@ -31,7 +33,7 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
             className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
           />
         ) : (
-            // avatar
+          // avatar
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900 transition-transform duration-500 group-hover:scale-110">
             <svg
               width="80"
@@ -42,19 +44,14 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
               xmlns="http://www.w3.org/2000/svg"
             >
               <circle cx="12" cy="8" r="4" fill="currentColor" />
-              <path
-                d="M4 20c0-4 4-6 8-6s8 2 8 6"
-                fill="currentColor"
-              />
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor" />
             </svg>
           </div>
         )}
       </div>
 
       <div className="p-5">
-        <h3 className="text-lg font-semibold text-gray-800">
-          {name}
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
 
         <p className="mt-1 text-sm text-gray-500">
           {session} • {branch}
@@ -93,6 +90,15 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
               className="transform text-gray-400 transition-all duration-300 hover:scale-125 hover:text-orange-500"
             >
               <FaReddit size={20} />
+            </a>
+          )}
+
+          {email && (
+            <a
+              href={`mailto:${email}`}
+              className="transform text-gray-400 transition-all duration-300 hover:scale-125 hover:text-red-500"
+            >
+              <FaEnvelope size={20} />
             </a>
           )}
         </div>

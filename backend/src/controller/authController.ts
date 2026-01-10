@@ -122,8 +122,10 @@ const login = async (req : Request, res : Response)=>{
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
 
+        console.log("TOKEN => ", token);
         return res.status(200).json({
             msg: "login successfully",
+            token, //returning token
         })
     }catch(e){
         return res.status(500).json({
