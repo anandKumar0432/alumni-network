@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 // });
 export const verifyUser = async (req, res) => {
     try {
-        console.log(req.params.id);
         const userId = req.params.id;
         if (!userId) {
             return res.status(400).json({

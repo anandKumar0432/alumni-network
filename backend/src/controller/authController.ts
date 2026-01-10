@@ -6,7 +6,7 @@ import { signupSchema, loginSchema } from "../types/zodSchema.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const signup = async (req : Request, res: Response)=>{
+const signup = async (req : Request, res: Response)=>{ 
     try{
         const parsed = signupSchema.safeParse(req.body);
         if(!parsed.success){
@@ -24,7 +24,6 @@ const signup = async (req : Request, res: Response)=>{
             return res.status(400).json({msg : "user already exists!"})
         }
         const hashPassword = await bcrypt.hash(data.password, 10);
-
         const user = await prisma.user.create({
             data:{
                 email: data.email,
@@ -35,7 +34,7 @@ const signup = async (req : Request, res: Response)=>{
                 role: data.role,
                 name: data.name,
 
-                student: 
+                student:
                 data.role === "STUDENT"
                 ? {
                     create: {
@@ -46,7 +45,7 @@ const signup = async (req : Request, res: Response)=>{
                 }
                 : undefined,
 
-                alumni: 
+                alumni:
                 data.role === "ALUMNI"
                 ? {
                     create : {

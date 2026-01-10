@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "mysecret";
 export const auth = (req, res, next) => {
-    console.log(JWT_SECRET);
-    console.log(req.cookies.token);
     try {
         if (!JWT_SECRET) {
             return res.status(500).json({
