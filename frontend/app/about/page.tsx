@@ -1,22 +1,21 @@
 import { Header } from "@/components/header";
+import { Footer} from "@/components/footer";
 import React from "react";
 
 const AboutAlumni: React.FC = () => {
   return (
     <div>
         <Header />
-        <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+        <section className="bg-gray-50 pt-20 pb-5 px-4 px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          
-          {/* Heading */}
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-gray-800">
-              About Us
-            </h2>
-            <div className="mt-2 w-20 h-1 bg-blue-600 mx-auto rounded"></div>
+
+          <div className="text-center mb-5">
+          <h3 className="text-4xl sm:text-5xl font-semibold text-black tracking-tight">
+            About Us
+          </h3>
+            <div className="mt-5 mx-auto h-[2px] w-25 bg-black"></div>
           </div>
 
-          {/* Content */}
           <div className="bg-white rounded-xl shadow-md p-8 space-y-6 text-gray-700 leading-relaxed">
             <p>
               The <span className="font-semibold">Katihar Engineering College Alumni Association</span> is an organized
@@ -48,6 +47,7 @@ const AboutAlumni: React.FC = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
