@@ -9,6 +9,7 @@ import Input2 from "@/components/input2";
 import SelectField from "@/components/selectField";
 import StudentForm from "@/components/studentForm";
 import AlumniForm from "@/components/AlumniForm";
+import { Footer } from "@/components/footer";
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
@@ -76,6 +77,7 @@ export default function RegisterPage() {
           </button>
         </form>
       </div>
+      <Footer />
     </div>
   );
 }

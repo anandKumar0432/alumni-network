@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
 import { LoginForm } from "@/components/login-form"
 export default function Page() {
@@ -6,6 +7,7 @@ export default function Page() {
       <div className="w-full max-w-sm">
         <Header />
         <LoginForm />
+        <Footer />
       </div>
     </div>
   )

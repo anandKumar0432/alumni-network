@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
 export const Hero = () => (
-  <div className="w-full pt-20 lg:pt-25 pb-5 px-5 lg:px-0">
+  <div className="w-full pt-20 lg:pt-20 pb-5 px-5 lg:px-0">
     <div className="container mx-auto">
       {/* <div className="grid grid-cols-1 gap-8 items-center md:grid-cols-2">
         <div className="flex gap-4 flex-col">
@@ -38,14 +38,15 @@ export const Hero = () => (
         </div>
       </div> */}
       <div className="w-full relative rounded-md overflow-hidden">
-        <Image
-          src="/college-image-2.png"
-          alt="Katihar Engineering College"
-          width={1600}
-          height={800}
-          className="w-full h-auto object-cover"
-          priority
-        />
+        <div className="relative w-full h-[40vh] sm:h-[55vh] md:h-[65vh] lg:h-[75vh]">
+          <Image
+            src="/college-image-2.png"
+            alt="Katihar Engineering College"
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
         {/* Top Gradient */}
         <div className="absolute top-0  left-0 right-0 h-12 bg-linear-to-b from-background/80 to-transparent pointer-events-none" />
         {/* Bottom Gradient */}
@@ -61,7 +62,7 @@ export const Hero = () => (
             </p>
           </div>
         </div> */}
-        <div className="absolute bottom-6 left-6 text-white drop-shadow-lg">
+          <div className="absolute bottom-6 left-6 text-white drop-shadow-lg">
           <p className="text-sm md:text-base font-bold text-white">Connecting Alumni of KEC, Katihar</p>
         </div>
       </div>
