@@ -31,7 +31,7 @@ export const Testimonials = () => {
   }, [api, current]);
 
   return (
-    <div className="w-full py-5 px-5 md:px-0">
+    <div className="w-full py-5">
       <div className="container mx-auto">
         <div className="flex flex-col gap-10">
           <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular text-left">

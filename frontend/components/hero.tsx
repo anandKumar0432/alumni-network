@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
 export const Hero = () => (
-  <div className="w-full pt-20 lg:pt-20 pb-5 px-5 lg:px-0">
+  <div className="w-full pt-20 lg:pt-20 pb-5 ">
     <div className="container mx-auto">
       {/* <div className="grid grid-cols-1 gap-8 items-center md:grid-cols-2">
         <div className="flex gap-4 flex-col">

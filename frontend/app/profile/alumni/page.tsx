@@ -3,6 +3,9 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
+import Loading from "@/components/loading";
+import { Button } from "@/components/ui/button";
+import { Globe, Instagram, Linkedin } from "lucide-react";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -76,9 +79,7 @@ export default function AlumniProfilePage() {
     return (
       <div>
         <Header />
-        <main className="pt-20 min-h-screen flex items-center justify-center">
-          <p className="text-muted-foreground">Loading profile...</p>
-        </main>
+        <Loading />
       </div>
     );
   }
@@ -99,17 +100,15 @@ export default function AlumniProfilePage() {
     <div>
       <Header />
 
-      <main className="pt-20 min-h-screen bg-background flex justify-center px-4">
+      <main className="pt-20 pb-5 min-h-screen bg-background flex justify-center px-4">
         <div className="w-full max-w-4xl space-y-6">
           
-          {/* Profile Header */}
           <div className="bg-card border border-border rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold">{alumni.name}</h1>
               <p className="text-muted-foreground">{alumni.email}</p>
             </div>
 
-            {/* Status Badge */}
             <span
               className={`px-4 py-1 rounded-full text-sm font-medium w-fit
                 ${
@@ -124,7 +123,6 @@ export default function AlumniProfilePage() {
             </span>
           </div>
 
-          {/* Personal Info */}
           <div className="bg-card border border-border rounded-xl p-6">
             <h2 className="text-lg font-semibold mb-4">Personal Information</h2>
 
@@ -148,7 +146,6 @@ export default function AlumniProfilePage() {
             </div>
           </div>
 
-          {/* Professional Info */}
           <div className="bg-card border border-border rounded-xl p-6">
             <h2 className="text-lg font-semibold mb-4">Professional Details</h2>
 
@@ -164,53 +161,52 @@ export default function AlumniProfilePage() {
             </div>
           </div>
 
-          {/* Social Links */}
           <div className="bg-card border border-border rounded-xl p-6">
-            <h2 className="text-lg font-semibold mb-4">Social Links</h2>
+            <div>
+            <h2 className="text-sm font-semibold mb-3">Social Links</h2>
+              <div className="flex items-center gap-4">
+              {alumni.linkedIn && (
+                <a
+                  href={alumni.linkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={18} />
+                </a>
+              )}
 
-            <div className="space-y-2 text-sm">
+              {alumni.instagram && (
+                <a
+                  href={alumni.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={18} />
+                </a>
+              )}
 
-                <p>
-                    <span className="text-muted-foreground">LinkedIn: </span>
-                    <a
-                        href={alumni.linkedIn}
-                        target="_blank"
-                        className="text-primary underline underline-offset-4"
-                    >
-                        {alumni.linkedIn || "—"}
-                    </a>
-                </p>
-                <p>
-                    <span className="text-muted-foreground">Instagram: </span>
-                    <a
-                        href={alumni.instagram}
-                        target="_blank"
-                        className="text-primary underline underline-offset-4"
-                    >
-                        {alumni.instagram || "—"}
-                    </a>
-                </p>
-                <p>
-                    <span className="text-muted-foreground">Portfolio: </span>
-                    <a
-                        href={alumni.portfolio}
-                        target="_blank"
-                        className="text-primary underline underline-offset-4"
-                    >
-                        {alumni.portfolio || "—"}
-                    </a>
-                </p>
+              {alumni.portfolio && (
+                <a
+                  href={alumni.portfolio}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition"
+                  aria-label="Portfolio"
+                >
+                  <Globe size={18} />
+                </a>
+              )}
+              </div>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <Button>Edit Profile</Button>
             </div>
           </div>
-
-          {/* Actions */}
-          <div className="flex justify-end">
-            <button className="px-6 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
-              Edit Profile
-            </button>  
-          </div>  <br/>
-
-        </div>
       </main>
       <Footer />
     </div>

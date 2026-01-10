@@ -15,7 +15,6 @@ const signup = async (req : Request, res: Response)=>{
             });
         }
         const data = parsed.data;
-        console.log(data);
         const  existingUser = await prisma.user.findUnique({
             where:{
                 email: data.email,
@@ -25,7 +24,6 @@ const signup = async (req : Request, res: Response)=>{
             return res.status(400).json({msg : "user already exists!"})
         }
         const hashPassword = await bcrypt.hash(data.password, 10);
-        console.log("hii there from the signup")
         const user = await prisma.user.create({
             data:{
                 email: data.email,
@@ -62,7 +60,6 @@ const signup = async (req : Request, res: Response)=>{
                 : undefined,
             }
         })
-        console.log(user);
         return res.status(201).json({
             msg : "signup successfull, Awaiting for verification",
             userId: user.id,
