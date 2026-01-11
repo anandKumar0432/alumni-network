@@ -33,12 +33,10 @@ export default function AlumniPage() {
     year: "",
   });
 
-  // hydration fix
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // fetch alumni
   const fetchAlumni = async () => {
     try {
       setLoading(true);
@@ -73,14 +71,12 @@ export default function AlumniPage() {
     }
   };
 
-  // debounce filters + page
   useEffect(() => {
     if (!mounted) return;
     const timeout = setTimeout(fetchAlumni, 400);
     return () => clearTimeout(timeout);
   }, [filters, page, mounted]);
 
-  // reset page when filters change
   useEffect(() => {
     setPage(1);
   }, [filters]);
@@ -98,7 +94,6 @@ export default function AlumniPage() {
           Showing page {page} of {totalPages}
         </p>
 
-        {/* Filters */}
         <div className="bg-white p-4 rounded-xl shadow mb-8 grid grid-cols-1 md:grid-cols-5 gap-4">
           <input
             placeholder="Search by name..."
@@ -156,7 +151,6 @@ export default function AlumniPage() {
           </button>
         </div>
 
-        {/* Alumni Grid */}
         {loading ? (
           <p className="text-center">Loading alumni...</p>
         ) : alumni.length === 0 ? (
@@ -180,17 +174,12 @@ export default function AlumniPage() {
           </div>
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className={`px-4 py-2 rounded-lg border ${
-                page === 1
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-white hover:bg-gray-100"
-              }`}
+              className="px-4 py-2 rounded-lg border bg-white disabled:bg-gray-200"
             >
               Prev
             </button>
@@ -200,9 +189,7 @@ export default function AlumniPage() {
                 key={i}
                 onClick={() => setPage(i + 1)}
                 className={`px-4 py-2 rounded-lg border ${
-                  page === i + 1
-                    ? "bg-black text-white"
-                    : "bg-white hover:bg-gray-100"
+                  page === i + 1 ? "bg-black text-white" : "bg-white"
                 }`}
               >
                 {i + 1}
@@ -212,11 +199,7 @@ export default function AlumniPage() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className={`px-4 py-2 rounded-lg border ${
-                page === totalPages
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-white hover:bg-gray-100"
-              }`}
+              className="px-4 py-2 rounded-lg border bg-white disabled:bg-gray-200"
             >
               Next
             </button>
