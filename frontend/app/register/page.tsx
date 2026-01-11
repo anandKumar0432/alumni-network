@@ -1,7 +1,5 @@
 "use client";
 
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/validators/register.schema";
@@ -31,9 +29,6 @@ export default function RegisterPage() {
   };
 
   return (
-    <div>
-      <Header />
-
       <div className="w-full min-h-screen pt-15 pb-5 flex items-center justify-center bg-gray-100">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -110,8 +105,5 @@ export default function RegisterPage() {
           </button>
         </form>
       </div>
-
-      <Footer />
-    </div>
   );
 }

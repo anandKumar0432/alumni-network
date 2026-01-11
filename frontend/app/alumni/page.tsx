@@ -1,20 +1,3 @@
-// import AlumniCard from "@/components/alumniCard";
-
-// export default function(){
-
-//     return <div>
-//         <AlumniCard
-//         name="Nitish Kumar"
-//         session="2019 - 2023"
-//         branch="Computer Science & Engineering"
-//         linkedin="https://linkedin.com/in/"
-//         twitter="https://twitter.com/"
-//         reddit="https://reddit.com/u/"
-//         image="/cardTest.png"
-//         />
-//     </div>
-// }
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -48,12 +31,9 @@ export default function AlumniPage() {
     year: "",
   });
 
-  // ✅ mount check (hydration fix)
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // ✅ fetch alumni
   const fetchAlumni = async () => {
     try {
       setLoading(true);
@@ -63,15 +43,17 @@ export default function AlumniPage() {
         withCredentials: true,
       });
 
+      const data = (res.data && typeof res.data === "object" && "data" in res.data && Array.isArray(res.data.data))
+        ? res.data.data
+        : [];
+
       setAlumni(
-        (res.data.data || []).map((a: any) => ({
+        data.map((a: any) => ({
           id: a.id,
           name: a.name,
           branch: a.branch,
           session: a.session,
           image: a.image || "/cardTest.png",
-
-          // 👇 mapping social links correctly
           linkedin: a.alumni?.linkedIn || "",
           twitter: a.alumni?.instagram || "",
           reddit: a.alumni?.portfolio || "",
@@ -85,7 +67,6 @@ export default function AlumniPage() {
     }
   };
 
-  // ✅ debounce filter
   useEffect(() => {
     if (!mounted) return;
 
@@ -96,19 +77,16 @@ export default function AlumniPage() {
     return () => clearTimeout(timeout);
   }, [filters, mounted]);
 
-  // ✅ block server render mismatch
   if (!mounted) {
     return <p className="text-center mt-10">Loading...</p>;
   }
 
-  // ✅ NORMAL JSX BELOW
   return (
     <div className="pt-20 min-h-screen bg-gray-50 px-4 py-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">Alumni Directory</h1>
         <p className="text-gray-600 mb-4">{alumni.length} alumni found</p>
 
-        {/* Filters */}
         <div className="bg-white p-4 rounded-xl shadow mb-8 grid grid-cols-1 md:grid-cols-5 gap-4">
           <input
             placeholder="Search by name..."
@@ -156,7 +134,6 @@ export default function AlumniPage() {
           </button>
         </div>
 
-        {/* Alumni Grid */}
         {loading ? (
           <p className="text-center">Loading alumni...</p>
         ) : alumni.length === 0 ? (

@@ -1,11 +1,10 @@
 "use client";
 
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { Globe, Instagram, Linkedin } from "lucide-react";
+import { json } from "zod";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -151,7 +150,6 @@ export default function AlumniProfilePage() {
   if (loading) {
     return (
       <div>
-        <Header />
         <Loading />
       </div>
     );
@@ -160,7 +158,6 @@ export default function AlumniProfilePage() {
   if (error || !alumni) {
     return (
       <div>
-        <Header />
         <main className="pt-20 min-h-screen flex items-center justify-center">
           <p className="text-red-600">{error || "Profile not found"}</p>
         </main>
@@ -171,8 +168,6 @@ export default function AlumniProfilePage() {
 
   return (
     <div>
-      <Header />
-
       <main className="pt-20 pb-5 min-h-screen bg-background flex justify-center px-4">
         <div className="w-full max-w-4xl space-y-6">
           
@@ -281,8 +276,6 @@ export default function AlumniProfilePage() {
             </div>
           </div>
       </main>
-      <Footer />
     </div>
-
   );
 }

@@ -1,11 +1,8 @@
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+
 import React from "react";
 
 const AboutAlumni: React.FC = () => {
   return (
-    <div>
-        <Header />
         <section className="bg-gray-50 pt-20 pb-5 px-4 px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
 
@@ -47,8 +44,6 @@ const AboutAlumni: React.FC = () => {
           </div>
         </div>
       </section>
-      <Footer />
-    </div>
   );
 };
 

@@ -9,13 +9,8 @@ import {
   Briefcase,
   Twitter,
 } from "lucide-react";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
-
 const ContactUs: React.FC = () => {
   return (
-    <div>
-      <Header />
       <section className="w-full bg-white pt-20 pb-10 lg:py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         
@@ -144,8 +139,6 @@ const ContactUs: React.FC = () => {
         </div>
       </div>
     </section>
-    <Footer />
-    </div>
   );
 };
 

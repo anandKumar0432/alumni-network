@@ -200,7 +200,7 @@ export const updateUser = async (req: Request, res: Response)=>{
                     }
                 }
                 : undefined,
-                alumni: 
+                alumni:
                 data.role === "ALUMNI"
                 ? {
                     upsert: {
