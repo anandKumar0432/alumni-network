@@ -86,57 +86,124 @@ export const findAllStudent = async (req: Request, res: Response)=>{
 //     }
 // }
 
+// export const findAllAlumni = async (req: Request, res: Response) => {
+//   try {
+//     const { search, branch, session, year } = req.query;
+
+//     const conditions: any[] = [];
+
+//     if (search) {
+//       conditions.push({
+//         name: {
+//           contains: String(search),
+//           mode: "insensitive",
+//         },
+//       });
+//     }
+
+//     if (branch) {
+//       conditions.push({
+//         branch: String(branch),
+//       });
+//     }
+
+//     if (session) {
+//       conditions.push({
+//         session: String(session),
+//       });
+//     }
+
+//     if (year) {
+//       conditions.push({
+//         session: {
+//           contains: String(year),
+//         },
+//       });
+//     }
+
+//     const alumnis = await prisma.user.findMany({
+//       where: {
+//         role: "ALUMNI",
+//         alumni: {
+//           status: "VERIFIED",
+//         },
+//         ...(conditions.length > 0 && { AND: conditions }),
+//       },
+//       select: {
+//         ...safeUserSelect,
+//       },
+//     });
+
+//     return res.status(200).json({
+//       msg: "alumni fetched successfully",
+//       data: alumnis,
+//     });
+//   } catch (e) {
+//     console.error(e);
+//     return res.status(500).json({
+//       msg: "something went wrong",
+//     });
+//   }
+// };
+
 export const findAllAlumni = async (req: Request, res: Response) => {
   try {
-    const { search, branch, session, year } = req.query;
+    const { search, branch, session, year, page = "1", limit = "8" } = req.query;
 
-    const conditions: any[] = [];
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+    const skip = (pageNumber - 1) * limitNumber;
 
-    if (search) {
-      conditions.push({
-        name: {
-          contains: String(search),
-          mode: "insensitive",
+    const filters: any = {
+      role: "ALUMNI",
+      alumni: { status: "VERIFIED" },
+      AND: [
+        search
+          ? {
+              name: {
+                contains: String(search),
+                mode: "insensitive",
+              },
+            }
+          : {},
+
+        branch ? { branch: String(branch) } : {},
+        session ? { session: String(session) } : {},
+
+        year
+          ? {
+              session: {
+                contains: String(year),
+              },
+            }
+          : {},
+      ],
+    };
+
+    const [alumnis, total] = await Promise.all([
+      prisma.user.findMany({
+        where: filters,
+        skip,
+        take: limitNumber,
+        select: {
+          ...safeUserSelect,
         },
-      });
-    }
+      }),
 
-    if (branch) {
-      conditions.push({
-        branch: String(branch),
-      });
-    }
-
-    if (session) {
-      conditions.push({
-        session: String(session),
-      });
-    }
-
-    if (year) {
-      conditions.push({
-        session: {
-          contains: String(year),
-        },
-      });
-    }
-
-    const alumnis = await prisma.user.findMany({
-      where: {
-        role: "ALUMNI",
-        alumni: {
-          status: "VERIFIED",
-        },
-        ...(conditions.length > 0 && { AND: conditions }),
-      },
-      select: {
-        ...safeUserSelect,
-      },
-    });
+      prisma.user.count({
+        where: filters,
+      }),
+    ]);
 
     return res.status(200).json({
       msg: "alumni fetched successfully",
       data: alumnis,
+      pagination: {
+        page: pageNumber,
+        limit: limitNumber,
+        total,
+        totalPages: Math.ceil(total / limitNumber),
+      },
     });
   } catch (e) {
     console.error(e);
@@ -145,7 +212,6 @@ export const findAllAlumni = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 
 
