@@ -13,6 +13,7 @@ app.use(cors({
 app.use(cookieParser());
 
 app.use("/api/v1", mainRouter);
+
 app.listen(PORT, ()=>{
     console.log(`app is listening on port ${PORT}`);
 });

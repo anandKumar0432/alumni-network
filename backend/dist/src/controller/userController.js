@@ -58,28 +58,80 @@ export const findAllStudent = async (req, res) => {
         });
     }
 };
+// export const findAllAlumni = async (req: Request, res: Response)=>{
+//     try{
+//         const alumnis = await prisma.user.findMany({
+//             where:{
+//                 role: "ALUMNI",
+//                 alumni:{
+//                     status:"VERIFIED"
+//                 }
+//             },
+//             select:{
+//                 ...safeUserSelect,
+//             }
+//         })
+//         if(!alumnis){
+//             return res.status(404).json({
+//                 msg: "alumnis not found"
+//             })
+//         }
+//     }catch(e){
+//         return res.status(500).json({
+//             msg: "something went wrong"
+//         })
+//     }
+// }
 export const findAllAlumni = async (req, res) => {
     try {
+        const { search, branch, session, year } = req.query;
+        const conditions = [];
+        if (search) {
+            conditions.push({
+                name: {
+                    contains: String(search),
+                    mode: "insensitive",
+                },
+            });
+        }
+        if (branch) {
+            conditions.push({
+                branch: String(branch),
+            });
+        }
+        if (session) {
+            conditions.push({
+                session: String(session),
+            });
+        }
+        if (year) {
+            conditions.push({
+                session: {
+                    contains: String(year),
+                },
+            });
+        }
         const alumnis = await prisma.user.findMany({
             where: {
                 role: "ALUMNI",
                 alumni: {
-                    status: "VERIFIED"
-                }
+                    status: "VERIFIED",
+                },
+                ...(conditions.length > 0 && { AND: conditions }),
             },
             select: {
                 ...safeUserSelect,
-            }
+            },
         });
-        if (!alumnis) {
-            return res.status(404).json({
-                msg: "alumnis not found"
-            });
-        }
+        return res.status(200).json({
+            msg: "alumni fetched successfully",
+            data: alumnis,
+        });
     }
     catch (e) {
+        console.error(e);
         return res.status(500).json({
-            msg: "something went wrong"
+            msg: "something went wrong",
         });
     }
 };
