@@ -3,6 +3,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
+import {Button} from "@/components/ui/button";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -21,55 +22,128 @@ type AlumniProfile = {
   status: "PENDING" | "VERIFIED" | "REJECTED";
 };
 
+
+
 export default function AlumniProfilePage() {
 
   const [alumni, setAlumni] = useState<AlumniProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [form, setForm] = useState<any>({});
+  const [saving, setSaving] = useState(false);
+  const [edit, setEdit] = useState(false);
+
+
+  
+
 
   // 🔹 TEMP, later store in local
   const userId = "795b7fe1-3575-42de-9f1f-9b641646594e";
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch(
-          `${BACKEND_URL}/alumini/me/${userId}`,
-          {
-            credentials: "include",
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-
-        const data = await res.json();
-
-        setAlumni({
-          name: data.user.name,
-          email: data.user.email,
-          regNo: data.user.regNo,
-          branch: data.user.branch,
-          session: data.user.session,
-          college: data.user.college,
-          currentJob: data.alumni?.currentJob,
-          currentCompany: data.alumni?.currentCompany,
-          linkedIn: data.alumni?.linkedIn,
-          instagram: data.alumni?.instagram,
-          portfolio: data.alumni?.portfolio,
-          status: data.alumni?.status,
-        });
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchProfile();
   }, [userId]);  
+
+
+    /* ---------------- FETCH PROFILE ---------------- */
+
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch(
+        `${BACKEND_URL}/alumini/me/${userId}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch profile");
+      }
+
+      const data = await res.json();
+      console.log(data)
+
+      const profile = {
+        name: data.user.name,
+        email: data.user.email,
+        regNo: data.user.regNo,
+        branch: data.user.branch,
+        session: data.user.session,
+        college: data.user.college,
+        currentJob: data.user.alumni?.currentJob || "",
+        currentCompany: data.user.alumni?.currentCompany || "",
+        linkedIn: data.user.alumni?.linkedIn || "",
+        instagram: data.user.alumni?.instagram || "",
+        portfolio: data.user.alumni?.portfolio || "",
+        status: data.user.alumni?.status,
+      };
+
+    setAlumni(profile);
+
+    setForm({
+      name: profile.name,
+      regNo: profile.regNo,
+      branch: profile.branch,
+      session: profile.session,
+      currentJob: profile.currentJob,
+      currentCompany: profile.currentCompany,
+      linkedIn: profile.linkedIn,
+      instagram: profile.instagram,
+      portfolio: profile.portfolio,
+    });
+
+    } catch (err: any) {
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+    /* ---------------- UPDATE PROFILE ---------------- */
+
+    const handleUpdate = async (e: any) => {
+      e.preventDefault();
+      setSaving(true);
+  
+      const payload = {
+        role: "ALUMNI",
+        name: form.name,
+        regNo: form.regNo,
+        branch: form.branch,
+        session: form.session,
+        alumni: {
+          currentJob: form.currentJob || undefined,
+          currentCompany: form.currentCompany,
+          linkedIn: form.linkedIn || undefined,
+          instagram: form.instagram || undefined,
+          portfolio: form.portfolio || undefined,
+        },
+      };
+  
+      try {
+        const res = await fetch(
+          `${BACKEND_URL}/alumini/update`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+          }
+        );
+  
+        if (!res.ok) throw new Error("Update failed");
+  
+        setEdit(false);
+        fetchProfile();
+      } catch (e: any) {
+        alert(e.message);
+      } finally {
+        setSaving(false);
+      }
+    };
 
   
   if (loading) {
@@ -205,10 +279,109 @@ export default function AlumniProfilePage() {
 
           {/* Actions */}
           <div className="flex justify-end">
-            <button className="px-6 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
+            {/* <button className="px-6 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
               Edit Profile
-            </button>  
+            </button>   */}
+            <Button
+              onClick={() => setEdit(!edit)}
+            >
+              {edit ? "Cancel" : "Edit Profile"}
+            </Button>
+            
           </div>  <br/>
+
+
+
+
+
+               {/* EDIT FORM */}
+          {edit && (
+            <form
+              onSubmit={handleUpdate}
+              className="bg-card border rounded-xl p-6 space-y-4"
+            >
+              <input
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Name"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.regNo}
+                onChange={(e) => setForm({ ...form, regNo: e.target.value })}
+                placeholder="Registration No"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.branch}
+                onChange={(e) => setForm({ ...form, branch: e.target.value })}
+                placeholder="Branch"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.session}
+                onChange={(e) => setForm({ ...form, session: e.target.value })}
+                placeholder="Session"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.currentJob}
+                onChange={(e) =>
+                  setForm({ ...form, currentJob: e.target.value })
+                }
+                placeholder="Current Job"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.currentCompany}
+                onChange={(e) =>
+                  setForm({ ...form, currentCompany: e.target.value })
+                }
+                placeholder="Company"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.linkedIn}
+                onChange={(e) =>
+                  setForm({ ...form, linkedIn: e.target.value })
+                }
+                placeholder="LinkedIn URL"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.instagram}
+                onChange={(e) =>
+                  setForm({ ...form, instagram: e.target.value })
+                }
+                placeholder="Instagram URL"
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                value={form.portfolio}
+                onChange={(e) =>
+                  setForm({ ...form, portfolio: e.target.value })
+                }
+                placeholder="Portfolio URL"
+                className="w-full border p-2 rounded"
+              />
+
+              <Button
+                disabled={saving}
+                className="w-full bg-primary text-primary-foreground py-2 rounded"
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </Button>
+            </form>
+          )}
+
 
         </div>
       </main>
