@@ -7,6 +7,10 @@ import AlumniCardSkeleton from "@/components/AlumniCardSkeleton";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import MobileFilterDrawer from "@/components/filters/MobileFilterDrawer";
+import MobilePagination from "@/components/alumni/MobilePagination";
+import AlumniHero from "@/components/alumni/AlumniHero";
+import AlumniFilterBar from "@/components/alumni/AlumniFilterBar";
+import ActiveFilters from "@/components/alumni/ActiveFilters";
 
 const API = "http://localhost:8000/api/v1";
 
@@ -51,14 +55,18 @@ export default function AlumniPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const activeCount = Object.values(filters).filter(Boolean).length;
+  const handleRemoveFilter = (key: string) => {
+    setFilters((f) => ({ ...f, [key]: "" }));
+    setPage(1);
+  };
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // }, [page]);
 
   // URL → STATE
   useEffect(() => {
@@ -131,37 +139,33 @@ export default function AlumniPage() {
   if (!mounted) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="pt-20 min-h-screen bg-gray-50 px-4 py-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Alumni Directory</h1>
-        <p className="text-gray-600 mb-4">
-          Showing page {page} of {totalPages}
-        </p>
+    <motion.main
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <AlumniHero />
 
-        {/* Mobile filter button */}
-        <div className="md:hidden mb-4 flex justify-end">
-          <button
-            onClick={() => setIsFilterOpen(true)}
-            className="border rounded-lg px-4 py-2 bg-white shadow-sm"
-          >
-            Filters {activeCount > 0 && `(${activeCount})`}
-          </button>
-        </div>
+      {/* FILTER ZONE */}
+      <section className="relative bg-gray-50">
+        <div className="h-6" />
 
-        {/* Desktop Filters */}
-        <div className="hidden md:grid bg-white p-4 rounded-xl shadow mb-8 grid-cols-1 md:grid-cols-5 gap-4">
-          <input
-            placeholder="Search by name..."
-            className="border rounded-lg px-3 py-2"
-            value={filters.search}
-            onChange={(e) => {
-              setFilters((f) => ({ ...f, search: e.target.value }));
-              setPage(1);
-            }}
-          />
-
+        <AlumniFilterBar
+          search={filters.search}
+          onSearchChange={(v) => {
+            setFilters((f) => ({ ...f, search: v }));
+            setPage(1);
+          }}
+          results={alumni.length}
+          onMobileFilter={() => setIsFilterOpen(true)}
+          onClear={() => {
+            setFilters({ search: "", branch: "", session: "", year: "" });
+            setPage(1);
+          }}
+        >
+          {/* Branch */}
           <select
-            className="border rounded-lg px-3 py-2"
+            className="h-11 rounded-xl border px-3 bg-background"
             value={filters.branch}
             onChange={(e) => {
               setFilters((f) => ({ ...f, branch: e.target.value }));
@@ -179,9 +183,10 @@ export default function AlumniPage() {
             <option value="FPP">FPP</option>
           </select>
 
+          {/* Session */}
           <input
-            placeholder="Session (e.g. 2019-23)"
-            className="border rounded-lg px-3 py-2"
+            placeholder="Session (e.g. 2023-27)"
+            className="h-11 rounded-xl border px-3 bg-background"
             value={filters.session}
             onChange={(e) => {
               setFilters((f) => ({ ...f, session: e.target.value }));
@@ -189,108 +194,117 @@ export default function AlumniPage() {
             }}
           />
 
+          {/* Year */}
           <input
             type="number"
             placeholder="Passing year"
-            className="border rounded-lg px-3 py-2"
+            className="h-11 rounded-xl border px-3 bg-background"
             value={filters.year}
             onChange={(e) => {
               setFilters((f) => ({ ...f, year: e.target.value }));
               setPage(1);
             }}
           />
+        </AlumniFilterBar>
 
-          <button
-            onClick={() => {
-              setFilters({ search: "", branch: "", session: "", year: "" });
-              setPage(1);
-            }}
-            className="bg-black text-white rounded-lg px-4 py-2"
-          >
-            Clear
-          </button>
+        <div className="max-w-7xl mx-auto px-4">
+          <ActiveFilters filters={filters} onRemove={handleRemoveFilter} />
         </div>
+      </section>
 
-        {/* List */}
-        <AnimatePresence mode="wait">
-          {loading ? (
-            <motion.div
-              key="skeleton"
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={listVariants}
-              transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-            >
-              {Array.from({ length: 8 }).map((_, i) => (
-                <AlumniCardSkeleton key={i} />
-              ))}
-            </motion.div>
-          ) : alumni.length === 0 ? (
-            <motion.p
-              key="empty"
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={listVariants}
-              transition={{ duration: 0.35 }}
-              className="text-center text-gray-500"
-            >
-              No alumni found.
-            </motion.p>
-          ) : (
-            <motion.div
-              key={page + JSON.stringify(filters)}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={listVariants}
-              transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-            >
-              {alumni.map((a) => (
-                <AlumniCard key={a.id} {...a} />
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
-            >
-              Prev
-            </button>
-
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i + 1)}
-                className={`px-4 py-2 rounded-lg border cursor-pointer ${
-                  page === i + 1 ? "bg-black text-white" : "bg-white"
-                }`}
+      {/* CONTENT ZONE */}
+      <section className="bg-gray-50 px-4 pb-12">
+        <div className="max-w-7xl mx-auto">
+          {/* LIST */}
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <motion.div
+                key="skeleton"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={listVariants}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
               >
-                {i + 1}
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <AlumniCardSkeleton key={i} />
+                ))}
+              </motion.div>
+            ) : alumni.length === 0 ? (
+              <motion.p
+                key="empty"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={listVariants}
+                transition={{ duration: 0.35 }}
+                className="text-center text-gray-500"
+              >
+                No alumni found.
+              </motion.p>
+            ) : (
+              <motion.div
+                key={page + JSON.stringify(filters)}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={listVariants}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+              >
+                {alumni.map((a) => (
+                  <AlumniCard key={a.id} {...a} />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* MOBILE PAGINATION */}
+          {totalPages > 1 && (
+            <MobilePagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(p) => setPage(p)}
+            />
+          )}
+
+          {/* DESKTOP PAGINATION */}
+          {totalPages > 1 && (
+            <div className="hidden sm:flex justify-center items-center gap-2 mt-10 flex-wrap">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
+              >
+                Prev
               </button>
-            ))}
 
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
-            >
-              Next
-            </button>
-          </div>
-        )}
-      </div>
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={`px-4 py-2 rounded-lg border cursor-pointer ${
+                    page === i + 1 ? "bg-black text-white" : "bg-white"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
 
-      {/* Mobile Filter Drawer */}
+              <button
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* MOBILE FILTER DRAWER */}
       <MobileFilterDrawer
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
@@ -300,6 +314,6 @@ export default function AlumniPage() {
           setPage(1);
         }}
       />
-    </div>
+    </motion.main>
   );
 }

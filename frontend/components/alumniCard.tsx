@@ -1,5 +1,10 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 import { FaLinkedin, FaTwitter, FaReddit, FaEnvelope } from "react-icons/fa";
 
 interface AlumniCardProps {
@@ -26,19 +31,29 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
   email,
 }) => {
   return (
-    <Link href={`/profile/alumni?id=${id}`} className="block">
-      <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-md">
+    <motion.div
+      whileHover={{ y: -8 }}
+      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+      className="group relative"
+    >
+      {/* glow */}
+      <div className="absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-indigo-500/30 via-purple-500/20 to-pink-500/30 blur pointer-events-none" />
+
+      <Link
+        href={`/profile/alumni?id=${id}`}
+        className="relative block overflow-hidden rounded-3xl border bg-white/80 backdrop-blur shadow-sm hover:shadow-2xl transition-all"
+      >
         {/* image */}
-        <div className="group relative h-44 w-full overflow-hidden">
+        <div className="relative h-52 w-full overflow-hidden">
           {image ? (
-            <img
+            <Image
               src={image}
               alt={name}
-              className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+              fill
+              className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110"
             />
           ) : (
-            // avatar
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900 transition-transform duration-500 group-hover:scale-110">
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
               <svg
                 width="80"
                 height="80"
@@ -52,68 +67,97 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
               </svg>
             </div>
           )}
-        </div>
 
-        <div className="p-5">
-          <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
+          {/* overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
 
-          <p className="mt-1 text-sm text-gray-500">
-            {session} • {branch}
-          </p>
+          {/* badge */}
+          <div className="absolute top-4 left-4">
+            <span className="text-xs font-medium bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+              Alumni
+            </span>
+          </div>
 
-          <div className="my-4 h-px w-full bg-gray-100" />
-
-          <div className="flex items-center gap-5">
+          {/* socials (hover) */}
+          <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition">
             {linkedin && (
               <a
                 href={linkedin}
+                onClick={(e) => e.stopPropagation()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transform text-gray-400 transition-all duration-300 hover:scale-125 hover:text-blue-600"
+                className="p-2 rounded-full bg-white/90 hover:bg-white shadow"
               >
-                <FaLinkedin size={20} />
+                <FaLinkedin />
               </a>
             )}
 
             {twitter && (
               <a
                 href={twitter}
+                onClick={(e) => e.stopPropagation()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transform text-gray-400 transition-all duration-300 hover:scale-125 hover:text-sky-500"
+                className="p-2 rounded-full bg-white/90 hover:bg-white shadow"
               >
-                <FaTwitter size={20} />
+                <FaTwitter />
               </a>
             )}
 
             {reddit && (
               <a
                 href={reddit}
+                onClick={(e) => e.stopPropagation()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transform text-gray-400 transition-all duration-300 hover:scale-125 hover:text-orange-500"
+                className="p-2 rounded-full bg-white/90 hover:bg-white shadow"
               >
-                <FaReddit size={20} />
+                <FaReddit />
               </a>
             )}
 
             {email && (
               <a
                 href={`mailto:${email}`}
-                className="transform text-gray-400 transition-all duration-300 hover:scale-125 hover:text-red-500"
+                onClick={(e) => e.stopPropagation()}
+                className="p-2 rounded-full bg-white/90 hover:bg-white shadow"
               >
-                <FaEnvelope size={20} />
+                <FaEnvelope />
               </a>
             )}
           </div>
-          <div className="mt-4 flex justify-end">
-            <span className="text-sm font-medium text-black-600 hover:underline hover:translate-x-1">
-              See details →
+        </div>
+
+        {/* content */}
+        <div className="p-5">
+          <h3 className="text-lg font-semibold tracking-tight">{name}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {session} • {branch}
+          </p>
+
+          {/* tags */}
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="text-xs rounded-full bg-gray-100 px-3 py-1">
+              {branch}
+            </span>
+            <span className="text-xs rounded-full border px-3 py-1">
+              {session}
             </span>
           </div>
+
+          <div className="mt-5 flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">KEC Connect</span>
+
+            {/* <span className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 group-hover:gap-2 transition-all">
+              View profile →
+            </span> */}
+            <Button size="sm" variant="outline" className="rounded-full gap-2">
+              View profile →
+            </Button>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 };
 
