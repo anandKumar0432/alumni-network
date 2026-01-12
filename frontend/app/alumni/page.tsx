@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AlumniCard from "@/components/alumniCard";
+import AlumniCardSkeleton from "@/components/AlumniCardSkeleton";
 
 const API = "http://localhost:8000/api/v1";
 
@@ -36,6 +37,13 @@ export default function AlumniPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [page]);
 
   const fetchAlumni = async () => {
     try {
@@ -88,7 +96,6 @@ export default function AlumniPage() {
   return (
     <div className="pt-20 min-h-screen bg-gray-50 px-4 py-8">
       <div className="max-w-7xl mx-auto">
-
         <h1 className="text-3xl font-bold mb-2">Alumni Directory</h1>
         <p className="text-gray-600 mb-4">
           Showing page {page} of {totalPages}
@@ -99,17 +106,13 @@ export default function AlumniPage() {
             placeholder="Search by name..."
             className="border rounded-lg px-3 py-2"
             value={filters.search}
-            onChange={(e) =>
-              setFilters({ ...filters, search: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
           />
 
           <select
             className="border rounded-lg px-3 py-2"
             value={filters.branch}
-            onChange={(e) =>
-              setFilters({ ...filters, branch: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, branch: e.target.value })}
           >
             <option value="">All Branches</option>
             <option value="CSE">CSE</option>
@@ -136,9 +139,7 @@ export default function AlumniPage() {
             placeholder="Passing year"
             className="border rounded-lg px-3 py-2"
             value={filters.year}
-            onChange={(e) =>
-              setFilters({ ...filters, year: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, year: e.target.value })}
           />
 
           <button
@@ -152,7 +153,11 @@ export default function AlumniPage() {
         </div>
 
         {loading ? (
-          <p className="text-center">Loading alumni...</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <AlumniCardSkeleton key={i} />
+            ))}
+          </div>
         ) : alumni.length === 0 ? (
           <p className="text-center text-gray-500">No alumni found.</p>
         ) : (
@@ -179,7 +184,7 @@ export default function AlumniPage() {
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border bg-white disabled:bg-gray-200"
+              className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
             >
               Prev
             </button>
@@ -188,7 +193,7 @@ export default function AlumniPage() {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`px-4 py-2 rounded-lg border ${
+                className={`px-4 py-2 rounded-lg border cursor-pointer ${
                   page === i + 1 ? "bg-black text-white" : "bg-white"
                 }`}
               >
@@ -199,7 +204,7 @@ export default function AlumniPage() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border bg-white disabled:bg-gray-200"
+              className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
             >
               Next
             </button>
