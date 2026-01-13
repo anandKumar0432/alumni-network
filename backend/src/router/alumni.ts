@@ -23,7 +23,7 @@ router.get("/students", findAllStudent);
 // /all-alumni
 // router.get("/alumnis", findAllAlumni);
 //correction
-router.get("/alumnis", requiredRole("ALUMNI", "STUDENT", "ADMIN"), findAllAlumni);
+
 
 
 export default router;

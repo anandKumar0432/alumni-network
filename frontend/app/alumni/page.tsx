@@ -12,7 +12,7 @@ import AlumniHero from "@/components/alumni/AlumniHero";
 import AlumniFilterBar from "@/components/alumni/AlumniFilterBar";
 import ActiveFilters from "@/components/alumni/ActiveFilters";
 
-const API = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const PAGE_SIZE = 8;
 
 type Alumni = {
@@ -107,13 +107,13 @@ export default function AlumniPage() {
 
   const fetchAlumni = async () => {
     try {
-      if (!API) {
+      if (!BACKEND_URL) {
         throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
       }
 
       setLoading(true);
 
-      const res = await axios.get(`${API}/alumini/alumnis`, {
+      const res = await axios.get(`${BACKEND_URL}/common/alumnis`, {
         params: { ...filters, page, limit: 8 },
         withCredentials: true,
       });

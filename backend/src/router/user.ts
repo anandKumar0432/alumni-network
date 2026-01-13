@@ -9,8 +9,9 @@ const router : Router = express.Router();
 router.use(auth);
 router.use(isActive);
 router.use(isVerified);
-router.use(requiredRole("STUDENT"));
 
+
+router.use(requiredRole("STUDENT"));
 // /me
 router.get("/me/:id", findUser);
 
