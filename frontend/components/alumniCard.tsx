@@ -44,7 +44,7 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
         className="relative block overflow-hidden rounded-3xl border bg-white/80 backdrop-blur shadow-sm hover:shadow-2xl transition-all"
       >
         {/* image */}
-        <div className="relative h-52 w-full overflow-hidden">
+        <div className="relative h-48 w-full overflow-hidden">
           {image ? (
             <Image
               src={image}
@@ -72,11 +72,11 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
 
           {/* badge */}
-          <div className="absolute top-4 left-4">
+          {/* <div className="absolute top-4 left-4">
             <span className="text-xs font-medium bg-white/90 backdrop-blur px-3 py-1 rounded-full">
               Alumni
             </span>
-          </div>
+          </div> */}
 
           {/* socials (hover) */}
           <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition">

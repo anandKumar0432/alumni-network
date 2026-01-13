@@ -12,7 +12,8 @@ import AlumniHero from "@/components/alumni/AlumniHero";
 import AlumniFilterBar from "@/components/alumni/AlumniFilterBar";
 import ActiveFilters from "@/components/alumni/ActiveFilters";
 
-const API = "http://localhost:8000/api/v1";
+const API = process.env.NEXT_PUBLIC_BACKEND_URL;
+const PAGE_SIZE = 8;
 
 type Alumni = {
   id: string;
@@ -44,6 +45,10 @@ export default function AlumniPage() {
     Number(searchParams.get("page")) || 1
   );
   const [totalPages, setTotalPages] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+
+  const start = totalResults === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const end = Math.min(page * PAGE_SIZE, totalResults);
 
   const [filters, setFilters] = useState({
     search: searchParams.get("search") || "",
@@ -102,6 +107,10 @@ export default function AlumniPage() {
 
   const fetchAlumni = async () => {
     try {
+      if (!API) {
+        throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
+      }
+
       setLoading(true);
 
       const res = await axios.get(`${API}/alumini/alumnis`, {
@@ -122,7 +131,11 @@ export default function AlumniPage() {
       }));
 
       setAlumni(mapped);
+      // console.log("FULL RESPONSE:", res.data);
+      // console.log("PAGINATION:", res.data.pagination);
+
       setTotalPages(res.data?.pagination?.totalPages || 1);
+      setTotalResults(res.data.pagination.total || 0);
     } catch (err) {
       console.error("Failed to fetch alumni", err);
     } finally {
@@ -156,7 +169,7 @@ export default function AlumniPage() {
             setFilters((f) => ({ ...f, search: v }));
             setPage(1);
           }}
-          results={alumni.length}
+          results={totalResults}
           onMobileFilter={() => setIsFilterOpen(true)}
           onClear={() => {
             setFilters({ search: "", branch: "", session: "", year: "" });
@@ -215,6 +228,19 @@ export default function AlumniPage() {
       {/* CONTENT ZONE */}
       <section className="bg-gray-50 px-4 pb-12">
         <div className="max-w-7xl mx-auto">
+          {!loading && totalResults > 0 && (
+            <div className="mb-4 text-sm text-muted-foreground">
+              Showing{" "}
+              <span className="font-medium text-foreground">{start}</span>
+              {" – "}
+              <span className="font-medium text-foreground">{end}</span> of{" "}
+              <span className="font-medium text-foreground">
+                {totalResults}
+              </span>{" "}
+              alumni
+            </div>
+          )}
+
           {/* LIST */}
           <AnimatePresence mode="wait">
             {loading ? (
@@ -277,7 +303,7 @@ export default function AlumniPage() {
                 onClick={() => setPage((p) => p - 1)}
                 className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
               >
-                Prev
+                ← Prev
               </button>
 
               {[...Array(totalPages)].map((_, i) => (
@@ -297,7 +323,7 @@ export default function AlumniPage() {
                 onClick={() => setPage((p) => p + 1)}
                 className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
               >
-                Next
+                Next →
               </button>
             </div>
           )}
