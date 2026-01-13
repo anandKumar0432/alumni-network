@@ -5,7 +5,7 @@ import axios from "axios";
 import AlumniCard from "@/components/alumniCard";
 import AlumniCardSkeleton from "@/components/AlumniCardSkeleton";
 
-const API = "http://localhost:8000/api/v1";
+const BACKEND_URL = process.env.BACKEND_URL;
 
 type Alumni = {
   id: string;
@@ -33,7 +33,7 @@ export default function AlumniPage() {
     session: "",
     year: "",
   });
-
+ 
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -49,7 +49,7 @@ export default function AlumniPage() {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${API}/alumini/alumnis`, {
+      const res = await axios.get(`${BACKEND_URL}/alumini/alumnis`, {
         params: {
           ...filters,
           page,

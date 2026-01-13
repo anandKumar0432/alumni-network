@@ -197,19 +197,19 @@ export default function AlumniProfilePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>    
                 <p className="text-muted-foreground">Registration No</p>
-                <p className="font-medium">{alumni.regNo}</p>         
+                <p className="font-medium">{alumni.regNo}</p>
             </div>
-            <div>    
+            <div>
                 <p className="text-muted-foreground">Branch</p>
-                <p className="font-medium">{alumni.branch}</p>         
+                <p className="font-medium">{alumni.branch}</p>
             </div>
             <div>    
                 <p className="text-muted-foreground">Session</p>
-                <p className="font-medium">{alumni.session}</p>         
+                <p className="font-medium">{alumni.session}</p> 
             </div>
             <div>    
                 <p className="text-muted-foreground">College</p>
-                <p className="font-medium">{alumni.college}</p>         
+                <p className="font-medium">{alumni.college}</p>
             </div>
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function AlumniProfilePage() {
               </div>
             </div>
             <div className="flex justify-end">
-              <Button>Edit Profile</Button>
+              <Button onClick={handleUpdate}>Edit Profile</Button>
             </div>
           </div>
       </main>
