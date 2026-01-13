@@ -4,8 +4,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AlumniCard from "@/components/alumniCard";
 import AlumniCardSkeleton from "@/components/AlumniCardSkeleton";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import MobileFilterDrawer from "@/components/filters/MobileFilterDrawer";
+import MobilePagination from "@/components/alumni/MobilePagination";
+import AlumniHero from "@/components/alumni/AlumniHero";
+import AlumniFilterBar from "@/components/alumni/AlumniFilterBar";
+import ActiveFilters from "@/components/alumni/ActiveFilters";
 
-const BACKEND_URL = process.env.BACKEND_URL;
+const API = process.env.NEXT_PUBLIC_BACKEND_URL;
+const PAGE_SIZE = 8;
 
 type Alumni = {
   id: string;
@@ -19,42 +27,94 @@ type Alumni = {
   email?: string;
 };
 
+const listVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
 export default function AlumniPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [mounted, setMounted] = useState(false);
   const [alumni, setAlumni] = useState<Alumni[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(
+    Number(searchParams.get("page")) || 1
+  );
   const [totalPages, setTotalPages] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+
+  const start = totalResults === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const end = Math.min(page * PAGE_SIZE, totalResults);
 
   const [filters, setFilters] = useState({
-    search: "",
-    branch: "",
-    session: "",
-    year: "",
+    search: searchParams.get("search") || "",
+    branch: searchParams.get("branch") || "",
+    session: searchParams.get("session") || "",
+    year: searchParams.get("year") || "",
   });
- 
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const activeCount = Object.values(filters).filter(Boolean).length;
+  const handleRemoveFilter = (key: string) => {
+    setFilters((f) => ({ ...f, [key]: "" }));
+    setPage(1);
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // }, [page]);
+
+  // URL → STATE
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [page]);
+    const newPage = Number(searchParams.get("page")) || 1;
+
+    const newFilters = {
+      search: searchParams.get("search") || "",
+      branch: searchParams.get("branch") || "",
+      session: searchParams.get("session") || "",
+      year: searchParams.get("year") || "",
+    };
+
+    setPage((p) => (p !== newPage ? newPage : p));
+    setFilters((f) =>
+      JSON.stringify(f) !== JSON.stringify(newFilters) ? newFilters : f
+    );
+  }, [searchParams]);
+
+  // STATE → URL
+  useEffect(() => {
+    if (!mounted) return;
+
+    const params = new URLSearchParams();
+
+    if (page > 1) params.set("page", page.toString());
+    if (filters.search) params.set("search", filters.search);
+    if (filters.branch) params.set("branch", filters.branch);
+    if (filters.session) params.set("session", filters.session);
+    if (filters.year) params.set("year", filters.year);
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [page, filters, mounted, router]);
 
   const fetchAlumni = async () => {
     try {
+      if (!API) {
+        throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
+      }
+
       setLoading(true);
 
-      const res = await axios.get(`${BACKEND_URL}/alumini/alumnis`, {
-        params: {
-          ...filters,
-          page,
-          limit: 8,
-        },
+      const res = await axios.get(`${API}/alumini/alumnis`, {
+        params: { ...filters, page, limit: 8 },
         withCredentials: true,
       });
 
@@ -71,7 +131,11 @@ export default function AlumniPage() {
       }));
 
       setAlumni(mapped);
+      // console.log("FULL RESPONSE:", res.data);
+      // console.log("PAGINATION:", res.data.pagination);
+
       setTotalPages(res.data?.pagination?.totalPages || 1);
+      setTotalResults(res.data.pagination.total || 0);
     } catch (err) {
       console.error("Failed to fetch alumni", err);
     } finally {
@@ -85,34 +149,41 @@ export default function AlumniPage() {
     return () => clearTimeout(timeout);
   }, [filters, page, mounted]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [filters]);
-
-  if (!mounted) {
-    return <p className="text-center mt-10">Loading...</p>;
-  }
+  if (!mounted) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="pt-20 min-h-screen bg-gray-50 px-4 py-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Alumni Directory</h1>
-        <p className="text-gray-600 mb-4">
-          Showing page {page} of {totalPages}
-        </p>
+    <motion.main
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <AlumniHero />
 
-        <div className="bg-white p-4 rounded-xl shadow mb-8 grid grid-cols-1 md:grid-cols-5 gap-4">
-          <input
-            placeholder="Search by name..."
-            className="border rounded-lg px-3 py-2"
-            value={filters.search}
-            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-          />
+      {/* FILTER ZONE */}
+      <section className="relative bg-gray-50">
+        <div className="h-6" />
 
+        <AlumniFilterBar
+          search={filters.search}
+          onSearchChange={(v) => {
+            setFilters((f) => ({ ...f, search: v }));
+            setPage(1);
+          }}
+          results={totalResults}
+          onMobileFilter={() => setIsFilterOpen(true)}
+          onClear={() => {
+            setFilters({ search: "", branch: "", session: "", year: "" });
+            setPage(1);
+          }}
+        >
+          {/* Branch */}
           <select
-            className="border rounded-lg px-3 py-2"
+            className="h-11 rounded-xl border px-3 bg-background"
             value={filters.branch}
-            onChange={(e) => setFilters({ ...filters, branch: e.target.value })}
+            onChange={(e) => {
+              setFilters((f) => ({ ...f, branch: e.target.value }));
+              setPage(1);
+            }}
           >
             <option value="">All Branches</option>
             <option value="CSE">CSE</option>
@@ -125,92 +196,150 @@ export default function AlumniPage() {
             <option value="FPP">FPP</option>
           </select>
 
+          {/* Session */}
           <input
-            placeholder="Session (e.g. 2019-23)"
-            className="border rounded-lg px-3 py-2"
+            placeholder="Session (e.g. 2023-27)"
+            className="h-11 rounded-xl border px-3 bg-background"
             value={filters.session}
-            onChange={(e) =>
-              setFilters({ ...filters, session: e.target.value })
-            }
+            onChange={(e) => {
+              setFilters((f) => ({ ...f, session: e.target.value }));
+              setPage(1);
+            }}
           />
 
+          {/* Year */}
           <input
             type="number"
             placeholder="Passing year"
-            className="border rounded-lg px-3 py-2"
+            className="h-11 rounded-xl border px-3 bg-background"
             value={filters.year}
-            onChange={(e) => setFilters({ ...filters, year: e.target.value })}
+            onChange={(e) => {
+              setFilters((f) => ({ ...f, year: e.target.value }));
+              setPage(1);
+            }}
           />
+        </AlumniFilterBar>
 
-          <button
-            onClick={() =>
-              setFilters({ search: "", branch: "", session: "", year: "" })
-            }
-            className="bg-black text-white rounded-lg px-4 py-2"
-          >
-            Clear
-          </button>
+        <div className="max-w-7xl mx-auto px-4">
+          <ActiveFilters filters={filters} onRemove={handleRemoveFilter} />
         </div>
+      </section>
 
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <AlumniCardSkeleton key={i} />
-            ))}
-          </div>
-        ) : alumni.length === 0 ? (
-          <p className="text-center text-gray-500">No alumni found.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {alumni.map((a) => (
-              <AlumniCard
-                key={a.id}
-                id={a.id}
-                name={a.name}
-                session={a.session}
-                branch={a.branch}
-                linkedin={a.linkedin}
-                twitter={a.twitter}
-                reddit={a.reddit}
-                email={a.email}
-                image={a.image}
-              />
-            ))}
-          </div>
-        )}
+      {/* CONTENT ZONE */}
+      <section className="bg-gray-50 px-4 pb-12">
+        <div className="max-w-7xl mx-auto">
+          {!loading && totalResults > 0 && (
+            <div className="mb-4 text-sm text-muted-foreground">
+              Showing{" "}
+              <span className="font-medium text-foreground">{start}</span>
+              {" – "}
+              <span className="font-medium text-foreground">{end}</span> of{" "}
+              <span className="font-medium text-foreground">
+                {totalResults}
+              </span>{" "}
+              alumni
+            </div>
+          )}
 
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
-            >
-              Prev
-            </button>
-
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i + 1)}
-                className={`px-4 py-2 rounded-lg border cursor-pointer ${
-                  page === i + 1 ? "bg-black text-white" : "bg-white"
-                }`}
+          {/* LIST */}
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <motion.div
+                key="skeleton"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={listVariants}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
               >
-                {i + 1}
-              </button>
-            ))}
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <AlumniCardSkeleton key={i} />
+                ))}
+              </motion.div>
+            ) : alumni.length === 0 ? (
+              <motion.p
+                key="empty"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={listVariants}
+                transition={{ duration: 0.35 }}
+                className="text-center text-gray-500"
+              >
+                No alumni found.
+              </motion.p>
+            ) : (
+              <motion.div
+                key={page + JSON.stringify(filters)}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={listVariants}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+              >
+                {alumni.map((a) => (
+                  <AlumniCard key={a.id} {...a} />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
-            >
-              Next
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+          {/* MOBILE PAGINATION */}
+          {totalPages > 1 && (
+            <MobilePagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(p) => setPage(p)}
+            />
+          )}
+
+          {/* DESKTOP PAGINATION */}
+          {totalPages > 1 && (
+            <div className="hidden sm:flex justify-center items-center gap-2 mt-10 flex-wrap">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
+              >
+                ← Prev
+              </button>
+
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={`px-4 py-2 rounded-lg border cursor-pointer ${
+                    page === i + 1 ? "bg-black text-white" : "bg-white"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="px-4 py-2 rounded-lg border cursor-pointer bg-white disabled:bg-gray-200"
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* MOBILE FILTER DRAWER */}
+      <MobileFilterDrawer
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        currentFilters={filters}
+        onApply={(newFilters) => {
+          setFilters(newFilters);
+          setPage(1);
+        }}
+      />
+    </motion.main>
   );
 }
