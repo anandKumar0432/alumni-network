@@ -23,10 +23,7 @@ export default function AlumniFilterBar({
   const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setStuck(window.scrollY > 120);
-    };
-
+    const onScroll = () => setStuck(window.scrollY > 120);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -48,9 +45,9 @@ export default function AlumniFilterBar({
       >
         <div className="flex flex-col gap-3">
           {/* Top row */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             {/* Search */}
-            <div className="relative flex-1">
+            <div className="relative flex-1 min-w-[220px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 value={search}
@@ -61,7 +58,7 @@ export default function AlumniFilterBar({
             </div>
 
             {/* Desktop filters */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-3 flex-wrap">
               {children}
             </div>
 
@@ -69,12 +66,13 @@ export default function AlumniFilterBar({
             <Button
               variant="outline"
               size="icon"
-              className="lg:hidden h-11 w-11 rounded-xl"
+              className="md:hidden h-11 w-11 rounded-xl"
               onClick={onMobileFilter}
             >
               <SlidersHorizontal className="h-5 w-5" />
             </Button>
 
+            {/* Clear */}
             <Button
               onClick={onClear}
               className="h-11 rounded-xl px-5 hidden sm:inline-flex"

@@ -5,9 +5,9 @@ import {
   Mail,
   Instagram,
   Facebook,
-  Youtube,
+  // Youtube,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
+// import { FaWhatsapp } from "react-icons/fa";
 
 export const Footer = () => {
   const navigation = [
@@ -63,8 +63,8 @@ export const Footer = () => {
                 { Icon: Mail, link: "mailto:principalranjanakri84@gmail.com" },
                 { Icon: Instagram, link: "https://www.instagram.com/keckatiharofficial/" },
                 { Icon: Facebook, link: "https://www.facebook.com/profile.php?id=61564963783682" },
-                { Icon: FaWhatsapp, link: "https://whatsapp.com/channel/0029VaeIPrnFHWptfQRrpo0Q" },
-                { Icon: Youtube, link: "https://www.youtube.com/channel/UCJu8sFs4jAp6sZIPsa8Qs5g" },
+                // { Icon: FaWhatsapp, link: "https://whatsapp.com/channel/0029VaeIPrnFHWptfQRrpo0Q" },
+                // { Icon: Youtube, link: "https://www.youtube.com/channel/UCJu8sFs4jAp6sZIPsa8Qs5g" },
               ].map(({ Icon, link }, i) => (
                 <Link
                   key={i}
