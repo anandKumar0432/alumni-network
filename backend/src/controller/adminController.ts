@@ -71,42 +71,74 @@ export const verifyUser =async (req: Request, res: Response)=>{
             msg: "user verified successfully"
         })
     }catch(e){
-        return res.json(500).json({
+        return res.status(500).json({
             msg : "verification failed"
         })
     }
 }
 
-export const unverifiedUser = async (req: Request, res: Response)=>{
-    try{
-        const unverifiedUsers = prisma.user.findMany({
-            where: {
-                student: {
-                    status: "PENDING",
-                },
-                alumni: {
-                    status: "PENDING"
-                }
-            },
-            select: {
-                ...safeUserSelect
-            }
-        }) 
-        if(!unverifiedUsers){
-            return res.status(404).json({
-                msg: "there is no any unverified users"
-            })
-        }
-        return res.status(201).json({
-            msg: "user successfully fetched",
-            unverifiedUsers,
-        })
-    } catch(e){
-        return res.status(500).json({
-            msg: "something went wrong",
-        })
-    }
-}
+// export const unverifiedUser = async (req: Request, res: Response)=>{
+//     try{
+//         const unverifiedUsers = prisma.user.findMany({
+//             where: {
+//                 student: {
+//                     status: "PENDING",
+//                 },
+//                 alumni: {
+//                     status: "PENDING"
+//                 }
+//             },
+//             select: {
+//                 ...safeUserSelect
+//             }
+//         }) 
+//         if(!unverifiedUsers){
+//             return res.status(404).json({
+//                 msg: "there is no any unverified users"
+//             })
+//         }
+//         return res.status(201).json({
+//             msg: "user successfully fetched",
+//             unverifiedUsers,
+//         })
+//     } catch(e){
+//         return res.status(500).json({
+//             msg: "something went wrong",
+//         })
+//     }
+// }
+
+
+export const unverifiedUser = async (req: Request, res: Response) => {
+  try {
+    const unverifiedUsers = await prisma.user.findMany({
+      where: {
+        OR: [
+          { student: { status: "PENDING" } },
+          { alumni: { status: "PENDING" } }
+        ]
+      },
+      include: {
+        student: true,
+        alumni: true
+      }
+    });
+
+    return res.status(200).json({
+      msg: "unverified users fetched",
+      count: unverifiedUsers.length,
+      unverifiedUsers,
+    });
+
+  } catch (e) {
+    return res.status(500).json({
+      msg: "something went wrong",
+    });
+  }
+};
+
+
+
 
 export const changRole = async (req: Request, res: Response)=>{
     try{
