@@ -1,33 +1,37 @@
+## Prerequisites
 
-Prerequisites node version >= 22
-Typescript installed globally
-prisma version == 7.0
+Make sure the following are installed on your system:
 
-------------------------Step wise command-------------------------
-fork the repo
-clone the repo:
-     git clone https://github.com/<your user name>/alumni-network.git
+- Node.js version **>= 22**
+- TypeScript installed globally
+- Prisma version **7.0**
 
-upstream this with original repo:
-    git remote add upstream https://github.com/anandKumar0432/alumni-network.git
+---
 
-rebase:
-    git fetch upstream
-merge with your local:
-    git merge upstream/main
+## Step-by-Step Contribution Guide
 
-push to your local and open a PR
+### 1. Fork the Repository
 
-configure BACKEND
-    cd /backend
-        npm install
-        prisma generate
-        tsc -b
-        node dist/src/index.js   // backend will start at PORT 8000
-    cd /frontend
-        npm install
-        npm run dev
+Fork the repository to your GitHub account.
 
-You are all set to contribute 
-Be sure and tested all the routes and changes you'll do
+---
+
+### 2. Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/alumni-network.git
+
+git remote add upstream https://github.com/anandKumar0432/alumni-network.git
+git fetch upstream
+git merge upstream/main
+
+cd backend
+npm install
+npx prisma generate
+tsc -b
+node dist/src/index.js
+
+cd frontend
+npm install
+npm run dev
 
