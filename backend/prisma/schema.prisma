@@ -36,6 +36,9 @@ model User {
   college         String  @default("Katihar Engineering College")
   role            Role
   isActive        Boolean @default(true)
+  emailVerified   Boolean  @default(false)
+  emailToken      String?  @unique
+  emailTokenExp   DateTime?
 
   alumni          Alumni?
   student         Student?
@@ -46,6 +49,7 @@ model User {
 
   @@index([role])
   @@index([isActive])
+  @@index([emailVerified])
 }
 
 model Alumni {

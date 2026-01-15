@@ -93,6 +93,9 @@ export const UserScalarFieldEnum = {
     college: 'college',
     role: 'role',
     isActive: 'isActive',
+    emailVerified: 'emailVerified',
+    emailToken: 'emailToken',
+    emailTokenExp: 'emailTokenExp',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

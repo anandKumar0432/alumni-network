@@ -22,6 +22,9 @@ export type UserMinAggregateOutputType = {
     college: string | null;
     role: $Enums.Role | null;
     isActive: boolean | null;
+    emailVerified: boolean | null;
+    emailToken: string | null;
+    emailTokenExp: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -36,6 +39,9 @@ export type UserMaxAggregateOutputType = {
     college: string | null;
     role: $Enums.Role | null;
     isActive: boolean | null;
+    emailVerified: boolean | null;
+    emailToken: string | null;
+    emailTokenExp: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -50,6 +56,9 @@ export type UserCountAggregateOutputType = {
     college: number;
     role: number;
     isActive: number;
+    emailVerified: number;
+    emailToken: number;
+    emailTokenExp: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -65,6 +74,9 @@ export type UserMinAggregateInputType = {
     college?: true;
     role?: true;
     isActive?: true;
+    emailVerified?: true;
+    emailToken?: true;
+    emailTokenExp?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -79,6 +91,9 @@ export type UserMaxAggregateInputType = {
     college?: true;
     role?: true;
     isActive?: true;
+    emailVerified?: true;
+    emailToken?: true;
+    emailTokenExp?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -93,6 +108,9 @@ export type UserCountAggregateInputType = {
     college?: true;
     role?: true;
     isActive?: true;
+    emailVerified?: true;
+    emailToken?: true;
+    emailTokenExp?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -170,6 +188,9 @@ export type UserGroupByOutputType = {
     college: string;
     role: $Enums.Role;
     isActive: boolean;
+    emailVerified: boolean;
+    emailToken: string | null;
+    emailTokenExp: Date | null;
     createdAt: Date;
     updatedAt: Date;
     _count: UserCountAggregateOutputType | null;
@@ -193,6 +214,9 @@ export type UserWhereInput = {
     college?: Prisma.StringFilter<"User"> | string;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
     isActive?: Prisma.BoolFilter<"User"> | boolean;
+    emailVerified?: Prisma.BoolFilter<"User"> | boolean;
+    emailToken?: Prisma.StringNullableFilter<"User"> | string | null;
+    emailTokenExp?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     alumni?: Prisma.XOR<Prisma.AlumniNullableScalarRelationFilter, Prisma.AlumniWhereInput> | null;
@@ -210,6 +234,9 @@ export type UserOrderByWithRelationInput = {
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    emailToken?: Prisma.SortOrderInput | Prisma.SortOrder;
+    emailTokenExp?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     alumni?: Prisma.AlumniOrderByWithRelationInput;
@@ -220,6 +247,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
     email?: string;
     regNo?: string;
+    emailToken?: string;
     AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[];
     OR?: Prisma.UserWhereInput[];
     NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[];
@@ -230,12 +258,14 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     college?: Prisma.StringFilter<"User"> | string;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
     isActive?: Prisma.BoolFilter<"User"> | boolean;
+    emailVerified?: Prisma.BoolFilter<"User"> | boolean;
+    emailTokenExp?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     alumni?: Prisma.XOR<Prisma.AlumniNullableScalarRelationFilter, Prisma.AlumniWhereInput> | null;
     student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null;
     approvalLog?: Prisma.ApprovalLogListRelationFilter;
-}, "id" | "email" | "regNo">;
+}, "id" | "email" | "regNo" | "emailToken">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
@@ -247,6 +277,9 @@ export type UserOrderByWithAggregationInput = {
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    emailToken?: Prisma.SortOrderInput | Prisma.SortOrder;
+    emailTokenExp?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.UserCountOrderByAggregateInput;
@@ -267,6 +300,9 @@ export type UserScalarWhereWithAggregatesInput = {
     college?: Prisma.StringWithAggregatesFilter<"User"> | string;
     role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role;
     isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    emailToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    emailTokenExp?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
 };
@@ -281,6 +317,9 @@ export type UserCreateInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniCreateNestedOneWithoutUserInput;
@@ -298,6 +337,9 @@ export type UserUncheckedCreateInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniUncheckedCreateNestedOneWithoutUserInput;
@@ -315,6 +357,9 @@ export type UserUpdateInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUpdateOneWithoutUserNestedInput;
@@ -332,6 +377,9 @@ export type UserUncheckedUpdateInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUncheckedUpdateOneWithoutUserNestedInput;
@@ -349,6 +397,9 @@ export type UserCreateManyInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -363,6 +414,9 @@ export type UserUpdateManyMutationInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -377,6 +431,9 @@ export type UserUncheckedUpdateManyInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -391,6 +448,9 @@ export type UserCountOrderByAggregateInput = {
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    emailToken?: Prisma.SortOrder;
+    emailTokenExp?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -405,6 +465,9 @@ export type UserMaxOrderByAggregateInput = {
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    emailToken?: Prisma.SortOrder;
+    emailTokenExp?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -419,6 +482,9 @@ export type UserMinOrderByAggregateInput = {
     college?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    emailToken?: Prisma.SortOrder;
+    emailTokenExp?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -438,6 +504,12 @@ export type EnumRoleFieldUpdateOperationsInput = {
 };
 export type BoolFieldUpdateOperationsInput = {
     set?: boolean;
+};
+export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null;
+};
+export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null;
 };
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
@@ -491,6 +563,9 @@ export type UserCreateWithoutAlumniInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     student?: Prisma.StudentCreateNestedOneWithoutUserInput;
@@ -507,6 +582,9 @@ export type UserUncheckedCreateWithoutAlumniInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput;
@@ -536,6 +614,9 @@ export type UserUpdateWithoutAlumniInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     student?: Prisma.StudentUpdateOneWithoutUserNestedInput;
@@ -552,6 +633,9 @@ export type UserUncheckedUpdateWithoutAlumniInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput;
@@ -568,6 +652,9 @@ export type UserCreateWithoutStudentInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniCreateNestedOneWithoutUserInput;
@@ -584,6 +671,9 @@ export type UserUncheckedCreateWithoutStudentInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniUncheckedCreateNestedOneWithoutUserInput;
@@ -613,6 +703,9 @@ export type UserUpdateWithoutStudentInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUpdateOneWithoutUserNestedInput;
@@ -629,6 +722,9 @@ export type UserUncheckedUpdateWithoutStudentInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUncheckedUpdateOneWithoutUserNestedInput;
@@ -645,6 +741,9 @@ export type UserCreateWithoutApprovalLogInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniCreateNestedOneWithoutUserInput;
@@ -661,6 +760,9 @@ export type UserUncheckedCreateWithoutApprovalLogInput = {
     college?: string;
     role: $Enums.Role;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: string | null;
+    emailTokenExp?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     alumni?: Prisma.AlumniUncheckedCreateNestedOneWithoutUserInput;
@@ -690,6 +792,9 @@ export type UserUpdateWithoutApprovalLogInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUpdateOneWithoutUserNestedInput;
@@ -706,6 +811,9 @@ export type UserUncheckedUpdateWithoutApprovalLogInput = {
     college?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailTokenExp?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     alumni?: Prisma.AlumniUncheckedUpdateOneWithoutUserNestedInput;
@@ -746,6 +854,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     college?: boolean;
     role?: boolean;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: boolean;
+    emailTokenExp?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     alumni?: boolean | Prisma.User$alumniArgs<ExtArgs>;
@@ -764,6 +875,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     college?: boolean;
     role?: boolean;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: boolean;
+    emailTokenExp?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
@@ -778,6 +892,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     college?: boolean;
     role?: boolean;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: boolean;
+    emailTokenExp?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["user"]>;
@@ -792,10 +909,13 @@ export type UserSelectScalar = {
     college?: boolean;
     role?: boolean;
     isActive?: boolean;
+    emailVerified?: boolean;
+    emailToken?: boolean;
+    emailTokenExp?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "regNo" | "branch" | "session" | "college" | "role" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "regNo" | "branch" | "session" | "college" | "role" | "isActive" | "emailVerified" | "emailToken" | "emailTokenExp" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     alumni?: boolean | Prisma.User$alumniArgs<ExtArgs>;
     student?: boolean | Prisma.User$studentArgs<ExtArgs>;
@@ -822,6 +942,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         college: string;
         role: $Enums.Role;
         isActive: boolean;
+        emailVerified: boolean;
+        emailToken: string | null;
+        emailTokenExp: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["user"]>;
@@ -1191,6 +1314,9 @@ export interface UserFieldRefs {
     readonly college: Prisma.FieldRef<"User", 'String'>;
     readonly role: Prisma.FieldRef<"User", 'Role'>;
     readonly isActive: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly emailToken: Prisma.FieldRef<"User", 'String'>;
+    readonly emailTokenExp: Prisma.FieldRef<"User", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
 }

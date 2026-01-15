@@ -391,9 +391,6 @@ export type AlumniUncheckedUpdateOneWithoutUserNestedInput = {
     connect?: Prisma.AlumniWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.AlumniUpdateToOneWithWhereWithoutUserInput, Prisma.AlumniUpdateWithoutUserInput>, Prisma.AlumniUncheckedUpdateWithoutUserInput>;
 };
-export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null;
-};
 export type EnumStatusFieldUpdateOperationsInput = {
     set?: $Enums.Status;
 };

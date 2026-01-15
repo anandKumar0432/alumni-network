@@ -592,6 +592,9 @@ export declare const UserScalarFieldEnum: {
     readonly college: "college";
     readonly role: "role";
     readonly isActive: "isActive";
+    readonly emailVerified: "emailVerified";
+    readonly emailToken: "emailToken";
+    readonly emailTokenExp: "emailTokenExp";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
