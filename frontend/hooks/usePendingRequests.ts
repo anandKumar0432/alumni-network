@@ -53,7 +53,7 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
     }
   };
 
-  // 🚧 not implemented on backend yet
+  // not implemented on backend yet
   const rejectUser = async (id: string) => {
     console.warn("Reject user not implemented yet", id);
   };

@@ -125,7 +125,7 @@ export const unverifiedUser = async (req: Request, res: Response) => {
     const pageSize = Number(limit) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
-    // 🔍 search filter
+    // search filter
     const searchFilter = search
       ? {
           OR: [
@@ -136,7 +136,7 @@ export const unverifiedUser = async (req: Request, res: Response) => {
         }
       : {};
 
-    // ✅ ONLY pending users (Prisma-correct)
+    // ONLY pending users
     const pendingFilter = {
       OR: [
         { student: { is: { status: Status.PENDING } } },
@@ -181,7 +181,7 @@ export const unverifiedUser = async (req: Request, res: Response) => {
 
     const [users, totalResults] = await Promise.all([
       prisma.user.findMany({
-        where: whereCondition, // ✅ THIS is the corrected where
+        where: whereCondition, 
         skip,
         take: pageSize,
         orderBy: { createdAt: "desc" },
@@ -191,7 +191,7 @@ export const unverifiedUser = async (req: Request, res: Response) => {
         },
       }),
       prisma.user.count({
-        where: whereCondition, // ✅ AND this one
+        where: whereCondition, 
       }),
     ]);
 

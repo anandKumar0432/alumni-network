@@ -17,7 +17,7 @@ type Props = {
 export default function FiltersBar({ filters, setFilters }: Props) {
   const [searchValue, setSearchValue] = useState(filters.search);
 
-  // 🔁 debounce search
+  // debounce search
   useEffect(() => {
     const timeout = setTimeout(() => {
       setFilters((prev) => ({ ...prev, search: searchValue }));
@@ -39,7 +39,7 @@ export default function FiltersBar({ filters, setFilters }: Props) {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
-      {/* 🔍 Search */}
+      {/* Search */}
       <div className="w-full md:w-96">
         <input
           type="text"
@@ -50,7 +50,7 @@ export default function FiltersBar({ filters, setFilters }: Props) {
         />
       </div>
 
-      {/* 🎛 Filters */}
+      {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
 
         {/* Branch */}
@@ -91,11 +91,16 @@ export default function FiltersBar({ filters, setFilters }: Props) {
           className="border border-gray-300 px-3 py-2 rounded-xl bg-white"
         >
           <option value="">All Sessions</option>
-          <option value="2017-21">2017-21</option>
-          <option value="2018-22">2018-22</option>
-          <option value="2019-23">2019-23</option>
-          <option value="2020-24">2020-24</option>
-          <option value="2021-25">2021-25</option>
+          <option value="2017-21">2016-2020</option>
+          <option value="2018-22">2017-2021</option>
+          <option value="2019-23">2018-2022</option>
+          <option value="2020-24">2019-2023</option>
+          <option value="2021-25">2020-2024</option>
+          <option value="2021-25">2021-2025</option>
+          <option value="2021-25">2022-2026</option>
+          <option value="2021-25">2023-2027</option>
+          <option value="2021-25">2024-2028</option>
+          <option value="2021-25">2025-2029</option>
         </select>
 
         {/* Clear */}

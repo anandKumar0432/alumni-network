@@ -1,41 +1,4 @@
-// type Props = {
-//   user: any;
-//   onVerify: (id: string) => void;
-//   onReject: (id: string) => void;
-//   loading: boolean;
-// };
 
-// export default function RequestRow({ user, onVerify, onReject, loading }: Props) {
-//   return (
-//     <div className="flex items-center justify-between p-4 border rounded-xl">
-//       <div>
-//         <p className="font-medium">{user.name}</p>
-//         <p className="text-sm text-gray-500">{user.email}</p>
-//         <p className="text-xs text-gray-400">
-//           {user.branch} • {user.session} • {user.role}
-//         </p>
-//       </div>
-
-//       <div className="flex gap-3">
-//         <button
-//           disabled={loading}
-//           onClick={() => onVerify(user.id)}
-//           className="px-4 py-1.5 rounded-lg bg-green-600 text-white text-sm"
-//         >
-//           Approve
-//         </button>
-
-//         <button
-//           disabled={loading}
-//           onClick={() => onReject(user.id)}
-//           className="px-4 py-1.5 rounded-lg bg-red-600 text-white text-sm"
-//         >
-//           Reject
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
 
 type Props = {
   user: any;

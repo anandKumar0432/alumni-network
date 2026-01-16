@@ -26,7 +26,7 @@ export default function RequestTable({ filters }: Props) {
 
   return (
     <div className="space-y-5">
-      {/* ✅ Table */}
+      {/* Table */}
       <div className="bg-white rounded-2xl border overflow-hidden">
         {/* Header */}
         <div className="grid grid-cols-12 px-5 py-3 text-sm font-medium text-gray-600 border-b bg-gray-50">
@@ -55,13 +55,15 @@ export default function RequestTable({ filters }: Props) {
                 setSelectedUser(user);
                 setOpen(true);
               }}
+              onVerify={verifyUser}
+              onReject={rejectUser}
               loading={actionLoadingId === user.id}
             />
           ))
         )}
       </div>
 
-      {/* ✅ Pagination */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-end items-center gap-3">
           <button
