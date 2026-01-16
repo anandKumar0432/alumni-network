@@ -1,19 +1,40 @@
 "use client";
 
+import { useState } from "react";
 import Sidebar from "@/components/admin/Sidebar";
 import AdminGuard from "@/components/admin/AdminGuard";
+import AdminTopbar from "@/components/admin/AdminTopbar";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [open, setOpen] = useState(false); // mobile drawer
+  const [collapsed, setCollapsed] = useState(false); // desktop collapse
+
   return (
     <AdminGuard>
-      <div className="pt-16">
-        <div className="flex min-h-[calc(100vh-64px)] bg-gray-100">
-          <Sidebar />
-          <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      <div className="pt-16 h-screen bg-gray-100 overflow-hidden">
+        <div className="flex h-[calc(100vh-64px)]">
+
+          <Sidebar
+            open={open}
+            setOpen={setOpen}
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+          />
+
+          <div className="flex flex-col flex-1 min-w-0">
+
+            <AdminTopbar onMenuClick={() => setOpen(true)} />
+
+            {/* Page content */}
+            <main className="flex-1 overflow-y-auto p-4 md:p-6">
+              {children}
+            </main>
+
+          </div>
         </div>
       </div>
     </AdminGuard>
