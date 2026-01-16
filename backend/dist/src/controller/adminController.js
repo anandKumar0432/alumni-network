@@ -2,6 +2,8 @@ import { prisma } from "../lib/prisma.js";
 import { safeUserSelect } from "../lib/selectors/userSelector.js";
 import { signupSchema } from "../types/zodSchema.js";
 import bcrypt from "bcrypt";
+import { Status, Role } from "../../generated/prisma/enums.js";
+import { Prisma } from "../../generated/prisma/client.js";
 // const verifyUserParamsSchema = z.object({
 //   id: z.string().uuid(),
 // });
@@ -10,7 +12,7 @@ export const verifyUser = async (req, res) => {
         const userId = req.params.id;
         if (!userId) {
             return res.status(400).json({
-                msg: "Invalid userId"
+                msg: "Invalid userId",
             });
         }
         const user = await prisma.user.findUnique({
@@ -35,8 +37,8 @@ export const verifyUser = async (req, res) => {
                     userId,
                 },
                 data: {
-                    status: "VERIFIED"
-                }
+                    status: "VERIFIED",
+                },
             });
         }
         if (user.role == "ALUMNI") {
@@ -46,8 +48,8 @@ export const verifyUser = async (req, res) => {
                     userId,
                 },
                 data: {
-                    status: "VERIFIED"
-                }
+                    status: "VERIFIED",
+                },
             });
         }
         // audit log
@@ -58,15 +60,15 @@ export const verifyUser = async (req, res) => {
                 oldStatus,
                 newStatus: "VERIFIED",
                 actionById: req.user.id,
-            }
+            },
         });
         return res.status(200).json({
-            msg: "user verified successfully"
+            msg: "user verified successfully",
         });
     }
     catch (e) {
         return res.status(500).json({
-            msg: "verification failed"
+            msg: "verification failed",
         });
     }
 };
@@ -84,7 +86,7 @@ export const verifyUser = async (req, res) => {
 //             select: {
 //                 ...safeUserSelect
 //             }
-//         }) 
+//         })
 //         if(!unverifiedUsers){
 //             return res.status(404).json({
 //                 msg: "there is no any unverified users"
@@ -102,25 +104,80 @@ export const verifyUser = async (req, res) => {
 // }
 export const unverifiedUser = async (req, res) => {
     try {
-        const unverifiedUsers = await prisma.user.findMany({
-            where: {
+        const { search = "", branch = "", role = "", session = "", page = "1", limit = "10", } = req.query;
+        const pageNumber = Number(page) || 1;
+        const pageSize = Number(limit) || 10;
+        const skip = (pageNumber - 1) * pageSize;
+        // 🔍 search filter
+        const searchFilter = search
+            ? {
                 OR: [
-                    { student: { status: "PENDING" } },
-                    { alumni: { status: "PENDING" } }
-                ]
-            },
-            include: {
-                student: true,
-                alumni: true
+                    { name: { contains: String(search), mode: "insensitive" } },
+                    { email: { contains: String(search), mode: "insensitive" } },
+                    { regNo: { contains: String(search), mode: "insensitive" } },
+                ],
             }
-        });
+            : {};
+        // ✅ ONLY pending users (Prisma-correct)
+        const pendingFilter = {
+            OR: [
+                { student: { is: { status: Status.PENDING } } },
+                { alumni: { is: { status: Status.PENDING } } },
+            ],
+        };
+        const andFilters = [];
+        // always pending
+        andFilters.push(pendingFilter);
+        // search
+        if (search) {
+            andFilters.push({
+                OR: [
+                    { name: { contains: String(search), mode: "insensitive" } },
+                    { email: { contains: String(search), mode: "insensitive" } },
+                    { regNo: { contains: String(search), mode: "insensitive" } },
+                ],
+            });
+        }
+        // role (enum safe)
+        if (role) {
+            andFilters.push({ role: role });
+        }
+        // branch
+        if (branch) {
+            andFilters.push({ branch: String(branch) });
+        }
+        // session
+        if (session) {
+            andFilters.push({ session: String(session) });
+        }
+        const whereCondition = {
+            AND: andFilters,
+        };
+        const [users, totalResults] = await Promise.all([
+            prisma.user.findMany({
+                where: whereCondition, // ✅ THIS is the corrected where
+                skip,
+                take: pageSize,
+                orderBy: { createdAt: "desc" },
+                include: {
+                    student: true,
+                    alumni: true,
+                },
+            }),
+            prisma.user.count({
+                where: whereCondition, // ✅ AND this one
+            }),
+        ]);
         return res.status(200).json({
             msg: "unverified users fetched",
-            count: unverifiedUsers.length,
-            unverifiedUsers,
+            totalResults,
+            totalPages: Math.ceil(totalResults / pageSize),
+            currentPage: pageNumber,
+            data: users,
         });
     }
     catch (e) {
+        console.error("unverifiedUser error:", e);
         return res.status(500).json({
             msg: "something went wrong",
         });
@@ -137,7 +194,7 @@ export const changRole = async (req, res) => {
         }
         const existingUser = await prisma.user.findUnique({
             where: { id: userId },
-            include: { student: true }
+            include: { student: true },
         });
         if (!existingUser) {
             return res.status(404).json({
@@ -155,15 +212,17 @@ export const changRole = async (req, res) => {
                             status: status,
                         },
                         create: {
-                            currentYear: existingUser.student?.currentYear || req.body.currentYear || "1",
+                            currentYear: existingUser.student?.currentYear ||
+                                req.body.currentYear ||
+                                "1",
                             status: status,
                         },
-                    }
-                }
-            }
+                    },
+                },
+            },
         });
         return res.status(200).json({
-            msg: `status changeed to ${status}`
+            msg: `status changeed to ${status}`,
         });
     }
     catch (e) {
@@ -183,11 +242,11 @@ export const deleteUser = async (req, res) => {
         const existingUser = await prisma.user.findUnique({
             where: {
                 id: userId,
-            }
+            },
         });
         if (!existingUser) {
             return res.status(404).json({
-                msg: "user not found"
+                msg: "user not found",
             });
         }
         const user = await prisma.user.update({
@@ -196,15 +255,15 @@ export const deleteUser = async (req, res) => {
             },
             data: {
                 isActive: false,
-            }
+            },
         });
         return res.status(204).json({
-            msg: "user deleted successfylly"
+            msg: "user deleted successfylly",
         });
     }
     catch (e) {
         return res.status(500).json({
-            msg: "something went wrong"
+            msg: "something went wrong",
         });
     }
 };
