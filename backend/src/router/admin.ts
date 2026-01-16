@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import { changRole, deleteUser, unverifiedUser, verifyUser } from "../controller/adminController.js";
+import { changRole, deleteUser, unverifiedUser, updateUserStatus } from "../controller/adminController.js";
 import { auth } from "../middleware/authMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
 import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
@@ -10,8 +10,8 @@ router.use(auth);
 router.use(isActive);
 router.use(requiredRole("ADMIN"));
 
-// /verify-user
-router.patch("/verify-user/:id", verifyUser);
+// /verify-user , update status of user 
+router.post("/update-status/:id", updateUserStatus);
 
 // fetch user which is unverified
 router.get("/unverified/user", unverifiedUser);

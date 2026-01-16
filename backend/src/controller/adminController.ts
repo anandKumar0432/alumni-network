@@ -10,9 +10,12 @@ import { Prisma } from "../../generated/prisma/client.js";
 //   id: z.string().uuid(),
 // });
 
-export const verifyUser = async (req: Request, res: Response) => {
+type status = "PENDING" | "REJECTED" | "VERIFIED";
+
+export const updateUserStatus = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
+    const status: status = req.body.status;
     if (!userId) {
       return res.status(400).json({
         msg: "Invalid userId",
@@ -34,27 +37,33 @@ export const verifyUser = async (req: Request, res: Response) => {
         msg: "user not found",
       });
     }
-    let oldStatus: "PENDING" | "REJECTED" | "VERIFIED" = "PENDING";
+    let oldStatus: status = "PENDING";
     if (user.role == "STUDENT") {
       oldStatus = user.student?.status ?? "PENDING";
+      if (oldStatus === status) {
+        return res.status(400).json({ msg: "User already has this status" });
+      }      
       await prisma.student.update({
         where: {
           userId,
         },
         data: {
-          status: "VERIFIED",
+          status: status,
         },
       });
     }
 
     if (user.role == "ALUMNI") {
       oldStatus = user.alumni?.status ?? "PENDING";
+      if (oldStatus === status) {
+        return res.status(400).json({ msg: "User already has this status" });
+      }      
       await prisma.alumni.update({
         where: {
           userId,
         },
         data: {
-          status: "VERIFIED",
+          status: status,
         },
       });
     }
@@ -64,7 +73,7 @@ export const verifyUser = async (req: Request, res: Response) => {
         targetType: user.role,
         targetId: userId,
         oldStatus,
-        newStatus: "VERIFIED",
+        newStatus: status,
         actionById: req.user.id,
       },
     });
@@ -295,6 +304,8 @@ export const deleteUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+
 
 // If needed then I can think about this as of now it is same as the signup
 
