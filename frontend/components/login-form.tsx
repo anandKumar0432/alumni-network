@@ -44,11 +44,13 @@ export function LoginForm({
                     withCredentials: true
                 }
             )
-            console.log(res.data);
-            router.push('/register');
-        } catch(error){
-            console.error('login failed :', error);
-        }
+            if (res && res.data && typeof res.data === 'object' && 'route' in res.data && typeof res.data.route === 'string') {
+              console.log(res.data);
+              router.push(res.data.route);
+            }
+            } catch(error){
+                console.error('login failed :', error);
+            }
     }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

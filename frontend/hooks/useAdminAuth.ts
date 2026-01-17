@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const API = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export function useAdminAuth() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export function useAdminAuth() {
     const checkAdmin = async () => {
       try {
         await axios.get(
-          `${API}/admin/unverified/user`,
+          `${BACKEND_URL}/admin/unverified/user`,
           { withCredentials: true }
         );
 

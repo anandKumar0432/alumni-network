@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { PendingFilters } from "@/components/admin/FiltersBar";
 
-const API = process.env.NEXT_PUBLIC_BACKEND_URL;
+const  BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export function usePendingRequests(filters: PendingFilters, page: number) {
   const [users, setUsers] = useState<any[]>([]);
@@ -16,7 +16,7 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${API}/admin/unverified/user`, {
+      const res = await axios.get(`${BACKEND_URL}/admin/unverified/user`, {
         params: {
           ...filters,
           page,
@@ -25,8 +25,9 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
         withCredentials: true,
       });
 
-      setUsers(res.data.data);
-      setTotalPages(res.data.totalPages || 1);
+      const data = res.data as { data: any[]; totalPages?: number };
+      setUsers(data.data);
+      setTotalPages(data.totalPages || 1);
     } catch (err) {
       console.error("Failed to fetch pending users", err);
     } finally {
@@ -39,7 +40,7 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
       setActionLoadingId(id);
 
       await axios.patch(
-        `${API}/admin/verify-user/${id}`,
+        `${BACKEND_URL}/admin/verify-user/${id}`,
         {},
         { withCredentials: true }
       );

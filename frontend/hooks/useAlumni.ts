@@ -38,7 +38,9 @@ export function useAlumni(filters: any, page: number, mounted: boolean) {
           withCredentials: true,
         });
 
-        const mapped = (res.data?.data || []).map((a: any) => ({
+        // Make sure res has the expected shape and suppress type error appropriately
+        const alumniData = (res as any)?.data?.data || [];
+        const mapped = alumniData.map((a: any) => ({
           id: a.id,
           name: a.name,
           branch: a.branch,
@@ -51,8 +53,9 @@ export function useAlumni(filters: any, page: number, mounted: boolean) {
         }));
 
         setAlumni(mapped);
-        setTotalPages(res.data?.pagination?.totalPages || 1);
-        setTotalResults(res.data?.pagination?.total || 0);
+        const pagination = (res.data && typeof res.data === "object" && 'pagination' in res.data) ? (res.data as any).pagination : undefined;
+        setTotalPages(pagination?.totalPages || 1);
+        setTotalResults(pagination?.total || 0);
       } catch (e) {
         console.error("Failed to fetch alumni", e);
       } finally {

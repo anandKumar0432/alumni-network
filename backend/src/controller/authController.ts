@@ -134,11 +134,18 @@ const login = async (req : Request, res : Response)=>{
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-
+        let route;
+        if(user.role === "ADMIN"){
+            route = "/admin"
+        } else if(user.role === "STUDENT"){
+            route = "/student"
+        }else{
+            route = "/profile/alumni"
+        }
         //console.log("TOKEN => ", token);
         return res.status(200).json({
             msg: "login successfully",
-            token, //returning token
+            route,
         })
     }catch(e){
         return res.status(500).json({

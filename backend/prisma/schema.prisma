@@ -43,6 +43,7 @@ model User {
   alumni          Alumni?
   student         Student?
   approvalLog     ApprovalLog[]
+  // job             job[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -68,6 +69,23 @@ model Alumni {
 
   @@index([status])
 }
+
+// model job {
+//   id              String @id @default(ulid())
+//   company         String
+//   role            String
+//   startDate       DateTime
+//   endDate         DateTime?
+//   isCurrent       Boolean @default(false)
+
+//   alumni          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId          String
+
+//   createdAt       DateTime @default(now())
+//   updatedAt       DateTime @updatedAt
+
+//   @@index([userId])
+// }
 
 model Student {
   id             String  @id @default(uuid())

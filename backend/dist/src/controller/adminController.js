@@ -4,12 +4,10 @@ import { signupSchema } from "../types/zodSchema.js";
 import bcrypt from "bcrypt";
 import { Status, Role } from "../../generated/prisma/enums.js";
 import { Prisma } from "../../generated/prisma/client.js";
-// const verifyUserParamsSchema = z.object({
-//   id: z.string().uuid(),
-// });
-export const verifyUser = async (req, res) => {
+export const updateUserStatus = async (req, res) => {
     try {
         const userId = req.params.id;
+        const status = req.body.status;
         if (!userId) {
             return res.status(400).json({
                 msg: "Invalid userId",
@@ -32,23 +30,29 @@ export const verifyUser = async (req, res) => {
         let oldStatus = "PENDING";
         if (user.role == "STUDENT") {
             oldStatus = user.student?.status ?? "PENDING";
+            if (oldStatus === status) {
+                return res.status(400).json({ msg: "User already has this status" });
+            }
             await prisma.student.update({
                 where: {
                     userId,
                 },
                 data: {
-                    status: "VERIFIED",
+                    status: status,
                 },
             });
         }
         if (user.role == "ALUMNI") {
             oldStatus = user.alumni?.status ?? "PENDING";
+            if (oldStatus === status) {
+                return res.status(400).json({ msg: "User already has this status" });
+            }
             await prisma.alumni.update({
                 where: {
                     userId,
                 },
                 data: {
-                    status: "VERIFIED",
+                    status: status,
                 },
             });
         }
@@ -58,7 +62,7 @@ export const verifyUser = async (req, res) => {
                 targetType: user.role,
                 targetId: userId,
                 oldStatus,
-                newStatus: "VERIFIED",
+                newStatus: status,
                 actionById: req.user.id,
             },
         });
