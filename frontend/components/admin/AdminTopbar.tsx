@@ -22,7 +22,7 @@ export default function AdminTopbar({
   };
 
   return (
-    <header className="h-14 bg-white border-b flex items-center justify-between px-4 md:px-6 relative">
+    <header className="h-14 bg-white border-b flex items-center justify-between px-4 md:px-6 relative shrink-0">
       {/* Left */}
       <div className="flex items-center gap-3">
         <button

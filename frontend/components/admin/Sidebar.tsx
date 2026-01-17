@@ -37,11 +37,15 @@ export default function Sidebar({
 
       <aside
         className={clsx(
-          "fixed md:static z-50 h-screen bg-white border-r flex flex-col transition-all duration-300",
+          "bg-white border-r flex flex-col transition-all duration-300",
+          "h-full", 
+          "fixed md:static z-50",
           collapsed ? "w-[72px]" : "w-64",
-          open ? "left-0" : "-left-full md:left-0"
+          open ? "left-0" : "-left-full md:left-0",
         )}
       >
+
+
         {/* Header */}
         <div className="h-14 px-4 flex items-center justify-between border-b">
           <div className="flex items-center gap-2 font-bold text-lg">
@@ -77,7 +81,7 @@ export default function Sidebar({
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition",
                   active
                     ? "bg-blue-50 text-black-600"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
                 )}
               >
                 <item.icon size={20} />

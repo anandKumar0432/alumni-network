@@ -112,5 +112,81 @@ export default function FiltersBar({ filters, setFilters }: Props) {
         </button>
       </div>
     </div>
+
+    // <div className="bg-white rounded-xl border p-4 space-y-4">
+    //   {/* Top row: Search */}
+    //   <div className="w-full">
+    //     <input
+    //       type="text"
+    //       placeholder="Search by name, email or reg no"
+    //       value={searchValue}
+    //       onChange={(e) => setSearchValue(e.target.value)}
+    //       className="w-full h-10 px-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    //     />
+    //   </div>
+
+    //   {/* Filters */}
+    //   <div
+    //     className="
+    //   grid grid-cols-1 gap-3
+    //   sm:grid-cols-2
+    //   lg:grid-cols-4
+    // "
+    //   >
+    //     <select
+    //       value={filters.branch}
+    //       onChange={(e) =>
+    //         setFilters((prev) => ({ ...prev, branch: e.target.value }))
+    //       }
+    //       className="filter-input"
+    //     >
+    //       <option>All Branches</option>
+    //       <option value="CSE">CSE</option>
+    //       <option value="ECE">ECE</option>
+    //       <option value="ME">ME</option>
+    //       <option value="CE">CE</option>
+    //       <option value="EE">EE</option>
+    //     </select>
+
+    //     <select
+    //       value={filters.role}
+    //       onChange={(e) =>
+    //         setFilters((prev) => ({ ...prev, role: e.target.value }))
+    //       }
+    //       className="filter-input"
+    //     >
+    //       <option>All Roles</option>
+    //       <option value="STUDENT">Student</option>
+    //       <option value="ALUMNI">Alumni</option>
+    //     </select>
+
+    //     <select
+    //       value={filters.session}
+    //       onChange={(e) =>
+    //         setFilters((prev) => ({ ...prev, session: e.target.value }))
+    //       }
+    //       className="filter-input"
+    //     >
+    //       <option>All Sessions</option>
+    //       <option value="2017-21">2016-2020</option>
+    //       <option value="2018-22">2017-2021</option>
+    //       <option value="2019-23">2018-2022</option>
+    //       <option value="2020-24">2019-2023</option>
+    //       <option value="2021-25">2020-2024</option>
+    //       <option value="2021-25">2021-2025</option>
+    //       <option value="2021-25">2022-2026</option>
+    //       <option value="2021-25">2023-2027</option>
+    //       <option value="2021-25">2024-2028</option>
+    //       <option value="2021-25">2025-2029</option>
+    //     </select>
+
+    //     <button
+    //       onClick={clearFilters}
+    //       className="h-10 rounded-lg border text-sm hover:bg-gray-100"
+    //     >
+    //       Clear
+    //     </button>
+    //   </div>
+    // </div>
   );
 }
