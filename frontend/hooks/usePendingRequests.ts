@@ -35,29 +35,51 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
     }
   }, [filters, page]);
 
-  const verifyUser = async (id: string) => {
+  // const verifyUser = async (id: string) => {
+  //   try {
+  //     setActionLoadingId(id);
+
+  //     await axios.patch(
+  //       `${API}/admin/verify-user/${id}`,
+  //       {},
+  //       { withCredentials: true }
+  //     );
+
+  //     // Optimistic update
+  //     setUsers((prev) => prev.filter((u) => u.id !== id));
+  //   } catch (err) {
+  //     console.error("Verify failed", err);
+  //   } finally {
+  //     setActionLoadingId(null);
+  //   }
+  // };
+
+  // // not implemented on backend yet
+  // const rejectUser = async (id: string) => {
+  //   console.warn("Reject user not implemented yet", id);
+  // };
+
+  const updateStatus = async (id: string, status: "VERIFIED" | "REJECTED") => {
     try {
       setActionLoadingId(id);
 
-      await axios.patch(
-        `${BACKEND_URL}/admin/verify-user/${id}`,
-        {},
+      await axios.post(
+        `${API}/admin/update-status/${id}`,
+        { status },
         { withCredentials: true }
       );
 
-      // Optimistic update
+      //remove from pending list after action
       setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
-      console.error("Verify failed", err);
+      console.error(`Update status failed (${status})`, err);
     } finally {
       setActionLoadingId(null);
     }
   };
 
-  // not implemented on backend yet
-  const rejectUser = async (id: string) => {
-    console.warn("Reject user not implemented yet", id);
-  };
+  const verifyUser = (id: string) => updateStatus(id, "VERIFIED");
+  const rejectUser = (id: string) => updateStatus(id, "REJECTED");
 
   useEffect(() => {
     fetchUsers();
