@@ -1,7 +1,15 @@
+type Props = {
+  user: any;
+  onClick: () => void;
+  onApprove: () => void;
+  onReject: () => void;
+  loading?: boolean;
+};
+
 export default function RequestRow({
   user,
   onClick,
-  onVerify,
+  onApprove,
   onReject,
   loading,
 }: Props) {
@@ -12,7 +20,6 @@ export default function RequestRow({
     >
       {/* MAIN ROW */}
       <div className="grid grid-cols-12 items-center gap-y-2">
-
         {/* User */}
         <div className="col-span-5 flex items-center gap-3 min-w-0">
           <div className="h-10 w-10 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold">
@@ -45,26 +52,43 @@ export default function RequestRow({
 
         {/* INLINE ACTIONS (DESKTOP ONLY) */}
         <div className="hidden xl:flex col-span-1 justify-end gap-2">
-          <ActionButtons {...{ user, loading, onVerify, onReject }} />
+          <ActionButtons
+            loading={loading}
+            onApprove={onApprove}
+            onReject={onReject}
+          />
         </div>
       </div>
 
       {/* SECOND ROW ACTIONS (TABLET + MOBILE) */}
       <div className="mt-3 flex justify-end gap-2 xl:hidden">
-        <ActionButtons {...{ user, loading, onVerify, onReject }} />
+        <ActionButtons
+          loading={loading}
+          onApprove={onApprove}
+          onReject={onReject}
+        />
       </div>
     </div>
   );
 }
 
-function ActionButtons({ user, loading, onVerify, onReject }: any) {
+function ActionButtons({
+  loading,
+  onApprove,
+  onReject,
+}: {
+  loading?: boolean;
+  onApprove: () => void;
+  onReject: () => void;
+}) {
   return (
     <>
       <button
         disabled={loading}
         onClick={(e) => {
           e.stopPropagation();
-          onVerify(user.id);
+          // onVerify(user.id);
+          onApprove();
         }}
         className="px-3 py-1.5 rounded-md text-xs font-semibold bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 whitespace-nowrap"
       >
@@ -75,7 +99,7 @@ function ActionButtons({ user, loading, onVerify, onReject }: any) {
         disabled={loading}
         onClick={(e) => {
           e.stopPropagation();
-          onReject(user.id);
+          onReject();
         }}
         className="px-3 py-1.5 rounded-md text-xs font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 whitespace-nowrap"
       >
@@ -84,5 +108,3 @@ function ActionButtons({ user, loading, onVerify, onReject }: any) {
     </>
   );
 }
-
-

@@ -64,7 +64,7 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
       setActionLoadingId(id);
 
       await axios.post(
-        `${API}/admin/update-status/${id}`,
+        `${BACKEND_URL}/admin/update-status/${id}`,
         { status },
         { withCredentials: true }
       );
