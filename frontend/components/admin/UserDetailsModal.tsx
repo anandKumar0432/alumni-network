@@ -53,8 +53,8 @@ export default function UserDetailsModal({
           >
             Reject
           </Button>
-          <Button onClick={onVerify} disabled={loading}>
-            Verify
+          <Button className="bg-green-700" onClick={onVerify} disabled={loading}>
+            Approve
           </Button>
         </div>
       </DialogContent>
