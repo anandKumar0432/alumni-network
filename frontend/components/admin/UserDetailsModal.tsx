@@ -7,24 +7,55 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  user: any;
+  // user: any;
+  userId: string | null;
   onVerify: () => void;
   onReject: () => void;
   loading?: boolean;
+  showActions?: boolean;
 };
 
 export default function UserDetailsModal({
   open,
   onClose,
-  user,
+  // user,
+  userId,
   onVerify,
   onReject,
   loading,
+  showActions = false,
 }: Props) {
+  const [user, setUser] = useState<any>(null);
+  const [fetching, setFetching] = useState(false);
+
+  useEffect(() => {
+    if (!userId || !open) return;
+
+    const fetchUser = async () => {
+      try {
+        setFetching(true);
+        const res = await axios.get(`${BACKEND_URL}/admin/me/${userId}`, {
+          withCredentials: true,
+        });
+        setUser(res.data.user || res.data);
+      } catch (err) {
+        console.error("Failed to fetch user", err);
+      } finally {
+        setFetching(false);
+      }
+    };
+
+    fetchUser();
+  }, [userId, open]);
+
   if (!user) return null;
 
   return (
@@ -46,14 +77,14 @@ export default function UserDetailsModal({
         </div>
 
         <div className="flex justify-end gap-3 pt-4">
-          <Button
-            variant="destructive"
-            onClick={onReject}
-            disabled={loading}
-          >
+          <Button variant="destructive" onClick={onReject} disabled={loading}>
             Reject
           </Button>
-          <Button className="bg-green-700" onClick={onVerify} disabled={loading}>
+          <Button
+            className="bg-green-700"
+            onClick={onVerify}
+            disabled={loading}
+          >
             Approve
           </Button>
         </div>

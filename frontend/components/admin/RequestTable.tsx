@@ -243,6 +243,16 @@ export default function RequestTable({ filters }: Props) {
           setOpen(false);
         }}
       />
+
+      <UserDetailsModal
+        open={open}
+        onClose={() => setOpen(false)}
+        userId={selectedUser?.id}
+        showActions
+        loading={actionLoadingId === selectedUser?.id}
+        onVerify={() => verifyUser(selectedUser.id)}
+        onReject={() => rejectUser(selectedUser.id)}
+      />
     </div>
   );
 }
