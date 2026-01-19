@@ -4,6 +4,7 @@ import { auth } from "../middleware/authMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
 import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
 import { isActive } from "../middleware/isActiveMiddleware.js";
+import { getApprovalLogs, getApprovalAdmins } from "../controller/adminLogController.js";
 
 const router : Router = express.Router();
 router.use(auth);
@@ -15,7 +16,13 @@ router.post("/update-status/:id", updateUserStatus);
 
 // fetch user which is unverified
 router.get("/unverified/user", unverifiedUser);
-    
+
+// to get approval-logs of approved or rejected users
+router.get("/approval-logs", getApprovalLogs);
+
+// to get which admin has approved or rejected the user request if there are more than one admin
+router.get("/approval-admins", getApprovalAdmins);
+   
 //role changes
 router.put("/change-role/:id", changRole);
 
