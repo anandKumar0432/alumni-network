@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
-import { Prisma } from "../../generated/prisma/client.js";
+import { Prisma, Status } from "../../generated/prisma/client.js";
+// import { Status } from "@prisma/client";
 
 export const getApprovalAdmins = async (req: Request, res: Response) => {
   try {
@@ -85,5 +86,54 @@ export const getApprovalLogs = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("getApprovalLogs error:", error);
     return res.status(500).json({ msg: "Failed to fetch logs" });
+  }
+};
+
+export const getApprovalLogStats = async (req: Request, res: Response) => {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const [
+      totalLogs,
+      todayLogs,
+      approvedCount,
+      rejectedCount,
+      // pendingUsers,
+    ] = await Promise.all([
+      // total logs
+      prisma.approvalLog.count(),
+
+      // today logs
+      prisma.approvalLog.count({
+        where: { createdAt: { gte: todayStart } },
+      }),
+
+      // approved (PENDING -> VERIFIED)
+      prisma.approvalLog.count({
+        where: { newStatus: Status.VERIFIED },
+      }),
+
+      // rejected
+      prisma.approvalLog.count({
+        where: { newStatus: Status.REJECTED },
+      }),
+
+      // users still pending
+      // prisma.user.count({
+      //   where: { emailVerified: false },
+      // }),
+    ]);
+
+    return res.json({
+      totalLogs,
+      todayLogs,
+      approvedCount,
+      rejectedCount,
+      // pendingUsers,
+    });
+  } catch (err) {
+    console.error("Stats error:", err);
+    return res.status(500).json({ message: "Failed to fetch stats" });
   }
 };
