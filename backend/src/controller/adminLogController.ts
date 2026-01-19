@@ -1,5 +1,6 @@
-import type { Prisma } from "@prisma/client/extension";
+import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
+import { Prisma } from "../../generated/prisma/client.js";
 
 export const getApprovalAdmins = async (req: Request, res: Response) => {
   try {
@@ -24,10 +25,10 @@ export const getApprovalAdmins = async (req: Request, res: Response) => {
       .map((a) => a.actionBy)
       .filter(Boolean);
 
-    res.json({ data: result });
+    return res.json({ data: result });
   } catch (e) {
     console.error("getApprovalAdmins error:", e);
-    res.status(500).json({ msg: "Failed to fetch admins" });
+    return res.status(500).json({ msg: "Failed to fetch admins" });
   }
 };
 
@@ -83,6 +84,6 @@ export const getApprovalLogs = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("getApprovalLogs error:", error);
-    res.status(500).json({ msg: "Failed to fetch logs" });
+    return res.status(500).json({ msg: "Failed to fetch logs" });
   }
 };
