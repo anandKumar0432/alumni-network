@@ -336,3 +336,75 @@ export const deleteUser = async (req: Request, res: Response) => {
 //         })
 //     }
 // }
+
+
+
+
+export const bulkVerifyUsers = async (req: Request, res: Response) => {
+  try {
+    const { userIds, action } = req.body;
+
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ msg: "No users selected" });
+    }
+
+    if (!["APPROVE", "REJECT"].includes(action)) {
+      return res.status(400).json({ msg: "Invalid action" });
+    }
+
+    const newStatus =
+      action === "APPROVE" ? Status.VERIFIED : Status.REJECTED;
+
+    // fetch users with real state
+    const users = await prisma.user.findMany({
+      where: { id: { in: userIds } },
+      include: {
+        student: true,
+        alumni: true,
+      },
+    });
+
+    await prisma.$transaction(async (tx) => {
+      for (const user of users) {
+        let oldStatus: Status = Status.PENDING;
+
+        if (user.role === "STUDENT") {
+          oldStatus = user.student?.status ?? Status.PENDING;
+
+          await tx.student.update({
+            where: { userId: user.id },
+            data: { status: newStatus },
+          });
+        }
+
+        if (user.role === "ALUMNI") {
+          oldStatus = user.alumni?.status ?? Status.PENDING;
+
+          await tx.alumni.update({
+            where: { userId: user.id },
+            data: { status: newStatus },
+          });
+        }
+
+        // audit log (separate, safe, correct)
+        await tx.approvalLog.create({
+          data: {
+            targetType: user.role,
+            targetId: user.id,
+            oldStatus,
+            newStatus,
+            actionById: req.user.id,
+          },
+        });
+      }
+    });
+
+    return res.json({
+      msg: `Bulk ${action.toLowerCase()} successful`,
+      count: users.length,
+    });
+  } catch (error) {
+    console.error("bulkVerifyUsers error:", error);
+    return res.status(500).json({ msg: "Bulk operation failed" });
+  }
+};
