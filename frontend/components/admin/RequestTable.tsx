@@ -10,6 +10,8 @@ import RequestCard from "./RequestCard";
 import RequestRowSkeleton from "./RequestRowSkeleton";
 import RequestCardSkeleton from "./RequestCardSkeleton";
 import ConfirmActionModal from "./ConfirmActionModal";
+import axios from "axios";
+import BulkActionBar from "./BulkActionBar";
 
 type Props = {
   filters: PendingFilters;
@@ -22,6 +24,60 @@ export default function RequestTable({ filters }: Props) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [actionType, setActionType] = useState<"approve" | "reject">("approve");
   const [list, setList] = useState<any[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [bulkLoading, setBulkLoading] = useState(false);
+
+  const isMultiSelect = selectedIds.length > 0;
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const clearSelection = () => setSelectedIds([]);
+
+  const handleBulkApprove = async () => {
+    if (!selectedIds.length) return;
+    setBulkLoading(true);
+    try {
+      await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/users/bulk-verify`,
+        {
+          userIds: selectedIds,
+          action: "APPROVE",
+        },
+      );
+
+      setList((prev) => prev.filter((u) => !selectedIds.includes(u.id)));
+      clearSelection();
+    } catch (e) {
+      alert("Bulk approve failed");
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleBulkReject = async () => {
+    if (!selectedIds.length) return;
+    setBulkLoading(true);
+    try {
+      await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/users/bulk-verify`,
+        {
+          userIds: selectedIds,
+          action: "REJECT",
+        },
+      );
+
+      setList((prev) => prev.filter((u) => !selectedIds.includes(u.id)));
+      clearSelection();
+    } catch (e) {
+      alert("Bulk reject failed");
+    } finally {
+      setBulkLoading(false);
+    }
+  };
 
   const {
     users,
@@ -36,8 +92,21 @@ export default function RequestTable({ filters }: Props) {
     setList(users);
   }, [users]);
 
+  useEffect(() => {
+    clearSelection();
+  }, [page, filters]);
+
   return (
     <div className="space-y-5">
+      <BulkActionBar
+        count={selectedIds.length}
+        onApprove={handleBulkApprove}
+        onReject={handleBulkReject}
+        onClear={clearSelection}
+        loading={bulkLoading}
+      />
+
+      {/* MOBILE VIEW */}
       <div className="md:hidden space-y-4">
         {loading ? (
           <>
@@ -62,6 +131,9 @@ export default function RequestTable({ filters }: Props) {
               >
                 <RequestCard
                   user={user}
+                  selected={selectedIds.includes(user.id)}
+                  onToggleSelect={() => toggleSelect(user.id)}
+                  disableActions={isMultiSelect}
                   loading={actionLoadingId === user.id}
                   onApprove={() => {
                     setSelectedUser(user);
@@ -112,6 +184,9 @@ export default function RequestTable({ filters }: Props) {
               >
                 <RequestRow
                   user={user}
+                  selected={selectedIds.includes(user.id)}
+                  onToggleSelect={() => toggleSelect(user.id)}
+                  disableActions={isMultiSelect}
                   onClick={() => {
                     setSelectedUser(user);
                     setOpen(true);

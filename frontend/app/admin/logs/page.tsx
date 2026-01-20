@@ -5,6 +5,8 @@ import { useApprovalLogs } from "@/hooks/useApprovalLogs";
 import ApprovalTimeline from "@/components/admin/ApprovalTimeline";
 import { useApprovalAdmins } from "@/hooks/useApprovalAdmins";
 import UserDetailsModal from "@/components/admin/UserDetailsModal";
+import { useApprovalLogStats } from "@/hooks/useApprovalLogStats";
+import LogStatsCards from "@/components/admin/LogStatsCards";
 
 export default function ApprovalLogsPage() {
   const [page, setPage] = useState(1);
@@ -14,6 +16,29 @@ export default function ApprovalLogsPage() {
   const { admins } = useApprovalAdmins();
   const [openUserModal, setOpenUserModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const { stats, loading: statsLoading } = useApprovalLogStats();
+  // const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  // const [bulkLoading, setBulkLoading] = useState(false);
+
+//   const toggleSelect = (id: string) => {
+//   setSelectedIds((prev) =>
+//     prev.includes(id)
+//       ? prev.filter((x) => x !== id)
+//       : [...prev, id]
+//   );
+// };
+
+
+// const handleBulkApprove = async () => {
+//   if (selectedIds.length === 0) return;
+//   console.log("Bulk approve:", selectedIds);
+// };
+
+// const handleBulkReject = async () => {
+//   if (selectedIds.length === 0) return;
+//   console.log("Bulk reject:", selectedIds);
+// };
+
 
   return (
     <div className="space-y-6">
@@ -22,6 +47,8 @@ export default function ApprovalLogsPage() {
         <p className="text-sm text-gray-500">
           Track all verification and rejection actions
         </p>
+
+        <LogStatsCards stats={stats} loading={statsLoading} />
       </div>
 
       <div className="flex flex-wrap gap-3">
@@ -68,9 +95,20 @@ export default function ApprovalLogsPage() {
         )}
       </div>
 
+      {/* <BulkActionBar
+        count={selectedIds.length}
+        onApprove={handleBulkApprove}
+        onReject={handleBulkReject}
+        onClear={() => setSelectedIds([])}
+        loading={bulkLoading}
+      /> */}
+
+      {/* <ApprovalTimeline logs={logs} loading={loading} /> */}
       <ApprovalTimeline
         logs={logs}
         loading={loading}
+        // selectedIds={selectedIds}
+        // onToggleSelect={toggleSelect}
         onSelectUser={(id: string) => {
           setSelectedUserId(id);
           setOpenUserModal(true);

@@ -1,25 +1,45 @@
 type Props = {
   user: any;
+  selected: boolean;
+  onToggleSelect: () => void;
   onClick: () => void;
   onApprove: () => void;
   onReject: () => void;
   loading?: boolean;
+  disableActions?: boolean;
 };
 
 export default function RequestRow({
   user,
+  selected,
+  onToggleSelect,
   onClick,
   onApprove,
   onReject,
   loading,
+  disableActions,
 }: Props) {
   return (
+    // <div
+    //   onClick={onClick}
+    //   className="px-5 py-3 border-b hover:bg-gray-50 transition cursor-pointer"
+    // >
     <div
       onClick={onClick}
-      className="px-5 py-3 border-b hover:bg-gray-50 transition cursor-pointer"
+      className={`px-5 py-3 border-b transition cursor-pointer
+    ${selected ? "bg-blue-50" : "hover:bg-gray-50"}
+  `}
     >
       <div className="grid grid-cols-12 items-center gap-y-2">
         <div className="col-span-5 flex items-center gap-3 min-w-0">
+          <input
+            type="checkbox"
+            checked={selected}
+            onClick={(e) => e.stopPropagation()}
+            onChange={onToggleSelect}
+            className="h-4 w-4 accent-blue-600"
+          />
+
           <div className="h-10 w-10 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold">
             {user.name?.charAt(0)}
           </div>
@@ -47,7 +67,8 @@ export default function RequestRow({
 
         <div className="hidden xl:flex col-span-1 justify-end gap-2">
           <ActionButtons
-            loading={loading}
+            loading={loading || disableActions}
+            disabled={disableActions}
             onApprove={onApprove}
             onReject={onReject}
           />
@@ -56,7 +77,8 @@ export default function RequestRow({
 
       <div className="mt-3 flex justify-end gap-2 xl:hidden">
         <ActionButtons
-          loading={loading}
+          loading={loading || disableActions}
+          disabled={disableActions}
           onApprove={onApprove}
           onReject={onReject}
         />
@@ -67,33 +89,54 @@ export default function RequestRow({
 
 function ActionButtons({
   loading,
+  disabled,
   onApprove,
   onReject,
 }: {
   loading?: boolean;
+  disabled?: boolean;
   onApprove: () => void;
   onReject: () => void;
 }) {
   return (
     <>
       <button
-        disabled={loading}
+        disabled={loading || disabled}
         onClick={(e) => {
           e.stopPropagation();
+          if (disabled) return;
+          // onVerify(user.id);
           onApprove();
         }}
-        className="px-3 py-1.5 rounded-md text-xs font-semibold bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 whitespace-nowrap"
+      //   className="px-3 py-1.5 rounded-md text-xs font-semibold bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 whitespace-nowrap"
+      // >
+      className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap
+          ${
+            disabled
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+              : "bg-green-600 text-white hover:bg-green-700"
+          }
+        `}
       >
         Approve
       </button>
 
       <button
-        disabled={loading}
+        disabled={loading || loading}
         onClick={(e) => {
           e.stopPropagation();
+          if (disabled) return;
           onReject();
         }}
-        className="px-3 py-1.5 rounded-md text-xs font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 whitespace-nowrap"
+      //   className="px-3 py-1.5 rounded-md text-xs font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 whitespace-nowrap"
+      // >
+      className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap
+          ${
+            disabled
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+              : "bg-red-600 text-white hover:bg-red-700"
+          }
+        `}
       >
         Reject
       </button>

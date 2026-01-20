@@ -1,5 +1,8 @@
 type Props = {
   user: any;
+  selected: boolean;
+  onToggleSelect: () => void;
+  disableActions?: boolean;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
   loading: boolean;
@@ -7,29 +10,40 @@ type Props = {
 
 export default function RequestCard({
   user,
+  selected,
+  onToggleSelect,
+  disableActions,
   onApprove,
   onReject,
   loading,
 }: Props) {
-  const profile = user.student || user.alumni;
+  // const profile = user.student || user.alumni;
 
   return (
-    <div className="bg-white rounded-xl border p-4 shadow-sm space-y-3">
+    // <div className="bg-white rounded-xl border p-4 shadow-sm space-y-3">
+    <div
+      className={`rounded-xl border p-4 shadow-sm space-y-3 transition
+        ${selected ? "bg-blue-50 border-blue-300" : "bg-white"}
+      `}
+    >
+      {/* Top: user info */}
       <div className="flex items-start gap-3">
+        {/* Checkbox */}
+        <input
+          type="checkbox"
+          checked={selected}
+          onClick={(e) => e.stopPropagation()}
+          onChange={onToggleSelect}
+          className="mt-1 h-4 w-4 accent-blue-600"
+        />
         <div className="h-10 w-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
           {user.name?.[0]}
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-gray-900 truncate">
-            {user.name}
-          </p>
-          <p className="text-sm text-gray-500 truncate">
-            {user.email}
-          </p>
-          <p className="text-xs text-gray-400">
-            {user.regNo}
-          </p>
+          <p className="font-semibold text-gray-900 truncate">{user.name}</p>
+          <p className="text-sm text-gray-500 truncate">{user.email}</p>
+          <p className="text-xs text-gray-400">{user.regNo}</p>
         </div>
       </div>
 
@@ -53,21 +67,37 @@ export default function RequestCard({
 
       <div className="flex justify-end gap-2 pt-2">
         <button
-          disabled={loading}
+          disabled={loading || disableActions}
           onClick={() => onApprove(user.id)}
-          className="px-3 py-1.5 rounded-md text-sm font-medium
-                     bg-green-600 text-white hover:bg-green-700
-                     disabled:opacity-50"
+          //   className="px-3 py-1.5 rounded-md text-sm font-medium
+          //              bg-green-600 text-white hover:bg-green-700
+          //              disabled:opacity-50"
+          // >
+          className={`px-3 py-1.5 rounded-md text-sm font-medium
+    ${
+      disableActions
+        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+        : "bg-green-600 text-white hover:bg-green-700"
+    }
+  `}
         >
           Approve
         </button>
 
         <button
-          disabled={loading}
+          disabled={loading || loading}
           onClick={() => onReject(user.id)}
-          className="px-3 py-1.5 rounded-md text-sm font-medium
-                     bg-red-600 text-white hover:bg-red-700
-                     disabled:opacity-50"
+          //   className="px-3 py-1.5 rounded-md text-sm font-medium
+          //              bg-red-600 text-white hover:bg-red-700
+          //              disabled:opacity-50"
+          // >
+          className={`px-3 py-1.5 rounded-md text-sm font-medium
+    ${
+      disableActions
+        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+        : "bg-red-600 text-white hover:bg-red-700"
+    }
+  `}
         >
           Reject
         </button>
