@@ -22,20 +22,26 @@ export default function RequestCard({
   return (
     // <div className="bg-white rounded-xl border p-4 shadow-sm space-y-3">
     <div
-      className={`rounded-xl border p-4 shadow-sm space-y-3 transition
-        ${selected ? "bg-blue-50 border-blue-300" : "bg-white"}
+      className={`group rounded-xl border p-4 shadow-sm space-y-3 transition
+        ${selected ? "bg-blue-50 border-blue-300" : "bg-white hover:border-gray-300"}
       `}
     >
       {/* Top: user info */}
       <div className="flex items-start gap-3">
         {/* Checkbox */}
-        <input
-          type="checkbox"
-          checked={selected}
-          onClick={(e) => e.stopPropagation()}
-          onChange={onToggleSelect}
-          className="mt-1 h-4 w-4 accent-blue-600"
-        />
+        <div
+          className={`transition-opacity duration-200 mt-1
+            ${disableActions ? "opacity-100" : "opacity-0 group-active:opacity-100 group-focus-within:opacity-100"}
+          `}
+        >
+          <input
+            type="checkbox"
+            checked={selected}
+            onClick={(e) => e.stopPropagation()}
+            onChange={onToggleSelect}
+            className="h-4 w-4 accent-blue-600 cursor-pointer"
+          />
+        </div>
         <div className="h-10 w-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
           {user.name?.[0]}
         </div>

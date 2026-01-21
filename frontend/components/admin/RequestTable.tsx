@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePendingRequests } from "@/hooks/usePendingRequests";
 import RequestRow from "./RequestRow";
@@ -27,7 +27,18 @@ export default function RequestTable({ filters }: Props) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkLoading, setBulkLoading] = useState(false);
 
+  const selectAllRef = useRef<HTMLInputElement>(null);
+
   const isMultiSelect = selectedIds.length > 0;
+
+  const {
+    users,
+    loading,
+    verifyUser,
+    rejectUser,
+    actionLoadingId,
+    totalPages,
+  } = usePendingRequests(filters, page);
 
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) =>
@@ -36,6 +47,25 @@ export default function RequestTable({ filters }: Props) {
   };
 
   const clearSelection = () => setSelectedIds([]);
+
+  const allIds = users.map((u) => u.id);
+
+  const isAllSelected = users.length > 0 && selectedIds.length === users.length;
+
+  const toggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(allIds);
+    }
+  };
+
+  useEffect(() => {
+    if (!selectAllRef.current) return;
+
+    selectAllRef.current.indeterminate =
+      selectedIds.length > 0 && selectedIds.length < users.length;
+  }, [selectedIds, users]);
 
   const handleBulkApprove = async () => {
     if (!selectedIds.length) return;
@@ -79,32 +109,29 @@ export default function RequestTable({ filters }: Props) {
     }
   };
 
-  const {
-    users,
-    loading,
-    verifyUser,
-    rejectUser,
-    actionLoadingId,
-    totalPages,
-  } = usePendingRequests(filters, page);
-
   useEffect(() => {
     setList(users);
   }, [users]);
 
   useEffect(() => {
     clearSelection();
-  }, [page, filters]);
+  }, [page, filters, users]);
 
   return (
     <div className="space-y-5">
-      <BulkActionBar
-        count={selectedIds.length}
-        onApprove={handleBulkApprove}
-        onReject={handleBulkReject}
-        onClear={clearSelection}
-        loading={bulkLoading}
-      />
+      {selectedIds.length > 0 && (
+        <div className="top-[64px] z-20">
+          <BulkActionBar
+            count={selectedIds.length}
+            total={list.length}
+            onSelectAll={() => setSelectedIds(list.map((u) => u.id))}
+            onApprove={handleBulkApprove}
+            onReject={handleBulkReject}
+            onClear={clearSelection}
+            loading={bulkLoading}
+          />
+        </div>
+      )}
 
       {/* MOBILE VIEW */}
       <div className="md:hidden space-y-4">
@@ -154,7 +181,21 @@ export default function RequestTable({ filters }: Props) {
 
       <div className="hidden md:block bg-white rounded-xl border shadow-sm overflow-hidden">
         <div className="grid grid-cols-12 px-5 py-3 text-sm font-medium text-gray-600 border-b bg-gray-50 sticky top-0 z-10">
-          <div className="col-span-5">User</div>
+          {/* <div className="col-span-1 flex items-center"> */}
+          <div
+            className={`col-span-1 flex items-center transition-opacity duration-200
+    ${isMultiSelect ? "opacity-100" : "opacity-0 pointer-events-none"}
+  `}
+          >
+            <input
+              ref={selectAllRef}
+              type="checkbox"
+              checked={isAllSelected}
+              onChange={toggleSelectAll}
+              className="w-4 h-4 accent-black cursor-pointer"
+            />
+          </div>
+          <div className="col-span-4 pl-10">User</div>
           <div className="col-span-2">Role</div>
           <div className="col-span-2">Branch</div>
           <div className="col-span-2">Session</div>
@@ -234,6 +275,7 @@ export default function RequestTable({ filters }: Props) {
         </div>
       )}
 
+      {/* USER MODAL */}
       <ConfirmActionModal
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}

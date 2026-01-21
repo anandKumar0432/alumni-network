@@ -18,7 +18,12 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
 
       const res = await axios.get(`${BACKEND_URL}/admin/unverified/user`, {
         params: {
-          ...filters,
+          // ...filters,
+          search: filters.search,
+          branch: filters.branch,
+          role: filters.role,
+
+          session: (filters as any).session || (filters as any).year || "",
           page,
           limit: 10,
         },

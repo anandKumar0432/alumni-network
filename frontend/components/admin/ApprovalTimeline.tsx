@@ -6,6 +6,7 @@ type Props = {
   loading: boolean;
   onSelectUser: (id: string) => void;
 
+  // optional (only for bulk/select mode)
   selectedIds?: string[];
   onToggleSelect?: (id: string) => void;
 };
@@ -108,11 +109,13 @@ export default function ApprovalTimeline({
                   <div
                     onClick={() => onSelectUser(log.targetId)}
                     className={`p-4 rounded-xl border space-y-1 cursor-pointer transition
-    ${
-      isSelected ? "bg-blue-50 border-blue-300" : "bg-gray-50 hover:bg-gray-100"
-    }`}
+                      ${
+                        isSelected
+                          ? "bg-blue-50 border-blue-300"
+                          : "bg-gray-50 hover:bg-gray-100"
+                      }`}
                   >
-                    {/* checkbox */}
+                    {/* Checkbox (only if bulk mode enabled) */}
                     {onToggleSelect && (
                       <div className="flex items-center gap-2 mb-2">
                         <input
@@ -127,7 +130,9 @@ export default function ApprovalTimeline({
                     )}
 
                     <p className="text-sm text-gray-800">
-                      <span className="font-medium">{log.actionBy?.name}</span>{" "}
+                      <span className="font-medium">
+                        {log.actionBy?.name}
+                      </span>{" "}
                       ({log.actionBy?.email}){" "}
                       {approved ? "approved" : "rejected"} a{" "}
                       <span className="font-medium lowercase">
