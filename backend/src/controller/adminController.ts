@@ -42,7 +42,7 @@ export const updateUserStatus = async (req: Request, res: Response) => {
       oldStatus = user.student?.status ?? "PENDING";
       if (oldStatus === status) {
         return res.status(400).json({ msg: "User already has this status" });
-      }      
+      }
       await prisma.student.update({
         where: {
           userId,
@@ -57,7 +57,7 @@ export const updateUserStatus = async (req: Request, res: Response) => {
       oldStatus = user.alumni?.status ?? "PENDING";
       if (oldStatus === status) {
         return res.status(400).json({ msg: "User already has this status" });
-      }      
+      }
       await prisma.alumni.update({
         where: {
           userId,
@@ -190,7 +190,7 @@ export const unverifiedUser = async (req: Request, res: Response) => {
 
     const [users, totalResults] = await Promise.all([
       prisma.user.findMany({
-        where: whereCondition, 
+        where: whereCondition,
         skip,
         take: pageSize,
         orderBy: { createdAt: "desc" },
@@ -200,7 +200,7 @@ export const unverifiedUser = async (req: Request, res: Response) => {
         },
       }),
       prisma.user.count({
-        where: whereCondition, 
+        where: whereCondition,
       }),
     ]);
 
@@ -305,8 +305,6 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-
-
 // If needed then I can think about this as of now it is same as the signup
 
 // export const createUser = async (req: Request, res: Response)=>{
@@ -337,9 +335,6 @@ export const deleteUser = async (req: Request, res: Response) => {
 //     }
 // }
 
-
-
-
 export const bulkVerifyUsers = async (req: Request, res: Response) => {
   try {
     const { userIds, action } = req.body;
@@ -352,8 +347,7 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
       return res.status(400).json({ msg: "Invalid action" });
     }
 
-    const newStatus =
-      action === "APPROVE" ? Status.VERIFIED : Status.REJECTED;
+    const newStatus = action === "APPROVE" ? Status.VERIFIED : Status.REJECTED;
 
     // fetch users with real state
     const users = await prisma.user.findMany({

@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, UserCheck, GraduationCap, Menu, X } from "lucide-react";
+import {
+  Users,
+  UserCheck,
+  GraduationCap,
+  Menu,
+  X,
+  FileClock,
+} from "lucide-react";
 import clsx from "clsx";
 
 const nav = [
   { name: "Requests", href: "/admin", icon: UserCheck },
   { name: "Students", href: "/admin/students", icon: Users },
-  { name: "Alumni", href: "/alumni", icon: GraduationCap },
+  { name: "Alumni", href: "/admin/alumni", icon: GraduationCap },
+  { name: "Approval Logs", href: "/admin/logs", icon: FileClock },
 ];
 
 type Props = {
@@ -38,12 +46,13 @@ export default function Sidebar({
       <aside
         className={clsx(
           "bg-white border-r flex flex-col transition-all duration-300",
-          "h-full", 
+          "h-full",
           "fixed md:static z-50",
           collapsed ? "w-[72px]" : "w-64",
           open ? "left-0" : "-left-full md:left-0",
         )}
       >
+        {/* Header */}
         <div className="h-14 px-4 flex items-center justify-between border-b">
           <div className="flex items-center gap-2 font-bold text-lg">
             <GraduationCap className="text-black-600" />
@@ -67,7 +76,11 @@ export default function Sidebar({
 
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {nav.map((item) => {
-            const active = pathname === item.href;
+            // const active = pathname === item.href;
+            const active =
+              item.href === "/admin"
+                ? pathname === "/admin"
+                : pathname.startsWith(item.href);
 
             return (
               <Link
