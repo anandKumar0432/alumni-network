@@ -21,10 +21,8 @@ export default function AdminPage() {
         </p>
       </div>
 
-      {/* Filters */}
       <FiltersBar filters={filters} setFilters={setFilters} />
 
-      {/* Table */}
       <RequestTable filters={filters} />
     </div>
   );

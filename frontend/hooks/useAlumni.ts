@@ -38,7 +38,6 @@ export function useAlumni(filters: any, page: number, mounted: boolean) {
           withCredentials: true,
         });
 
-        // Make sure res has the expected shape and suppress type error appropriately
         const alumniData = (res as any)?.data?.data || [];
         const mapped = alumniData.map((a: any) => ({
           id: a.id,

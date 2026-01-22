@@ -25,7 +25,6 @@ export default function ApprovalLogsPage() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        {/* Status Filter */}
         <select
           value={status}
           onChange={(e) => {
@@ -39,7 +38,6 @@ export default function ApprovalLogsPage() {
           <option value="REJECTED">Rejected</option>
         </select>
 
-        {/* Admin Filter (placeholder for now) */}
         <select
           value={adminId}
           onChange={(e) => {
@@ -56,7 +54,6 @@ export default function ApprovalLogsPage() {
           ))}
         </select>
 
-        {/* Clear */}
         {(status || adminId) && (
           <button
             onClick={() => {
@@ -71,7 +68,6 @@ export default function ApprovalLogsPage() {
         )}
       </div>
 
-      {/* <ApprovalTimeline logs={logs} loading={loading} /> */}
       <ApprovalTimeline
         logs={logs}
         loading={loading}
@@ -81,7 +77,6 @@ export default function ApprovalLogsPage() {
         }}
       />
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-between items-center">
           <p className="text-sm text-gray-500">

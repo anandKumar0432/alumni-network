@@ -15,10 +15,9 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 type Props = {
   open: boolean;
   onClose: () => void;
-  // user: any;
   userId: string | null;
-  onVerify: () => void;
-  onReject: () => void;
+  onVerify?: () => void;
+  onReject?: () => void;
   loading?: boolean;
   showActions?: boolean;
 };
@@ -26,7 +25,6 @@ type Props = {
 export default function UserDetailsModal({
   open,
   onClose,
-  // user,
   userId,
   onVerify,
   onReject,
@@ -45,7 +43,9 @@ export default function UserDetailsModal({
         const res = await axios.get(`${BACKEND_URL}/admin/me/${userId}`, {
           withCredentials: true,
         });
-        setUser(res.data.user || res.data);
+        // Explicitly type res.data as any to satisfy the linter
+        const data: any = res.data;
+        setUser(data.user || data);
       } catch (err) {
         console.error("Failed to fetch user", err);
       } finally {
@@ -76,18 +76,24 @@ export default function UserDetailsModal({
           <Field label="Status" value={user.status} />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4">
-          <Button variant="destructive" onClick={onReject} disabled={loading}>
-            Reject
-          </Button>
-          <Button
-            className="bg-green-700"
-            onClick={onVerify}
-            disabled={loading}
-          >
-            Approve
-          </Button>
-        </div>
+        {showActions && (
+          <div className="flex justify-end gap-3 pt-4">
+            <Button
+              variant="destructive"
+              onClick={onReject}
+              disabled={loading || !onReject}
+            >
+              Reject
+            </Button>
+            <Button
+              className="bg-green-700"
+              onClick={onVerify}
+              disabled={loading || !onVerify}
+            >
+              Approve
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

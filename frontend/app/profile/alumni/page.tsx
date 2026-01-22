@@ -39,7 +39,6 @@ export default function AlumniProfilePage() {
   
 
 
-  // 🔹 TEMP, later store in local
   const userId = "795b7fe1-3575-42de-9f1f-9b641646594e";
 
   useEffect(() => {
@@ -47,8 +46,6 @@ export default function AlumniProfilePage() {
     fetchProfile();
   }, [userId]);  
 
-
-    /* ---------------- FETCH PROFILE ---------------- */
 
   const fetchProfile = async () => {
     try {
@@ -102,8 +99,6 @@ export default function AlumniProfilePage() {
     }
   };
 
-
-    /* ---------------- UPDATE PROFILE ---------------- */
 
     const handleUpdate = async (e: any) => {
       e.preventDefault();

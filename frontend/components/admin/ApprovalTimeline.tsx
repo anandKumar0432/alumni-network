@@ -51,7 +51,6 @@ export default function ApprovalTimeline({
   loading,
   onSelectUser,
 }: Props) {
-  // skeleton
   if (loading) {
     return (
       <div className="bg-white border rounded-xl p-6">
@@ -72,7 +71,6 @@ export default function ApprovalTimeline({
     );
   }
 
-  // group logs AFTER loading
   const groupedLogs = groupLogsByDate(logs);
 
   return (
@@ -80,7 +78,6 @@ export default function ApprovalTimeline({
       <ol className="relative border-l border-gray-200 space-y-10">
         {Object.entries(groupedLogs).map(([date, items]) => (
           <div key={date} className="space-y-6">
-            {/* Date label */}
             <div className="ml-6 text-sm font-semibold text-gray-500">
               {date}
             </div>
@@ -90,7 +87,6 @@ export default function ApprovalTimeline({
 
               return (
                 <li key={log.id} className="ml-6">
-                  {/* Dot */}
                   <span
                     className={`absolute -left-3 flex items-center justify-center w-6 h-6 rounded-full ring-8 ring-white
                     ${approved ? "bg-green-100" : "bg-red-100"}`}
@@ -102,7 +98,6 @@ export default function ApprovalTimeline({
                     )}
                   </span>
 
-                  {/* Card */}
                   <div
                     onClick={() => onSelectUser(log.targetId)}
                     className="p-4 bg-gray-50 rounded-xl border space-y-1 cursor-pointer hover:bg-gray-100 transition"

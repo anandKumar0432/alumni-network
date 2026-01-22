@@ -33,8 +33,6 @@ export default function AlumniPage() {
   return (
     <motion.main initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <AlumniHero />
-
-      {/* FILTER ZONE */}
       <section className="relative bg-gray-50">
         <div className="h-6" />
 
@@ -53,7 +51,7 @@ export default function AlumniPage() {
         >
           <AlumniDesktopFilters
             filters={filters}
-            onChange={(newFilters) => setFilters(newFilters)}
+            onChange={(newFilters) => setFilters((f) => ({ ...f, ...newFilters }))}
             onResetPage={() => setPage(1)}
           />
         </AlumniFilterBar>
@@ -68,8 +66,6 @@ export default function AlumniPage() {
           />
         </div>
       </section>
-
-      {/* CONTENT */}
       <section className="bg-gray-50 px-4 pb-12">
         <div className="max-w-7xl mx-auto">
           <AlumniResults page={page} total={totalResults} />
@@ -81,15 +77,13 @@ export default function AlumniPage() {
           />
         </div>
       </section>
-
-      {/* MOBILE FILTER DRAWER */}
       <MobileFilterDrawer
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
       >
         <AlumniMobileFilters
           filters={filters}
-          onChange={(newFilters) => setFilters(newFilters)}
+          onChange={(newFilters) => setFilters((f) => ({ ...f, ...newFilters }))}
           onClear={() =>
             setFilters({ search: "", branch: "", session: "", year: "" })
           }

@@ -44,9 +44,7 @@ export default function AlumniFilterBar({
         `}
       >
         <div className="flex flex-col gap-3">
-          {/* Top row */}
           <div className="flex items-center gap-3 flex-wrap">
-            {/* Search */}
             <div className="relative flex-1 min-w-[220px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -57,12 +55,10 @@ export default function AlumniFilterBar({
               />
             </div>
 
-            {/* Desktop filters */}
             <div className="hidden md:flex items-center gap-3 flex-wrap">
               {children}
             </div>
 
-            {/* Mobile filter button */}
             <Button
               variant="outline"
               size="icon"
@@ -72,7 +68,6 @@ export default function AlumniFilterBar({
               <SlidersHorizontal className="h-5 w-5" />
             </Button>
 
-            {/* Clear */}
             <Button
               onClick={onClear}
               className="h-11 rounded-xl px-5 hidden sm:inline-flex"
@@ -81,7 +76,6 @@ export default function AlumniFilterBar({
             </Button>
           </div>
 
-          {/* Bottom row */}
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>{results} results found</span>
           </div>

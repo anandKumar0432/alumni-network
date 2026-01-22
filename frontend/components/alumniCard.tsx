@@ -36,14 +36,12 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
       transition={{ type: "spring", stiffness: 260, damping: 18 }}
       className="group relative"
     >
-      {/* glow */}
-      <div className="absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-indigo-500/30 via-purple-500/20 to-pink-500/30 blur pointer-events-none" />
+      <div className="absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 bg-linear-to-br from-indigo-500/30 via-purple-500/20 to-pink-500/30 blur pointer-events-none" />
 
       <Link
         href={`/profile/alumni?id=${id}`}
         className="relative block overflow-hidden rounded-3xl border bg-white/80 backdrop-blur shadow-sm hover:shadow-2xl transition-all"
       >
-        {/* image */}
         <div className="relative h-48 w-full overflow-hidden">
           {image ? (
             <Image
@@ -53,7 +51,7 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
               className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
+            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-700 to-gray-900">
               <svg
                 width="80"
                 height="80"
@@ -68,17 +66,8 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
             </div>
           )}
 
-          {/* overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent opacity-80" />
 
-          {/* badge */}
-          {/* <div className="absolute top-4 left-4">
-            <span className="text-xs font-medium bg-white/90 backdrop-blur px-3 py-1 rounded-full">
-              Alumni
-            </span>
-          </div> */}
-
-          {/* socials (hover) */}
           <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition">
             {linkedin && (
               <a
@@ -128,14 +117,12 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
           </div>
         </div>
 
-        {/* content */}
         <div className="p-5">
           <h3 className="text-lg font-semibold tracking-tight">{name}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
             {session} • {branch}
           </p>
 
-          {/* tags */}
           <div className="mt-3 flex flex-wrap gap-2">
             <span className="text-xs rounded-full bg-gray-100 px-3 py-1">
               {branch}
@@ -148,9 +135,6 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
           <div className="mt-5 flex items-center justify-between">
             <span className="text-xs text-muted-foreground">KEC Connect</span>
 
-            {/* <span className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 group-hover:gap-2 transition-all">
-              View profile →
-            </span> */}
             <Button size="sm" variant="outline" className="rounded-full gap-2">
               View profile →
             </Button>

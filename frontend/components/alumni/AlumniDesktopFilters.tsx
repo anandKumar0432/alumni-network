@@ -19,7 +19,6 @@ export default function AlumniDesktopFilters({
 }: Props) {
   return (
     <>
-      {/* Branch */}
       <select
         className="h-11 rounded-xl border px-3 bg-background"
         value={filters.branch}
@@ -39,7 +38,6 @@ export default function AlumniDesktopFilters({
         <option value="FPP">FPP</option>
       </select>
 
-      {/* Session */}
       <input
         placeholder="Session (e.g. 2023-27)"
         className="h-11 rounded-xl border px-3 bg-background"
@@ -50,7 +48,6 @@ export default function AlumniDesktopFilters({
         }}
       />
 
-      {/* Year */}
       <input
         type="number"
         placeholder="Passing year"

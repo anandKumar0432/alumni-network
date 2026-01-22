@@ -38,12 +38,7 @@ export default function RequestTable({ filters }: Props) {
 
   return (
     <div className="space-y-5">
-      {/* MOBILE VIEW */}
       <div className="md:hidden space-y-4">
-        {/* {loading ? (
-          <div className="text-center text-gray-500 py-10">
-            Loading pending requests...
-          </div> */}
         {loading ? (
           <>
             {Array.from({ length: 4 }).map((_, i) => (
@@ -55,26 +50,6 @@ export default function RequestTable({ filters }: Props) {
             No pending requests found
           </div>
         ) : (
-          // users.map((user) => (
-          //   <RequestCard
-          //     key={user.id}
-          //     user={user}
-          //     loading={actionLoadingId === user.id}
-          //     // onApprove={(id) => verifyUser(id)}
-          //     // onReject={(id) => rejectUser(id)}
-          //     onApprove={() => {
-          //       setSelectedUser(user);
-          //       setActionType("approve");
-          //       setConfirmOpen(true);
-          //     }}
-          //     onReject={() => {
-          //       setSelectedUser(user);
-          //       setActionType("reject");
-          //       setConfirmOpen(true);
-          //     }}
-          //   />
-          // ))
-
           <AnimatePresence>
             {list.map((user) => (
               <motion.div
@@ -105,9 +80,7 @@ export default function RequestTable({ filters }: Props) {
         )}
       </div>
 
-      {/* DESKTOP TABLE */}
       <div className="hidden md:block bg-white rounded-xl border shadow-sm overflow-hidden">
-        {/* Table header */}
         <div className="grid grid-cols-12 px-5 py-3 text-sm font-medium text-gray-600 border-b bg-gray-50 sticky top-0 z-10">
           <div className="col-span-5">User</div>
           <div className="col-span-2">Role</div>
@@ -116,7 +89,6 @@ export default function RequestTable({ filters }: Props) {
           <div className="col-span-1 text-right">Actions</div>
         </div>
 
-        {/* Table body */}
         {loading ? (
           <>
             {Array.from({ length: 6 }).map((_, i) => (
@@ -128,31 +100,6 @@ export default function RequestTable({ filters }: Props) {
             No pending requests found
           </div>
         ) : (
-          // users.map((user) => (
-          //   <RequestRow
-          //     key={user.id}
-          //     user={user}
-          //     onClick={() => {
-          //       setSelectedUser(user);
-          //       setOpen(true);
-          //     }}
-          //     // onVerify={verifyUser}
-          //     // onReject={rejectUser}
-          //     // loading={actionLoadingId === user.id}
-
-          //     onApprove={() => {
-          //       setSelectedUser(user);
-          //       setActionType("approve");
-          //       setConfirmOpen(true);
-          //     }}
-          //     onReject={() => {
-          //       setSelectedUser(user);
-          //       setActionType("reject");
-          //       setConfirmOpen(true);
-          //     }}
-          //   />
-          // ))
-
           <AnimatePresence>
             {list.map((user) => (
               <motion.div
@@ -186,7 +133,6 @@ export default function RequestTable({ filters }: Props) {
         )}
       </div>
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="flex flex-wrap justify-between items-center gap-3">
           <p className="text-sm text-gray-500">
@@ -212,16 +158,6 @@ export default function RequestTable({ filters }: Props) {
           </div>
         </div>
       )}
-
-      {/* USER MODAL */}
-      <UserDetailsModal
-        open={open}
-        onClose={() => setOpen(false)}
-        user={selectedUser}
-        loading={actionLoadingId === selectedUser?.id}
-        onVerify={() => verifyUser(selectedUser.id)}
-        onReject={() => rejectUser(selectedUser.id)}
-      />
 
       <ConfirmActionModal
         open={confirmOpen}

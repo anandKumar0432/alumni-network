@@ -15,8 +15,6 @@ export default function RequestCard({
 
   return (
     <div className="bg-white rounded-xl border p-4 shadow-sm space-y-3">
-
-      {/* Top: user info */}
       <div className="flex items-start gap-3">
         <div className="h-10 w-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
           {user.name?.[0]}
@@ -35,7 +33,6 @@ export default function RequestCard({
         </div>
       </div>
 
-      {/* Middle: meta chips */}
       <div className="flex flex-wrap gap-2 text-xs">
         <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 font-medium">
           {user.role}
@@ -54,7 +51,6 @@ export default function RequestCard({
         )}
       </div>
 
-      {/* Bottom: actions (single row, compact) */}
       <div className="flex justify-end gap-2 pt-2">
         <button
           disabled={loading}

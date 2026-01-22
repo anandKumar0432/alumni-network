@@ -6,18 +6,6 @@ import { Users, Building2, Globe } from "lucide-react";
 export default function AlumniHero() {
   return (
     <section className="relative overflow-hidden pt-16 md:pt-20 bg-gray-100">
-      {/* ===== BACKGROUND ===== */}
-      {/* <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-white to-violet-50 dark:from-indigo-950 dark:via-black dark:to-violet-950" /> */}
-
-      {/* ===== SOFT GLOWS ===== */}
-      {/* <div className="absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-violet-400/20 blur-[140px]" />
-      <div className="absolute top-24 right-[-140px] h-[320px] w-[320px] rounded-full bg-indigo-400/20 blur-[140px]" />
-      <div className="absolute bottom-[-140px] left-[-120px] h-[300px] w-[300px] rounded-full bg-pink-400/10 blur-[140px]" /> */}
-
-      {/* subtle wash */}
-      {/* <div className="absolute inset-0 bg-white/40 dark:bg-black/20 backdrop-blur-[1px]" /> */}
-
-      {/* ===== CONTENT ===== */}
       <div className="container mx-auto px-4 pb-10 md:pb-12 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -26,9 +14,6 @@ export default function AlumniHero() {
           className="text-3xl md:text-5xl font-bold tracking-tight"
         >
           Connect with Our Alumni Network{" "}
-          {/* <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-pink-500 bg-clip-text text-transparent">
-            Alumni Network
-          </span> */}
         </motion.h1>
 
         <motion.p
@@ -41,7 +26,6 @@ export default function AlumniHero() {
           community across industries and the world.
         </motion.p>
 
-        {/* ===== STATS ===== */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

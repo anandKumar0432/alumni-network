@@ -17,14 +17,12 @@ export default function AlumniPagination({
 
   return (
     <>
-      {/* MOBILE */}
       <MobilePagination
         currentPage={page}
         totalPages={totalPages}
         onPageChange={onPageChange}
       />
 
-      {/* DESKTOP */}
       <div className="hidden sm:flex justify-center items-center gap-2 mt-10 flex-wrap">
         <button
           disabled={page === 1}

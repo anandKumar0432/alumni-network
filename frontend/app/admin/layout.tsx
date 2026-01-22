@@ -10,10 +10,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(false); // mobile drawer
-  const [collapsed, setCollapsed] = useState(false); // desktop collapse
+  const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
-  // lock entire page scroll only for admin(admin has no need to visit footer)
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -39,7 +38,6 @@ export default function AdminLayout({
               <AdminTopbar onMenuClick={() => setOpen(true)} />
             </div>
 
-            {/* Page content */}
             <main className="flex-1 overflow-y-auto p-4 md:p-6">
               {children}
             </main>

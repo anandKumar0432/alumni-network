@@ -21,7 +21,6 @@ export function useAlumniFilters() {
 
   useEffect(() => setMounted(true), []);
 
-  // URL → STATE
   useEffect(() => {
     const newPage = Number(searchParams.get("page")) || 1;
 
@@ -38,7 +37,6 @@ export function useAlumniFilters() {
     );
   }, [searchParams]);
 
-  // STATE → URL
   useEffect(() => {
     if (!mounted) return;
 

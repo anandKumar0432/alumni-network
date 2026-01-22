@@ -26,8 +26,6 @@ export default function ConfirmActionModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-5 relative animate-in fade-in zoom-in-95">
-        
-        {/* Close */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 p-2 rounded-lg hover:bg-gray-100"
@@ -35,7 +33,6 @@ export default function ConfirmActionModal({
           <X className="w-5 h-5 text-gray-500" />
         </button>
 
-        {/* Icon */}
         <div
           className={`mx-auto w-14 h-14 flex items-center justify-center rounded-full ${
             isApprove ? "bg-green-100" : "bg-red-100"
@@ -48,19 +45,16 @@ export default function ConfirmActionModal({
           )}
         </div>
 
-        {/* Title */}
         <h2 className="text-lg font-semibold text-center mt-4">
           {isApprove ? "Approve User?" : "Reject User?"}
         </h2>
 
-        {/* Message */}
         <p className="text-sm text-gray-600 text-center mt-1">
           {isApprove
             ? "This user will get access to the platform."
             : "This request will be permanently rejected."}
         </p>
 
-        {/* User preview */}
         {user && (
           <div className="mt-4 p-3 border rounded-xl bg-gray-50">
             <p className="font-medium text-gray-900">{user.name}</p>
@@ -69,7 +63,6 @@ export default function ConfirmActionModal({
           </div>
         )}
 
-        {/* Actions */}
         <div className="mt-5 flex gap-3">
           <button
             onClick={onClose}

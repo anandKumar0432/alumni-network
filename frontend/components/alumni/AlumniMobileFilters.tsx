@@ -22,7 +22,6 @@ export default function AlumniMobileFilters({
 }: Props) {
   return (
     <div className="space-y-5">
-      {/* Branch */}
       <div>
         <label className="block text-sm font-medium mb-1">Branch</label>
         <select
@@ -44,7 +43,6 @@ export default function AlumniMobileFilters({
         </select>
       </div>
 
-      {/* Session */}
       <div>
         <label className="block text-sm font-medium mb-1">Session</label>
         <input
@@ -57,7 +55,6 @@ export default function AlumniMobileFilters({
         />
       </div>
 
-      {/* Year */}
       <div>
         <label className="block text-sm font-medium mb-1">Passing year</label>
         <input
@@ -71,7 +68,6 @@ export default function AlumniMobileFilters({
         />
       </div>
 
-      {/* Actions */}
       <div className="flex gap-3 pt-4">
         <button
           onClick={onClear}

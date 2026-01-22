@@ -5,9 +5,7 @@ import {
   Mail,
   Instagram,
   Facebook,
-  // Youtube,
 } from "lucide-react";
-// import { FaWhatsapp } from "react-icons/fa";
 
 export const Footer = () => {
   const navigation = [
@@ -43,9 +41,7 @@ export const Footer = () => {
   return (
     <footer className="bg-slate-950 text-slate-100">
       <div className="container mx-auto px-4 sm:px-6 pt-10 md:pt-12 pb-8">
-        {/* Top */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
-          {/* Brand */}
           <div className="lg:col-span-2 flex flex-col gap-3">
             <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-white">
               KEC CONNECT
@@ -63,8 +59,6 @@ export const Footer = () => {
                 { Icon: Mail, link: "mailto:principalranjanakri84@gmail.com" },
                 { Icon: Instagram, link: "https://www.instagram.com/keckatiharofficial/" },
                 { Icon: Facebook, link: "https://www.facebook.com/profile.php?id=61564963783682" },
-                // { Icon: FaWhatsapp, link: "https://whatsapp.com/channel/0029VaeIPrnFHWptfQRrpo0Q" },
-                // { Icon: Youtube, link: "https://www.youtube.com/channel/UCJu8sFs4jAp6sZIPsa8Qs5g" },
               ].map(({ Icon, link }, i) => (
                 <Link
                   key={i}

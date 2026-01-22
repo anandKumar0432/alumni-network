@@ -1,6 +1,3 @@
-//hook to fetch admins for applying filters on admin that which admin
-// has approved or rejected the user request
-
 "use client";
 
 import { useEffect, useState } from "react";

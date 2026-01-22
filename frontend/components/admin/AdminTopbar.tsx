@@ -13,7 +13,6 @@ export default function AdminTopbar({
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  //breadcrumb
   const segments = pathname.split("/").filter(Boolean).slice(1);
 
   const logout = () => {
@@ -23,7 +22,6 @@ export default function AdminTopbar({
 
   return (
     <header className="h-14 bg-white border-b flex items-center justify-between px-4 md:px-6 relative shrink-0">
-      {/* Left */}
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
@@ -43,15 +41,12 @@ export default function AdminTopbar({
         </div>
       </div>
 
-      {/* Right */}
       <div className="flex items-center gap-4">
-        {/* Notification */}
         <button className="p-2 rounded-lg hover:bg-gray-100 relative">
           <Bell size={18} />
           <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full" />
         </button>
 
-        {/* Profile */}
         <div className="relative">
           <button
             onClick={() => setOpen(!open)}

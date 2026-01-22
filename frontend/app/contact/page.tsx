@@ -47,7 +47,6 @@ const ContactUs: React.FC = () => {
               and professional guidance with the association.
             </p>
 
-            {/* Contact Info */}
             <div className="mt-6 space-y-4 text-gray-700">
               <div className="flex items-center gap-3">
                 <Mail size={18} />
@@ -68,7 +67,6 @@ const ContactUs: React.FC = () => {
               </div>
             </div>
 
-            {/* Social Icons */}
             <div className="mt-6 flex gap-4">
               {[Linkedin, Instagram, Twitter].map((Icon, index) => (
                 <a
