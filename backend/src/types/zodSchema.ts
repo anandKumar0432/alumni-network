@@ -20,8 +20,6 @@ export const studentSchema = z.object({
 export const alumniSchema = z.object({
     role: z.literal("ALUMNI"),
     alumni: z.object({
-        currentJob: z.string().optional(),
-        currentCompany:  z.string().optional(),
         linkedIn: z.string().optional(),
         instagram: z.string().optional(),
         portfolio: z.string().optional(),

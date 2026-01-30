@@ -54,8 +54,6 @@ const signup = async (req : Request, res: Response)=>{
                 data.role === "ALUMNI"
                 ? {
                     create : {
-                        currentJob: data.alumni.currentJob,
-                        currentCompany: data.alumni.currentCompany,
                         linkedIn: data.alumni.linkedIn,
                         instagram: data.alumni.instagram,
                         portfolio: data.alumni.portfolio,
@@ -149,7 +147,8 @@ const login = async (req : Request, res : Response)=>{
         })
     }catch(e){
         return res.status(500).json({
-            msg: "something went wrong!"
+            msg: "something went wrong!",
+            e,
         })
     }
 }

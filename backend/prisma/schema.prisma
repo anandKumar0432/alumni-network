@@ -39,11 +39,11 @@ model User {
   emailVerified   Boolean  @default(false)
   emailToken      String?  @unique
   emailTokenExp   DateTime?
+  imageUrl        String?
 
   alumni          Alumni?
   student         Student?
   approvalLog     ApprovalLog[]
-  // job             job[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -55,14 +55,13 @@ model User {
 
 model Alumni {
   id              String   @id @default(uuid())
-  currentJob      String?
-  currentCompany  String?
   linkedIn        String?
   instagram       String?
   portfolio       String?
   status          Status  @default(PENDING)
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String  @unique
+  job             job[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -70,22 +69,22 @@ model Alumni {
   @@index([status])
 }
 
-// model job {
-//   id              String @id @default(ulid())
-//   company         String
-//   role            String
-//   startDate       DateTime
-//   endDate         DateTime?
-//   isCurrent       Boolean @default(false)
+model job {
+  id              String @id @default(uuid())
+  company         String
+  role            String
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrent       Boolean @default(false)
 
-//   alumni          User @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   userId          String
+  alumni          Alumni @relation(fields: [alumniId], references: [id], onDelete: Cascade)
+  alumniId        String
 
-//   createdAt       DateTime @default(now())
-//   updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-//   @@index([userId])
-// }
+  @@index([alumniId])
+}
 
 model Student {
   id             String  @id @default(uuid())

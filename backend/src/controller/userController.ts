@@ -251,7 +251,7 @@ export const updateUser = async (req: Request, res: Response)=>{
                 regNo: data.regNo,
                 branch: data.branch,
                 session: data.session,
-                student: 
+                student:
                 data.role === "STUDENT"
                 ? {
                     upsert:{
@@ -271,15 +271,11 @@ export const updateUser = async (req: Request, res: Response)=>{
                 ? {
                     upsert: {
                         update : {
-                            currentJob: data.alumni.currentJob,
-                            currentCompany: data.alumni.currentCompany,
                             linkedIn: data.alumni.linkedIn,
                             instagram: data.alumni.instagram,
                             portfolio: data.alumni.portfolio,
                         },
                         create : {
-                            currentJob: data.alumni.currentJob,
-                            currentCompany: data.alumni.currentCompany,
                             linkedIn: data.alumni.linkedIn,
                             instagram: data.alumni.instagram,
                             portfolio: data.alumni.portfolio,
