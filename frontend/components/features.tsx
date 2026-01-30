@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Users,
   ShieldCheck,
-  LayoutDashboard,
-  FileClock,
   Search,
   GraduationCap,
+  LayoutDashboard,
+  FileClock,
+  Users,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -14,99 +14,100 @@ import { motion } from "framer-motion";
 const features = [
   {
     title: "Verified Alumni Network",
-    desc: "All profiles go through an admin approval system to ensure a trusted and authentic alumni community.",
+    desc: "Every alumni profile is manually reviewed and approved by administrators, ensuring a trusted institutional network.",
     icon: ShieldCheck,
   },
   {
-    title: "Powerful Alumni Directory",
-    desc: "Search and filter alumni by batch, branch, role, and status to quickly find the right connections.",
-    icon: Search,
-  },
-  {
-    title: "Student & Alumni Profiles",
-    desc: "Detailed profiles showcasing academic background, career paths, and contact information.",
-    icon: GraduationCap,
-  },
-  {
-    title: "Admin Dashboard",
-    desc: "A dedicated admin system to verify users, manage requests, and monitor platform activity.",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Approval Logs & Transparency",
-    desc: "Every approval and rejection is tracked with logs for full transparency and accountability.",
+    title: "Transparent Approval Logs",
+    desc: "All verification actions are recorded with timestamps and admin attribution for full auditability.",
     icon: FileClock,
   },
   {
-    title: "Secure Role-Based Access",
-    desc: "Role-based access control for students, alumni, and admins to ensure platform security.",
+    title: "Role-Based Access Control",
+    desc: "Defined permissions for students, alumni, and administrators protect sensitive data and workflows.",
     icon: Users,
+  },
+  {
+    title: "Advanced Alumni Directory",
+    desc: "Search and filter alumni by batch, department, role, and verification status instantly.",
+    icon: Search,
+  },
+  {
+    title: "Structured Academic & Career Profiles",
+    desc: "Standardized profiles present education, experience, and achievements clearly and professionally.",
+    icon: GraduationCap,
+  },
+  {
+    title: "Centralized Admin Dashboard",
+    desc: "A single interface to manage requests, users, and platform activity at scale.",
+    icon: LayoutDashboard,
   },
 ];
 
 export const Feature = () => {
   return (
-    <section className="w-full py-28 relative overflow-hidden">
+    <section className="w-full py-20 relative overflow-hidden bg-white">
 
-      {/* soft background accents */}
+      {/* Soft background accents */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 -right-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
 
-        {/* Section heading */}
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: false, amount: 0.3 }}
-          className="max-w-2xl mb-16"
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mb-12"
         >
-          <Badge className="mb-4">Platform Features</Badge>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
-            Everything you need to build a strong alumni ecosystem
+          <Badge variant="secondary" className="mb-4">
+            Platform Capabilities
+          </Badge>
+
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">
+            A secure, scalable platform for institutional alumni networks
           </h2>
-          <p className="mt-5 text-lg text-gray-600 leading-relaxed">
-            KEC Connect is designed to securely connect students and alumni through
-            verified profiles, powerful discovery tools, and a transparent admin system.
+
+          <p className="mt-4 text-base text-gray-600 leading-relaxed">
+            Designed to meet operational, security, and transparency requirements of
+            modern colleges.
           </p>
         </motion.div>
 
-        {/* Feature grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-9">
-          {features.map((f, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: i * 0.08 }}
-              viewport={{ once: false, amount: 0.3 }}
-              whileHover={{ y: -10 }}
-              className="group relative bg-white rounded-3xl border p-7 shadow-sm hover:shadow-xl transition-all duration-300"
-            >
-              {/* glow border */}
-              <div className="absolute inset-0 rounded-3xl ring-1 ring-black/5 group-hover:ring-black/10 transition" />
+        {/* Feature Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((f, i) => {
+            const Icon = f.icon;
 
-              {/* icon */}
+            return (
               <motion.div
-                whileHover={{ scale: 1.12, rotate: 2 }}
-                className="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center mb-6 shadow-sm"
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
+                whileHover={{ y: -3 }}
+                className="group relative rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition-all"
               >
-                <f.icon size={22} />
+                {/* Icon */}
+                <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mb-4">
+                  <Icon className="w-5 h-5 text-gray-700" />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-base font-semibold text-gray-900 mb-2">
+                  {f.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {f.desc}
+                </p>
               </motion.div>
-
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                {f.title}
-              </h3>
-
-              <p className="text-gray-600 text-base leading-relaxed">
-                {f.desc}
-              </p>
-
-              {/* hover overlay */}
-              <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-tr from-black/[0.04] via-transparent to-transparent" />
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
