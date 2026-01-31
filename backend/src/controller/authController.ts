@@ -76,6 +76,7 @@ const signup = async (req : Request, res: Response)=>{
 
 const login = async (req : Request, res : Response)=>{
     try{
+        console.log("hii from login !!");
         const parsed = loginSchema.safeParse(req.body);
         if(!parsed.success){
             return res.status(400).json({
