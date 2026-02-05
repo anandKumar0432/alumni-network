@@ -7,7 +7,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
 
 const faqs = [
   {
@@ -47,52 +46,41 @@ const faqs = [
 export const FAQ = () => {
   return (
     <section className="w-full py-28 bg-white relative overflow-hidden">
-
-      {/* soft background accents */}
+      
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 -right-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
 
       <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
 
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <Badge className="mb-4">FAQs</Badge>
+
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
             Frequently asked questions
           </h2>
+
           <p className="mt-5 text-lg text-gray-600">
             Everything you need to know about the KEC Connect alumni platform.
           </p>
-        </motion.div>
+        </div>
 
         {/* Accordion */}
         <Accordion type="single" collapsible className="w-full space-y-3">
           {faqs.map((faq, i) => (
-            <motion.div
+            <AccordionItem
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.05 }}
+              value={`faq-${i}`}
+              className="group border rounded-2xl px-6 py-1 bg-white shadow-sm hover:shadow-md transition"
             >
-              <AccordionItem
-                value={`faq-${i}`}
-                className="group border rounded-2xl px-6 py-1 bg-white shadow-sm hover:shadow-md transition"
-              >
-                <AccordionTrigger className="text-left text-lg font-medium text-gray-900 group-hover:text-black">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed pt-1 pb-4">
-                  {faq.a}
-                </AccordionContent>
-              </AccordionItem>
-            </motion.div>
+              <AccordionTrigger className="text-left text-lg font-medium text-gray-900 group-hover:text-black">
+                {faq.q}
+              </AccordionTrigger>
+
+              <AccordionContent className="text-gray-600 leading-relaxed pt-1 pb-4">
+                {faq.a}
+              </AccordionContent>
+            </AccordionItem>
           ))}
         </Accordion>
 
