@@ -72,7 +72,7 @@ export const CommunityCarousel = () => {
   };
 
   return (
-    <section className="w-full py-24 bg-white relative overflow-hidden">
+    <section id="community" className="w-full py-24 bg-white relative overflow-hidden">
 
       {/* subtle background */}
       <div className="absolute -top-32 left-0 w-96 h-96 bg-black/5 blur-3xl rounded-full" />

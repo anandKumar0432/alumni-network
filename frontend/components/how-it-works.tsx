@@ -33,9 +33,9 @@ const steps = [
 
 export const HowItWorks = () => {
   return (
-    <section className="w-full py-20 relative overflow-hidden bg-gray-50">
+    <section id="how" className="w-full py-20 relative overflow-hidden bg-gray-50">
 
-      {/* Soft background accents (same as Features) */}
+      {/* Soft background accents */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 -right-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
 

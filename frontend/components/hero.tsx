@@ -8,7 +8,7 @@ import { HeroIllustrationMobile } from "./HeroIllustrationMobile";
 
 export const Hero = () => {
   return (
-    <section className="relative pt-32 pb-28 bg-white">
+    <section id="home" className="relative pt-32 pb-28 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-14 items-center">
           {/* LEFT */}
