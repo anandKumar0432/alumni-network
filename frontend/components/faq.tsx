@@ -45,7 +45,7 @@ const faqs = [
 
 export const FAQ = () => {
   return (
-    <section className="w-full py-28 bg-white relative overflow-hidden">
+    <section id="faq" className="w-full py-28 bg-white relative overflow-hidden">
       
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 -right-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />

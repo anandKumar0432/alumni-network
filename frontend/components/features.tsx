@@ -46,7 +46,7 @@ const features = [
 
 export const Feature = () => {
   return (
-    <section className="w-full py-20 relative overflow-hidden bg-white">
+    <section id="features" className="w-full py-20 relative overflow-hidden bg-white">
 
       {/* Soft background accents */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-black/5 rounded-full blur-3xl" />
