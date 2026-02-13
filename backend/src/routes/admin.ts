@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import { bulkVerifyUsers, changRole, deleteUser, unverifiedUser, updateUserStatus } from "../controller/adminController.js";
+import { bulkVerifyUsers, changRole, deleteUser, unverifiedUser, updateUserStatus, getAllVerifiedStudents } from "../controller/adminController.js";
 import { auth } from "../middleware/authMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
 import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
@@ -9,6 +9,15 @@ import { getApprovalLogs, getApprovalAdmins, getApprovalLogStats } from "../cont
 const router : Router = express.Router();
 router.use(auth);
 router.use(isActive);
+
+// allow ADMIN + ALUMNI
+router.get(
+  "/students",
+  requiredRole("ADMIN", "ALUMNI"),
+  getAllVerifiedStudents
+);
+
+// ADMIN only
 router.use(requiredRole("ADMIN"));
 
 // /verify-user , update status of user 
