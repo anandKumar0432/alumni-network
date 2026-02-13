@@ -4,11 +4,15 @@ import { isVerified } from '../middleware/isVerifiedMiddleware.js';
 import { requiredRole } from '../middleware/requiredRole.js';
 import { findAllAlumni, findAllStudent, findUser, updateUser } from '../controller/userController.js';
 import { isActive } from '../middleware/isActiveMiddleware.js';
+import { getPlatformStats } from "../controller/stats.controller.js";
 
 const router : Router = express.Router();
 router.use(auth);
 router.use(isActive);
 router.use(isVerified);
+
+//to get total count of users
+router.get("/platform-stats", getPlatformStats);
 
 
 router.use(requiredRole("STUDENT"));
