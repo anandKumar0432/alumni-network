@@ -76,7 +76,6 @@ const signup = async (req : Request, res: Response)=>{
 
 const login = async (req : Request, res : Response)=>{
     try{
-        console.log("hii from login !!");
         const parsed = loginSchema.safeParse(req.body);
         if(!parsed.success){
             return res.status(400).json({
@@ -141,7 +140,7 @@ const login = async (req : Request, res : Response)=>{
         }else{
             route = "/profile/alumni"
         }
-        //console.log("TOKEN => ", token);
+
         return res.status(200).json({
             msg: "login successfully",
             route,

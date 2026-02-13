@@ -39,12 +39,12 @@ export default function AlumniProfilePage() {
   
 
 
-  const userId = "795b7fe1-3575-42de-9f1f-9b641646594e";
+  const userId = "43db5347-3c2b-4a8f-8b52-9291d2ac8488";
 
   useEffect(() => {
 
     fetchProfile();
-  }, [userId]);  
+  }, [userId]);
 
 
   const fetchProfile = async () => {
