@@ -378,6 +378,148 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 // ================= GET ALL VERIFIED STUDENTS =================
 // Admin + Alumni dashboard page
 
+// export const getAllVerifiedStudents = async (req: Request, res: Response) => {
+//   try {
+//     const page = Number(req.query.page) || 1;
+//     const limit = Number(req.query.limit) || 8;
+//     const skip = (page - 1) * limit;
+
+//     const search = (req.query.search as string) || "";
+//     const branch = (req.query.branch as string) || "";
+//     const session = (req.query.session as string) || "";
+
+//     // -------- WHERE FILTER --------
+//     const where: Prisma.UserWhereInput = {
+//       role: Role.STUDENT,
+//       isActive: true,
+
+//       student: {
+//         is: {
+//           status: Status.VERIFIED,
+//         },
+//       },
+
+//       ...(branch && { branch }),
+//       ...(session && { session }),
+
+//       ...(search && {
+//         OR: [
+//           { name: { contains: search, mode: "insensitive" } },
+//           { email: { contains: search, mode: "insensitive" } },
+//           { regNo: { contains: search, mode: "insensitive" } },
+//         ],
+//       }),
+//     };
+
+//     // -------- QUERY --------
+//     const [students, total] = await Promise.all([
+//       prisma.user.findMany({
+//         where,
+//         include: {
+//           student: true,
+//         },
+//         orderBy: { createdAt: "desc" },
+//         skip,
+//         take: limit,
+//       }),
+
+//       prisma.user.count({ where }),
+//     ]);
+
+//     return res.status(200).json({
+//       msg: "Verified students fetched",
+//       total,
+//       totalPages: Math.ceil(total / limit),
+//       currentPage: page,
+//       students,
+//     });
+//   } catch (error) {
+//     console.error("getAllVerifiedStudents error:", error);
+//     return res.status(500).json({
+//       msg: "Failed to fetch students",
+//     });
+//   }
+// };
+
+
+
+
+// export const getAllVerifiedStudents = async (req: Request, res: Response) => {
+//   try {
+//     const page = Number(req.query.page) || 1;
+//     const limit = Number(req.query.limit) || 8;
+//     const skip = (page - 1) * limit;
+
+//     const search = (req.query.search as string) || "";
+//     const branch = (req.query.branch as string) || "";
+//     const session = (req.query.session as string) || "";
+
+//     // 🔥 WHERE FILTER
+//     const where: Prisma.UserWhereInput = {
+//       role: Role.STUDENT,
+//       isActive: true,
+
+//       student: {
+//         is: {
+//           status: Status.VERIFIED,
+//         },
+//       },
+
+//       ...(branch && { branch }),
+//       ...(session && { session }),
+
+//       ...(search && {
+//         OR: [
+//           { name: { contains: search, mode: "insensitive" } },
+//           { email: { contains: search, mode: "insensitive" } },
+//           { regNo: { contains: search, mode: "insensitive" } },
+//         ],
+//       }),
+//     };
+
+//     // 🔥 PARALLEL QUERY (FAST)
+//     const [students, totalStudents] = await Promise.all([
+//       prisma.user.findMany({
+//         where,
+//         include: {
+//           student: true,
+//         },
+//         orderBy: { createdAt: "desc" },
+//         skip,
+//         take: limit,
+//       }),
+
+//       prisma.user.count({ where }),
+//     ]);
+
+//     return res.status(200).json({
+//       msg: "Verified students fetched",
+
+//       // 🔥 IMPORTANT FOR FRONTEND
+//       totalStudents,              // total filtered count
+//       currentPage: page,
+//       totalPages: Math.ceil(totalStudents / limit),
+
+//       students,
+//     });
+
+//   } catch (error) {
+//     console.error("getAllVerifiedStudents error:", error);
+//     return res.status(500).json({
+//       msg: "Failed to fetch students",
+//     });
+//   }
+// };
+
+
+
+
+
+
+
+
+
+
 export const getAllVerifiedStudents = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
@@ -387,17 +529,12 @@ export const getAllVerifiedStudents = async (req: Request, res: Response) => {
     const search = (req.query.search as string) || "";
     const branch = (req.query.branch as string) || "";
     const session = (req.query.session as string) || "";
+    const sort = (req.query.sort as string) || "newest";
 
-    // -------- WHERE FILTER --------
     const where: Prisma.UserWhereInput = {
       role: Role.STUDENT,
       isActive: true,
-
-      student: {
-        is: {
-          status: Status.VERIFIED,
-        },
-      },
+      student: { is: { status: Status.VERIFIED } },
 
       ...(branch && { branch }),
       ...(session && { session }),
@@ -411,14 +548,14 @@ export const getAllVerifiedStudents = async (req: Request, res: Response) => {
       }),
     };
 
-    // -------- QUERY --------
-    const [students, total] = await Promise.all([
+    let orderBy: any = { createdAt: "desc" };
+    if (sort === "name") orderBy = { name: "asc" };
+
+    const [students, filteredCount] = await Promise.all([
       prisma.user.findMany({
         where,
-        include: {
-          student: true,
-        },
-        orderBy: { createdAt: "desc" },
+        include: { student: true },
+        orderBy,
         skip,
         take: limit,
       }),
@@ -427,16 +564,13 @@ export const getAllVerifiedStudents = async (req: Request, res: Response) => {
     ]);
 
     return res.status(200).json({
-      msg: "Verified students fetched",
-      total,
-      totalPages: Math.ceil(total / limit),
-      currentPage: page,
+      msg: "Students fetched",
       students,
+      totalPages: Math.ceil(filteredCount / limit),
+      currentPage: page,
     });
   } catch (error) {
     console.error("getAllVerifiedStudents error:", error);
-    return res.status(500).json({
-      msg: "Failed to fetch students",
-    });
+    return res.status(500).json({ msg: "Failed to fetch students" });
   }
 };
