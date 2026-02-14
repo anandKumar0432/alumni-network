@@ -23,7 +23,7 @@ export default function StudentsPage() {
     try {
       setLoading(true);
 
-      const res = await axios.get(
+      const res: any = await axios.get(
         `${BACKEND_URL}/admin/students?page=${pageNum}&limit=8`,
         { withCredentials: true },
       );
