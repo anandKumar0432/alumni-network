@@ -7,6 +7,8 @@ export const baseSignupSchema = z.object({
     regNo: z.string(),
     branch: z.string(),
     session: z.string(),
+    imageUrl: z.string().optional(),
+    phone: z.string().optional(),
 })
 
 export const studentSchema = z.object({

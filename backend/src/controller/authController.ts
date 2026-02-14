@@ -34,6 +34,8 @@ const signup = async (req : Request, res: Response)=>{
                 regNo : data.regNo,
                 branch : data.branch,
                 session : data.session,
+                imageUrl: data.imageUrl,
+                phone: data.phone,
                 role: data.role,
                 name: data.name,
                 emailToken: emailToken,
@@ -166,6 +168,7 @@ const logout = (req: Request, res: Response)=>{
 }
 
 const verifyEmail = async (req: Request, res: Response) => {
+    console.log("hii from verify-email");
     const emailToken = typeof req.query.token === "string" ? req.query.token : undefined;
 
     if (!emailToken) {

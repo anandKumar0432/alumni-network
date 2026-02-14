@@ -10,7 +10,7 @@ export const sendVerificationEmail = async (email : string, token : string) => {
     }
   });
 
-  const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+  const verifyUrl = `${process.env.FRONTEND_URL}/auth/verify-email?token=${token}`;
 
   await transporter.sendMail({
     from: '"Alumni Network" <no-reply@alumni.com>',
