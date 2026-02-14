@@ -63,17 +63,10 @@ export default function StudentsPage() {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${BACKEND_URL}/admin/students`, {
-        params: {
-          page: pageNum,
-          limit: 8,
-          search,
-          branch,
-          session,
-          sort,
-        },
-        withCredentials: true,
-      });
+      const res: any = await axios.get(
+        `${BACKEND_URL}/admin/students?page=${pageNum}&limit=8`,
+        { withCredentials: true },
+      );
 
       setStudents(res.data.students);
       setTotalPages(res.data.totalPages);
