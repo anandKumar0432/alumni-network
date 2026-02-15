@@ -1,5 +1,6 @@
 import express , {Router} from "express";
 import {signup, login, logout, verifyEmail} from "../controller/authController.js"
+import { uploadImage } from "../controller/userController.js";
 
 const router : Router = express.Router();
 
