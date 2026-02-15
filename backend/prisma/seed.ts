@@ -121,9 +121,6 @@ async function main() {
 
   const branches = ["CSE", "IT", "ECE", "Mechanical", "Civil", "Electrical"];
 
-  // ===============================
-  // 40 STUDENTS (SAFE UPSERT)
-  // ===============================
   for (let i = 1; i <= 40; i++) {
     const branch = branches[i % branches.length];
 
@@ -151,11 +148,8 @@ async function main() {
     });
   }
 
-  console.log("🎓 Students seeded (safe)");
+  console.log("Students seeded (safe)");
 
-  // ===============================
-  // 40 ALUMNI (SAFE UPSERT)
-  // ===============================
   for (let i = 1; i <= 40; i++) {
     const branch = branches[i % branches.length];
     const start = 2015 + (i % 5);
