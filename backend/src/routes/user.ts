@@ -25,16 +25,13 @@ router.post(
 
 
 router.use(requiredRole("STUDENT"));
-// /me
+
 router.get("/me/:id", findUser);
 
-// /update-profile
 router.patch("/update",updateUser);
 
-// /all-student
 router.get("/students", findAllStudent);
 
-// /all-alumni
 router.get("/alumnis", findAllAlumni);
 
 export default router;

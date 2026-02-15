@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 import { Prisma, Status } from "../../generated/prisma/client.js";
-// import { Status } from "@prisma/client";
 
 export const getApprovalAdmins = async (req: Request, res: Response) => {
   try {
@@ -21,7 +20,6 @@ export const getApprovalAdmins = async (req: Request, res: Response) => {
       },
     });
 
-    // clean nulls and flatten
     const result = admins
       .map((a) => a.actionBy)
       .filter(Boolean);
@@ -99,22 +97,18 @@ export const getApprovalLogStats = async (req: Request, res: Response) => {
       todayLogs,
       approvedCount,
       rejectedCount,
-      // pendingUsers,
     ] = await Promise.all([
-      // total logs
+
       prisma.approvalLog.count(),
 
-      // today logs
       prisma.approvalLog.count({
         where: { createdAt: { gte: todayStart } },
       }),
 
-      // approved (PENDING -> VERIFIED)
       prisma.approvalLog.count({
         where: { newStatus: Status.VERIFIED },
       }),
 
-      // rejected
       prisma.approvalLog.count({
         where: { newStatus: Status.REJECTED },
       }),
@@ -130,7 +124,6 @@ export const getApprovalLogStats = async (req: Request, res: Response) => {
       todayLogs,
       approvedCount,
       rejectedCount,
-      // pendingUsers,
     });
   } catch (err) {
     console.error("Stats error:", err);

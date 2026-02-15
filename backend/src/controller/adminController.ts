@@ -373,9 +373,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 };
 
 
-
-
-// ================= GET ALL VERIFIED STUDENTS =================
 // Admin + Alumni dashboard page
 
 // export const getAllVerifiedStudents = async (req: Request, res: Response) => {
@@ -411,7 +408,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 //       }),
 //     };
 
-//     // -------- QUERY --------
 //     const [students, total] = await Promise.all([
 //       prisma.user.findMany({
 //         where,
@@ -454,7 +450,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 //     const branch = (req.query.branch as string) || "";
 //     const session = (req.query.session as string) || "";
 
-//     // 🔥 WHERE FILTER
 //     const where: Prisma.UserWhereInput = {
 //       role: Role.STUDENT,
 //       isActive: true,
@@ -477,7 +472,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 //       }),
 //     };
 
-//     // 🔥 PARALLEL QUERY (FAST)
 //     const [students, totalStudents] = await Promise.all([
 //       prisma.user.findMany({
 //         where,
@@ -495,7 +489,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 //     return res.status(200).json({
 //       msg: "Verified students fetched",
 
-//       // 🔥 IMPORTANT FOR FRONTEND
 //       totalStudents,              // total filtered count
 //       currentPage: page,
 //       totalPages: Math.ceil(totalStudents / limit),
@@ -510,13 +503,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
 //     });
 //   }
 // };
-
-
-
-
-
-
-
 
 
 

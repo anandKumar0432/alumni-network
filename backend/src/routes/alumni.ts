@@ -1,8 +1,7 @@
 import express , {Router} from "express";
-import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
+import { findAllStudent, findUser, updateUser } from "../controller/userController.js";
 import { auth } from "../middleware/authMiddleware.js";
 import { isVerified } from "../middleware/isVerifiedMiddleware.js";
-import { requiredRole } from "../middleware/requiredRole.js";
 import { isActive } from "../middleware/isActiveMiddleware.js";
 
 const router : Router = express.Router();
@@ -11,13 +10,10 @@ router.use(isActive);
 router.use(isVerified); // if admin change the status
 //router.use(requiredRole("ALUMNI"))  //I am chaning it to allow students, aluinis and admin to see all the listed aluminis
 
-// /me
 router.get("/me/:id", findUser);
 
-// /update-profile
 router.patch("/update", updateUser);
 
-// /all-student
 router.get("/students", findAllStudent);
 
 // /all-alumni
