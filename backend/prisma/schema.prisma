@@ -40,6 +40,7 @@ model User {
   emailToken      String?  @unique
   emailTokenExp   DateTime?
   imageUrl        String?
+  imageId         String?
   phone           String?
 
   alumni          Alumni?

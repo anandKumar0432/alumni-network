@@ -4,6 +4,40 @@ import { safeUserSelect } from "../lib/selectors/userSelector.js";
 import { userUpdateShema } from "../types/zodSchema.js";
 import bcrypt from "bcrypt";
 
+export const uploadImage = async (req: Request, res: Response)=>{
+        console.log(req.user.id);
+        console.log(req.file);
+        if(!req.file){
+            return res.status(400).json({ message: "No image uploaded" });
+        }
+
+        const imageUrl = req.file.path;      // Cloudinary URL
+        const publicId = req.file.filename;  // cloudinary public Id
+
+        try{
+            const userId = req.user.id
+
+            await prisma.user.update({
+                where: {
+                    id: userId,
+                }, 
+                data : {
+                    imageUrl,
+                    imageId: publicId,
+                }
+            })
+
+            return res.status(200).json({
+                msg: "Profile image uploaded successfully",
+                imageUrl,
+            })
+        } catch(e){
+            return res.status(500).json({
+                msg: "something went wrong!"
+            })
+        }
+}
+
 export const findUser = async (req: Request, res: Response)=>{
     try{
         const userId = req.params.id;
