@@ -16,12 +16,16 @@ type StatItem =
       suffix?: string;
       description: string;
       icon: React.ElementType;
+      color: string;
+      bg: string;
     }
   | {
       label: string;
       text: string;
       description: string;
       icon: React.ElementType;
+      color: string;
+      bg: string;
     };
 
 const stats: StatItem[] = [
@@ -31,6 +35,8 @@ const stats: StatItem[] = [
     suffix: "+",
     description: "Profiles approved through secure admin verification",
     icon: ShieldCheck,
+    color: "text-green-600",
+    bg: "bg-green-100",
   },
   {
     label: "Student Requests Processed",
@@ -38,6 +44,8 @@ const stats: StatItem[] = [
     suffix: "+",
     description: "Applications reviewed and logged transparently",
     icon: FileCheck2,
+    color: "text-blue-600",
+    bg: "bg-blue-100",
   },
   {
     label: "Average Approval Time",
@@ -45,12 +53,16 @@ const stats: StatItem[] = [
     suffix: " hrs",
     description: "Fast and consistent verification workflow",
     icon: Clock,
+    color: "text-purple-600",
+    bg: "bg-purple-100",
   },
   {
     label: "Audit Logs Enabled",
     text: "100%",
     description: "Every admin action is tracked and auditable",
     icon: Activity,
+    color: "text-orange-600",
+    bg: "bg-orange-100",
   },
 ];
 
@@ -81,10 +93,10 @@ function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
 
 export const Stats = () => {
   return (
-    <section className="w-full py-24 bg-gray-50">
+    <section className="w-full py-24 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
-        {/* Section Header */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -101,7 +113,7 @@ export const Stats = () => {
           </p>
         </motion.div>
 
-        {/* Stats Grid */}
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -119,11 +131,13 @@ export const Stats = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                whileHover={{ y: -4 }}
-                className="bg-white rounded-2xl p-7 border shadow-sm hover:shadow-lg transition-all"
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-2xl p-7 border shadow-sm hover:shadow-xl transition-all duration-300"
               >
                 {/* Icon */}
-                <Icon className="h-6 w-6 text-gray-400 mb-4" />
+                <div className={`inline-flex p-3 rounded-xl mb-5 ${stat.bg}`}>
+                  <Icon className={`h-5 w-5 ${stat.color}`} />
+                </div>
 
                 {/* Value */}
                 <div className="text-3xl md:text-4xl font-bold text-gray-900">
@@ -135,7 +149,7 @@ export const Stats = () => {
                 </div>
 
                 {/* Label */}
-                <p className="mt-3 text-sm font-medium text-gray-900">
+                <p className="mt-3 text-sm font-semibold text-gray-900">
                   {stat.label}
                 </p>
 
@@ -147,7 +161,6 @@ export const Stats = () => {
             );
           })}
         </motion.div>
-
       </div>
     </section>
   );
