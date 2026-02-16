@@ -373,8 +373,6 @@ export const bulkVerifyUsers = async (req: Request, res: Response) => {
   }
 };
 
-
->>>>>>> b178619 (fix: unwanted-import)
 export const getAllVerifiedStudents = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;

@@ -5,23 +5,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/validators/register.schema";
 import { z } from "zod";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 import Input2 from "@/components/input2";
 import SelectField from "@/components/selectField";
 import StudentForm from "@/components/studentForm";
 import AlumniForm from "@/components/AlumniForm";
+import { useRouter } from "next/navigation";
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 export default function RegisterPage() {
   if (!BACKEND_URL) {
     throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
   }
 
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -37,25 +35,22 @@ export default function RegisterPage() {
   const role = watch("role");
 
   const onSubmit = async (data: RegisterForm) => {
+
+    const router = useRouter();
     try {
       const response = await axios.post(
         `${BACKEND_URL}/auth/signup`,
         data
       );
-
-      console.log("REGISTER SUCCESS:", response.data);
-
-      // redirect to verify page
       router.push("/verify-email");
-
+      console.log("FORM DATA", response.data);
     } catch (err: any) {
-      console.error("Register error:", err?.response?.data || err.message);
-      alert(err?.response?.data?.msg || "Registration failed");
+      console.error(err.response?.data || err.message);
     }
   };
 
   return (
-    <div className="w-full min-h-screen pt-16 pb-8 flex items-center justify-center bg-gray-100">
+    <div className="w-full min-h-screen pt-15 pb-5 flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-4xl bg-white p-6 rounded-lg shadow space-y-6"
@@ -63,11 +58,10 @@ export default function RegisterPage() {
         <h1 className="text-lg font-semibold text-center">
           User Registration
         </h1>
-
         {Object.keys(errors).length > 0 && (
-          <div className="text-red-600 text-sm bg-red-50 border border-red-200 p-3 rounded">
-            Please fill all required fields correctly.
-          </div>
+          <pre className="text-red-600 text-xs bg-gray-100 p-2 rounded">
+            {JSON.stringify(errors, null, 2)}
+          </pre>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -99,9 +93,9 @@ export default function RegisterPage() {
         <button
           disabled={isSubmitting}
           type="submit"
-          className="w-full md:w-1/3 mx-auto block bg-black text-white py-2 rounded-md disabled:opacity-50 hover:opacity-90 transition"
+          className="w-full md:w-1/3 mx-auto block bg-black text-white py-2 rounded-md disabled:opacity-50"
         >
-          {isSubmitting ? "Registering..." : "Register"}
+          Register
         </button>
       </form>
     </div>
