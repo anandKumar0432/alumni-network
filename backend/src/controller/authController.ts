@@ -204,7 +204,8 @@ const verifyEmail = async (req: Request, res: Response) => {
     })
 
     return res.status(200).json({
-        msg: "Email verified successfully"
+        msg: "Email verified successfully",
+        route: "/login",
     })
 }
 
