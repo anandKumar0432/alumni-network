@@ -32,20 +32,18 @@ export default function StudentsPage() {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"grid" | "table">("grid");
 
-  // 🔥 GLOBAL STATS
+  // GLOBAL STATS
   const [totalStudents, setTotalStudents] = useState(0);
   const [totalAlumni, setTotalAlumni] = useState(0);
   const [totalVerified, setTotalVerified] = useState(0);
 
-  // 🔥 FILTERS
+  // FILTERS
   const [search, setSearch] = useState("");
   const [branch, setBranch] = useState("");
   const [session, setSession] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // ===============================
-  // 🔥 FETCH GLOBAL STATS (IMPORTANT)
-  // ===============================
+  // FETCH GLOBAL STATS (IMPORTANT)
   const fetchStats = async () => {
   try {
     const res = await axios.get(`${BACKEND_URL}/user/platform-stats`, {
@@ -60,10 +58,7 @@ export default function StudentsPage() {
   }
 };
 
-
-  // ===============================
-  // 🔥 FETCH STUDENTS WITH FILTERS
-  // ===============================
+  // FETCH STUDENTS WITH FILTERS
   const fetchStudents = async (pageNum = 1) => {
     try {
       setLoading(true);
@@ -90,12 +85,12 @@ export default function StudentsPage() {
     }
   };
 
-  // 🔥 load stats once
+  // load stats once
   useEffect(() => {
     fetchStats();
   }, []);
 
-  // 🔥 reload students on filters
+  // reload students on filters
   useEffect(() => {
     fetchStudents(1);
   }, [search, branch, session, sort]);
@@ -127,7 +122,7 @@ export default function StudentsPage() {
           </p>
         </div>
 
-        {/* 🔥 STATS CARDS */}
+        {/* STATS CARDS */}
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 mb-8">
           <Card className="rounded-2xl shadow-sm">
             <CardContent className="p-6 flex items-center gap-4">
@@ -170,7 +165,7 @@ export default function StudentsPage() {
           </Card>
         </div>
 
-        {/* 🔥 FILTER BAR */}
+        {/* FILTER BAR */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border mb-8">
           <div className="flex flex-col md:flex-row gap-4">
 
