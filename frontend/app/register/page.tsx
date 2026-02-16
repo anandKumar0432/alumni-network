@@ -10,6 +10,7 @@ import Input2 from "@/components/input2";
 import SelectField from "@/components/selectField";
 import StudentForm from "@/components/studentForm";
 import AlumniForm from "@/components/AlumniForm";
+import { useRouter } from "next/navigation";
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
@@ -34,11 +35,14 @@ export default function RegisterPage() {
   const role = watch("role");
 
   const onSubmit = async (data: RegisterForm) => {
+
+    const router = useRouter();
     try {
       const response = await axios.post(
         `${BACKEND_URL}/auth/signup`,
         data
       );
+      router.push("/verify-email");
       console.log("FORM DATA", response.data);
     } catch (err: any) {
       console.error(err.response?.data || err.message);
