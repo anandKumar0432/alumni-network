@@ -15,6 +15,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/multer": "^2.0.0",
     "@types/node": "^25.1.0",
     "@types/nodemailer": "^7.0.5",
     "@types/pg": "^8.16.0",
