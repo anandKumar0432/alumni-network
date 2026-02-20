@@ -131,17 +131,19 @@ const login = async (req : Request, res : Response)=>{
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            // sameSite: "strict",
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-        let route;
+        let route = "/";
         if(user.role === "ADMIN"){
             route = "/admin"
-        } else if(user.role === "STUDENT"){
-            route = "/student"
-        }else{
-            route = "/profile/alumni"
         }
+        //  else if(user.role === "STUDENT"){
+        //     route = "/student"
+        // }else{
+        //     route = "/profile/alumni"
+        // }
 
         return res.status(200).json({
             msg: "login successfully",
@@ -208,5 +210,30 @@ const verifyEmail = async (req: Request, res: Response) => {
         route: "/login",
     })
 }
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.id; // from auth middleware
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        imageId: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({ user: null });
+    }
+
+    res.status(200).json({ user });
+
+  } catch (err) {
+    res.status(401).json({ user: null });
+  }
+};
 
 export {signup, login, logout,verifyEmail};

@@ -20,6 +20,8 @@ export default function RegisterPage() {
     throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
   }
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -36,7 +38,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterForm) => {
 
-    const router = useRouter();
+    // const router = useRouter();
     try {
       const response = await axios.post(
         `${BACKEND_URL}/auth/signup`,

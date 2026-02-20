@@ -1,167 +1,28 @@
-// "use client";
-
-// import { Button } from "@/components/ui/button";
-// import {
-// NavigationMenu,
-// NavigationMenuContent,
-// NavigationMenuItem,
-// NavigationMenuLink,
-// NavigationMenuList,
-// NavigationMenuTrigger,
-// } from "@/components/ui/navigation-menu";
-// import { Menu, MoveRight, X } from "lucide-react";
-// import { useState } from "react";
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
-
-// export const Header = () => {
-// const navigationItems = [
-//     {
-//     title: "Home",
-//     href: "/",
-//     description: "",
-//     },
-//     {
-//     title: "College",
-//     description: "All the alumni assembles here.",
-//     items: [
-//         {
-//         title: "About us",
-//         href: "/about",
-//         },
-//         {
-//         title: "Contact us",
-//         href: "/contact",
-//         },
-//     ],
-//     },
-// ];
-
-// const [isOpen, setOpen] = useState(false);
-// const router = useRouter();
-
-// const HandleSignin = ()=>{
-//     router.push('/login');
-// }
-// const HandleRegister = ()=>{
-//     router.push('/register')
-// }
-// return (
-//     <header className="w-full z-40 fixed top-0 left-0 bg-background border-b px-3">
-//     <div className="container relative mx-auto min-h-8 flex gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
-//         <div className="justify-start items-center gap-4 lg:flex hidden flex-row">
-//         <NavigationMenu className="flex justify-start items-start">
-//             <NavigationMenuList className="flex justify-start gap-4 flex-row">
-//             {navigationItems.map((item) => (
-//                 <NavigationMenuItem key={item.title}>
-//                 {item.href ? (
-//                     <Link href={item.href}>
-//                         <NavigationMenuLink>
-//                             <Button variant="ghost">{item.title}</Button>
-//                         </NavigationMenuLink>
-//                     </Link>
-//                 ) : (
-//                     <>
-//                     <NavigationMenuTrigger className="font-medium text-sm">
-//                         {item.title}
-//                     </NavigationMenuTrigger>
-//                     <NavigationMenuContent className="!w-[450px] p-4">
-//                         <div className="flex flex-col lg:grid grid-cols-2 gap-4">
-//                         <div className="flex flex-col h-full justify-between">
-//                             <div className="flex flex-col">
-//                             <p className="text-base">{item.title}</p>
-//                             <p className="text-muted-foreground text-sm">
-//                                 {item.description}
-//                             </p>
-//                             </div>
-//                         </div>
-//                         <div className="flex flex-col text-sm h-full justify-end">
-//                             {item.items?.map((subItem) => (
-//                             <NavigationMenuLink
-//                                 href={subItem.href}
-//                                 key={subItem.title}
-//                                 className="flex flex-row justify-between items-center hover:bg-muted py-2 px-4 rounded"
-//                             >
-//                                 <span>{subItem.title}</span>
-//                                 <MoveRight className="w-4 h-4 text-muted-foreground" />
-//                             </NavigationMenuLink>
-//                             ))}
-//                         </div>
-//                         </div>
-//                     </NavigationMenuContent>
-//                     </>
-//                 )}
-//                 </NavigationMenuItem>
-//             ))}
-//             </NavigationMenuList>
-//         </NavigationMenu>
-//         </div>
-//         <div className="flex lg:justify-center">
-//         <p className="font-semibold px-2">KEC CONNECT</p>
-//         </div>
-//         <div className="flex justify-end w-full gap-4">
-//         <Button variant="outline" onClick={HandleSignin}>Sign in</Button>
-//         <Button onClick={HandleRegister}>Get started</Button>
-//         </div>
-//         <div className="flex w-12 shrink lg:hidden items-end justify-end">
-//         <Button variant="ghost" onClick={() => setOpen(!isOpen)}>
-//             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-//         </Button>
-//         {isOpen && (
-//             <div className="absolute top-20 border-t flex flex-col w-full right-0 bg-background shadow-lg py-4 container gap-8">
-//             {navigationItems.map((item) => (
-//                 <div key={item.title}>
-//                 <div className="flex flex-col gap-2">
-//                     {item.href ? (
-//                     <Link
-//                         href={item.href}
-//                         className="flex justify-between items-center"
-//                     >
-//                         <span className="text-lg">{item.title}</span>
-//                         <MoveRight className="w-4 h-4 stroke-1 text-muted-foreground" />
-//                     </Link>
-//                     ) : (
-//                     <p className="text-lg">{item.title}</p>
-//                     )}
-//                     {item.items &&
-//                     item.items.map((subItem) => (
-//                         <Link
-//                         key={subItem.title}
-//                         href={subItem.href}
-//                         className="flex justify-between items-center"
-//                         >
-//                         <span className="text-muted-foreground">
-//                             {subItem.title}
-//                         </span>
-//                         <MoveRight className="w-4 h-4 stroke-1" />
-//                         </Link>
-//                     ))}
-//                 </div>
-//                 </div>
-//             ))}
-//             </div>
-//         )}
-//         </div>
-//     </div>
-//     </header>
-// );
-// };
-
-
-
-
-
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  User,
+  LogOut,
+  LayoutDashboard,
+} from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 
-
-const NavLink = ({ id, children }: { id: string; children: React.ReactNode }) => {
+const NavLink = ({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) => {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -170,7 +31,7 @@ const NavLink = ({ id, children }: { id: string; children: React.ReactNode }) =>
 
     const observer = new IntersectionObserver(
       ([entry]) => setActive(entry.isIntersecting),
-      { threshold: 0.6 }
+      { threshold: 0.6 },
     );
 
     observer.observe(section);
@@ -193,12 +54,15 @@ const NavLink = ({ id, children }: { id: string; children: React.ReactNode }) =>
       href={`#${id}`}
       onClick={handleClick}
       className={`relative px-1 py-1 transition
-      ${active ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"}
+      ${
+        active
+          ? "text-blue-600 font-semibold"
+          : "text-gray-700 hover:text-blue-600"
+      }
       `}
     >
       {children}
 
-      {/* underline */}
       <span
         className={`absolute left-0 -bottom-1 h-[2px] bg-blue-600 transition-all duration-300
         ${active ? "w-full" : "w-0"}
@@ -208,37 +72,66 @@ const NavLink = ({ id, children }: { id: string; children: React.ReactNode }) =>
   );
 };
 
-
 export const Header = () => {
   const [isOpen, setOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+  const { user, loading, setUser } = useAuth();
+
+  // scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // click outside dropdown close
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const HandleSignin = () => router.push("/login");
   const HandleRegister = () => router.push("/register");
 
+  const handleLogout = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      setUser(null);
+      window.location.href = "/";
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500
-      ${
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         scrolled
           ? "bg-white/80 backdrop-blur-xl border-b shadow-[0_6px_25px_rgba(0,0,0,0.06)]"
           : "bg-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-
+        {/* LOGO */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full 
-          overflow-hidden border-2 border-gray-200 bg-white shadow-sm p-[3px]">
+          <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200 bg-white shadow-sm p-[3px]">
             <Image
               src="/kecCircLogo.png"
               alt="KEC logo"
@@ -258,6 +151,7 @@ export const Header = () => {
           </div>
         </Link>
 
+        {/* NAV */}
         <nav className="hidden md:flex items-center gap-10 text-[15px] font-medium">
           <NavLink id="home">Home</NavLink>
           <NavLink id="features">Features</NavLink>
@@ -266,24 +160,99 @@ export const Header = () => {
           <NavLink id="faq">FAQ</NavLink>
         </nav>
 
+        {/* RIGHT SIDE */}
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" onClick={HandleSignin}>
-            Sign in
-          </Button>
+          {loading ? null : user ? (
+            <div className="relative" ref={dropdownRef}>
+              {/* avatar button */}
+              
+              <motion.button
+                // whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-3 hover:bg-gray-100 px-3 py-2 rounded-full transition"
+              >
+                {user?.imageId ? (
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.imageId}`}
+                    alt="profile"
+                    className="w-9 h-9 rounded-full border object-cover"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </div>
+                )}
 
-          <Button
-            onClick={HandleRegister}
-            className="rounded-full px-6 font-medium
-            bg-gradient-to-r from-blue-600 to-indigo-600
-            hover:from-blue-700 hover:to-indigo-700
-            shadow-md hover:shadow-lg
-            transition-all duration-300"
-          >
-            Join Alumni
-          </Button>
+                <span className="font-medium">{user.name}</span>
+                <ChevronDown size={18} />
+                {/* </button> */}
+              </motion.button>
+
+              {/* dropdown */}
+              
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="absolute right-0 mt-3 w-56 bg-white border rounded-xl shadow-xl py-2 z-50"                   
+                  >
+                    <button
+                      onClick={() => {
+                        router.push("/profile");
+                        setDropdownOpen(false);
+                      }}
+                      className="flex items-center gap-3 px-4 py-2 w-full hover:bg-gray-100 text-sm"
+                    >
+                      <User size={16} /> Profile
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        router.push("/dashboard");
+                        setDropdownOpen(false);
+                      }}
+                      className="flex items-center gap-3 px-4 py-2 w-full hover:bg-gray-100 text-sm"
+                    >
+                      <LayoutDashboard size={16} /> Dashboard
+                    </button>
+
+                    <div className="border-t my-1" />
+
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-3 px-4 py-2 w-full hover:bg-red-50 text-red-600 text-sm"
+                    >
+                      <LogOut size={16} /> Logout
+                    </button>
+                    {/* </div> */}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* )} */}
+            </div>
+          ) : (
+            <>
+              <Button variant="ghost" onClick={HandleSignin}>
+                Sign in
+              </Button>
+
+              <Button
+                onClick={HandleRegister}
+                className="rounded-full px-6 font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                Join Alumni
+              </Button>
+            </>
+          )}
         </div>
 
-        {/* MOBILE */}
+        {/* MOBILE ICON */}
         <button className="md:hidden" onClick={() => setOpen(!isOpen)}>
           {isOpen ? <X /> : <Menu />}
         </button>
@@ -299,15 +268,44 @@ export const Header = () => {
           <a href="#faq">FAQ</a>
 
           <div className="flex flex-col gap-3 pt-4 border-t">
-            <Button variant="outline" onClick={HandleSignin}>
-              Sign in
-            </Button>
-            <Button onClick={HandleRegister}>
-              Join Alumni
-            </Button>
+            {user ? (
+              <>
+                <div className="flex items-center gap-3 mb-2">
+                  {user?.imageId ? (
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.imageId}`}
+                      alt="profile"
+                      className="w-9 h-9 rounded-full border object-cover"
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
+                      {user?.name?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="font-medium">{user.name}</span>
+                </div>
+
+                <Button onClick={() => router.push("/profile")}>Profile</Button>
+
+                <Button onClick={() => router.push("/dashboard")}>
+                  Dashboard
+                </Button>
+
+                <Button variant="destructive" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={HandleSignin}>
+                  Sign in
+                </Button>
+                <Button onClick={HandleRegister}>Join Alumni</Button>
+              </>
+            )}
           </div>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
