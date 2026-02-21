@@ -139,12 +139,7 @@ const login = async (req : Request, res : Response)=>{
         if(user.role === "ADMIN"){
             route = "/admin"
         }
-        //  else if(user.role === "STUDENT"){
-        //     route = "/student"
-        // }else{
-        //     route = "/profile/alumni"
-        // }
-
+        
         return res.status(200).json({
             msg: "login successfully",
             route,
