@@ -39,7 +39,8 @@ const AlumniCard: React.FC<AlumniCardProps> = ({
       <div className="absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 bg-linear-to-br from-indigo-500/30 via-purple-500/20 to-pink-500/30 blur pointer-events-none" />
 
       <Link
-        href={`/profile/alumni?id=${id}`}
+        // href={`/profile/alumni?id=${id}`}
+        href={`/profile?id=${id}`}
         className="relative block overflow-hidden rounded-3xl border bg-white/80 backdrop-blur shadow-sm hover:shadow-2xl transition-all"
       >
         <div className="relative h-48 w-full overflow-hidden">
