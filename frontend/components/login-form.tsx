@@ -31,7 +31,6 @@ export function LoginForm({
   const router = useRouter();
   const { setUser } = useAuth();
 
-  console.log(BACKEND_URL);
   const handleLogin = async () => {
     try {
       const res = await axios.post<{ route?: string }>(
@@ -40,11 +39,12 @@ export function LoginForm({
         { withCredentials: true },
       );
 
-      const me = await axios.get(`${BACKEND_URL}/auth/me`, {
-        withCredentials: true,
-      });
+      // const me = await axios.get(`${BACKEND_URL}/auth/me`, {
+      //   withCredentials: true,
+      // });
 
-      setUser(me.data.user);
+      // const user = (me.data as { user: any }).user;
+      // setUser(user);
 
       if (res?.data?.route) {
         router.push(res.data.route);

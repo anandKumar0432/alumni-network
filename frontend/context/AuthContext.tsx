@@ -31,11 +31,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await axios.get(
+        const res = await axios.get<{ user: User }>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`,
           { withCredentials: true }
         );
-
+        
         setUser(res.data.user);
       } catch {
         setUser(null);

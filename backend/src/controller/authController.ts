@@ -208,7 +208,7 @@ const verifyEmail = async (req: Request, res: Response) => {
 
 export const getMe = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.id; // from auth middleware
+    const userId = req.user.id; 
 
     const user = await prisma.user.findUnique({
       where: { id: userId },

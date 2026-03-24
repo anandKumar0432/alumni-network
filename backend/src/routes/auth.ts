@@ -10,6 +10,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/verify-email", verifyEmail);
+console.log("after /me")
 
 router.get("/me", auth, getMe);
 

@@ -19,7 +19,7 @@ export default function SelectField({
         >
           <option value="">Select</option>
           {options.map((opt) => (
-            <option key={opt} value={opt} className="rounde-md">
+            <option key={opt} value={opt} className="rounded-md">
               {opt}
             </option>
           ))}
