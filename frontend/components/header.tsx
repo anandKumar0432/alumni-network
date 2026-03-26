@@ -16,6 +16,8 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const NavLink = ({
   id,
   children,
@@ -105,7 +107,7 @@ export const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
+      await fetch(`${BACKEND_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -175,7 +177,7 @@ export const Header = () => {
               >
                 {user?.imageId ? (
                   <img
-                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.imageId}`}
+                    src={`${BACKEND_URL}/${user.imageId}`}
                     alt="profile"
                     className="w-9 h-9 rounded-full border object-cover"
                   />
@@ -187,7 +189,6 @@ export const Header = () => {
 
                 <span className="font-medium">{user.name}</span>
                 <ChevronDown size={18} />
-                {/* </button> */}
               </motion.button>
 
               {/* dropdown */}
@@ -203,7 +204,7 @@ export const Header = () => {
                   >
                     <button
                       onClick={() => {
-                        router.push("/profile");
+                        router.push(`/profile/${user.id}`);
                         setDropdownOpen(false);
                       }}
                       className="flex items-center gap-3 px-4 py-2 w-full hover:bg-gray-100 text-sm"
@@ -229,12 +230,9 @@ export const Header = () => {
                     >
                       <LogOut size={16} /> Logout
                     </button>
-                    {/* </div> */}
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              {/* )} */}
             </div>
           ) : (
             <>
@@ -273,7 +271,7 @@ export const Header = () => {
                 <div className="flex items-center gap-3 mb-2">
                   {user?.imageId ? (
                     <img
-                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.imageId}`}
+                      src={`${BACKEND_URL}/${user.imageId}`}
                       alt="profile"
                       className="w-9 h-9 rounded-full border object-cover"
                     />

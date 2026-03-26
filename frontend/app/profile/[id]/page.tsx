@@ -1,44 +1,25 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { Globe, Instagram, Linkedin } from "lucide-react";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-type Profile = {
-  name: string;
-  email: string;
-  regNo: string;
-  branch: string;
-  session: string;
-  college: string;
-  role: "ALUMNI" | "STUDENT";
-  status?: "PENDING" | "VERIFIED" | "REJECTED";
-
-  // alumni
-  currentJob?: string;
-  currentCompany?: string;
-  linkedIn?: string;
-  instagram?: string;
-  portfolio?: string;
-
-  // student
-  currentYear?: string;
-  interest?: string;
-};
+import { Profile, User } from "@/lib/type";
 
 export default function ProfilePage() {
-  const searchParams = useSearchParams();
-  const userId = searchParams.get("id");   // ⭐ dynamic id from URL
+
+  const params = useParams();
+  const userId = params.id;
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ================= FETCH PROFILE =================
   useEffect(() => {
     if (userId) {
       fetchProfile();
@@ -47,21 +28,13 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      console.log("Fetching profile for:", userId);
 
-      const res = await fetch(
-        `${BACKEND_URL}/alumini/me/${userId}`,
-        {
-          credentials: "include",
-        }
-      );
+      const res = await axios.get<User>(`${BACKEND_URL}/auth/profile/${userId}`,
+        {withCredentials: true},
+      )
+      const user = res.data.user;
 
-      if (!res.ok) throw new Error("Failed to fetch profile");
-
-      const data = await res.json();
-      console.log("PROFILE DATA:", data);
-
-      const user = data.user;
+      console.log(user);
 
       const formatted: Profile = {
         name: user.name,
@@ -71,34 +44,33 @@ export default function ProfilePage() {
         session: user.session,
         college: user.college,
         role: user.role,
+        status: user.status,
 
-        // alumni fields
         currentJob: user.alumni?.currentJob || "",
         currentCompany: user.alumni?.currentCompany || "",
         linkedIn: user.alumni?.linkedIn || "",
         instagram: user.alumni?.instagram || "",
         portfolio: user.alumni?.portfolio || "",
-        status: user.alumni?.status,
 
-        // student fields
         currentYear: user.student?.currentYear || "",
         interest: user.student?.interest || "",
       };
 
+      console.log(formatted);
       setProfile(formatted);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
+
+    console.log(profile);
   };
 
-  // ================= LOADING =================
   if (loading) {
     return <Loading />;
   }
 
-  // ================= ERROR =================
   if (error || !profile) {
     return (
       <main className="pt-20 min-h-screen flex items-center justify-center">
@@ -107,12 +79,10 @@ export default function ProfilePage() {
     );
   }
 
-  // ================= UI =================
   return (
     <main className="pt-20 pb-10 min-h-screen bg-background flex justify-center px-4">
       <div className="w-full max-w-4xl space-y-6">
 
-        {/* HEADER */}
         <div className="bg-card border rounded-xl p-6 flex justify-between">
           <div>
             <h1 className="text-2xl font-bold">{profile.name}</h1>
@@ -136,7 +106,6 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* BASIC INFO */}
         <div className="bg-card border rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Basic Info</h2>
           <div className="grid grid-cols-2 gap-4 text-sm">
@@ -159,7 +128,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ALUMNI SECTION */}
         {profile.role === "ALUMNI" && (
           <div className="bg-card border rounded-xl p-6">
             <h2 className="text-lg font-semibold mb-4">Professional Info</h2>
@@ -187,7 +155,6 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* STUDENT SECTION */}
         {profile.role === "STUDENT" && (
           <div className="bg-card border rounded-xl p-6">
             <h2 className="text-lg font-semibold mb-4">Student Info</h2>

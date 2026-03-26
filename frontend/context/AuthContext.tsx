@@ -16,7 +16,6 @@ type AuthType = {
   setUser: (u: User | null) => void;
 };
 
-axios.defaults.withCredentials = true;
 
 const AuthContext = createContext<AuthType>({
   user: null,

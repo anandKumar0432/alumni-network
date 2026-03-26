@@ -117,7 +117,7 @@ async function main() {
 
   // password for all dummy users = 123456
   const hashedPassword =
-    "$2a$10$x.UZ8v0KkL9N8DmgijAOhe4.dTmztgSesCIxN32FlHz1W0Z4OyaaS";
+    "$2a$10$z06wS1nzI3EobYw8TWUeauAYkOPNOZiFqKU8PBJ27B63.GQX777qa";
 
   const branches = ["CSE", "IT", "ECE", "Mechanical", "Civil", "Electrical"];
 
