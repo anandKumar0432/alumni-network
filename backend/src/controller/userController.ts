@@ -11,7 +11,7 @@ export const uploadImage = async (req: Request, res: Response)=>{
             return res.status(400).json({ message: "No image uploaded" });
         }
 
-        const imageUrl = req.file.path;      // Cloudinary URL
+        const imageUrl = req.file.path;       // Cloudinary URL
         const publicId = req.file.filename;  // cloudinary public Id
 
         try{

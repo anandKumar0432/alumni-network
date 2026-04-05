@@ -11,11 +11,17 @@ import SelectField from "@/components/selectField";
 import StudentForm from "@/components/studentForm";
 import AlumniForm from "@/components/AlumniForm";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export default function RegisterPage() {
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
+
   if (!BACKEND_URL) {
     throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
   }
@@ -51,6 +57,34 @@ export default function RegisterPage() {
     }
   };
 
+  const handleImageUpload = async () => {
+  if (!imageFile) return;
+
+  try {
+    setUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", imageFile);
+
+    const res = await axios.post(
+      `${BACKEND_URL}/auth/upload`, // your backend endpoint
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    //@ts-ignore
+    setImageUrl(res.data.imageUrl); // backend should return { url }
+  } catch (error: any) {
+    console.error("Upload failed:", error.response?.data || error.message);
+  } finally {
+    setUploading(false);
+  }
+};
+
   return (
     <div className="w-full min-h-screen pt-15 pb-5 flex items-center justify-center bg-gray-100">
       <form
@@ -65,6 +99,35 @@ export default function RegisterPage() {
             {JSON.stringify(errors, null, 2)}
           </pre>
         )}
+
+        <div className="flex flex-col items-center gap-3">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                setImageFile(e.target.files[0]);
+              }
+            }}
+          />
+
+          <button
+            type="button"
+            onClick={handleImageUpload}
+            className="bg-blue-500 text-white px-4 py-1 rounded"
+            disabled={uploading}
+          >
+            {uploading ? "Uploading..." : "Upload Image"}
+          </button>
+
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt="Uploaded"
+              className="w-24 h-24 rounded-full object-cover"
+            />
+          )}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <Input2 label="Name*" register={register("name")} />

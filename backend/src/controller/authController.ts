@@ -8,7 +8,7 @@ import { sendVerificationEmail } from "../lib/mailer.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const signup = async (req : Request, res: Response)=>{ 
+const signup = async (req : Request, res: Response)=>{
     try{
         const parsed = signupSchema.safeParse(req.body);
         if(!parsed.success){
