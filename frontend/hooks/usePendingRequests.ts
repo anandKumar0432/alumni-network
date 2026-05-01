@@ -16,7 +16,10 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${BACKEND_URL}/admin/unverified/user`, {
+      const res = await axios.get<{
+        data: any[];
+        totalPages?: number;
+      }>(`${BACKEND_URL}/admin/unverified/user`, {
         params: {
           // ...filters,
           search: filters.search,
@@ -30,9 +33,8 @@ export function usePendingRequests(filters: PendingFilters, page: number) {
         withCredentials: true,
       });
 
-      const data = res.data as { data: any[]; totalPages?: number };
-      setUsers(data.data);
-      setTotalPages(data.totalPages || 1);
+      setUsers(res.data.data);
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("Failed to fetch pending users", err);
     } finally {

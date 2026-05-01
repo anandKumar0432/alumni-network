@@ -45,7 +45,11 @@ export default function StudentsPage() {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/user/platform-stats`, {
+      const res = await axios.get<{
+        totalStudents: number;
+        totalAlumni: number;
+        totalVerified: number;
+      }>(`${BACKEND_URL}/user/platform-stats`, {
         withCredentials: true,
       });
 
@@ -61,10 +65,13 @@ export default function StudentsPage() {
     try {
       setLoading(true);
 
-      const res: any = await axios.get(
-        `${BACKEND_URL}/admin/students?page=${pageNum}&limit=8`,
-        { withCredentials: true },
-      );
+      const res = await axios.get<{
+        students: Student[];
+        totalPages: number;
+        currentPage: number;
+      }>(`${BACKEND_URL}/admin/students?page=${pageNum}&limit=8`, {
+        withCredentials: true,
+      });
 
       setStudents(res.data.students);
       setTotalPages(res.data.totalPages);

@@ -6,14 +6,17 @@ import axios from "axios";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export function useApprovalLogs(page: number, status: string, adminId: string) {
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BACKEND_URL}/admin/approval-logs`, {
+      const res = await axios.get<{
+        data: any[];
+        totalPages?: number;
+      }>(`${BACKEND_URL}/admin/approval-logs`, {
         params: { page, limit: 10, status, adminId },
         withCredentials: true,
       });

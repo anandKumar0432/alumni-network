@@ -92,8 +92,9 @@ export const Header = () => {
 
   // click outside dropdown close
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (dropdownRef.current && target && !dropdownRef.current.contains(target)) {
         setDropdownOpen(false);
       }
     };
@@ -176,7 +177,7 @@ export const Header = () => {
                 className="flex items-center gap-3 hover:bg-gray-100 px-3 py-2 rounded-full transition"
               >
                 {user?.imageId ? (
-                  <img
+                  <Image
                     src={`${BACKEND_URL}/${user.imageId}`}
                     alt="profile"
                     className="w-9 h-9 rounded-full border object-cover"
@@ -244,7 +245,7 @@ export const Header = () => {
                 onClick={HandleRegister}
                 className="rounded-full px-6 font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-300"
               >
-                Join Alumni
+                Join Network
               </Button>
             </>
           )}
@@ -298,7 +299,7 @@ export const Header = () => {
                 <Button variant="outline" onClick={HandleSignin}>
                   Sign in
                 </Button>
-                <Button onClick={HandleRegister}>Join Alumni</Button>
+                <Button onClick={HandleRegister}>Join Network</Button>
               </>
             )}
           </div>

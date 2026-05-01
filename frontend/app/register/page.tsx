@@ -12,6 +12,7 @@ import StudentForm from "@/components/studentForm";
 import AlumniForm from "@/components/AlumniForm";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
@@ -52,8 +53,12 @@ export default function RegisterPage() {
       );
       router.push("/verify-email");
       console.log("FORM DATA", response.data);
-    } catch (err: any) {
-      console.error(err.response?.data || err.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(error.response?.data || error.message);
+      } else {
+        console.error(error);
+      }
     }
   };
 
@@ -75,11 +80,13 @@ export default function RegisterPage() {
         },
       }
     );
-
-    //@ts-ignore
     setImageUrl(res.data.imageUrl); // backend should return { url }
-  } catch (error: any) {
-    console.error("Upload failed:", error.response?.data || error.message);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Upload failed:", error.response?.data || error.message);
+    } else {
+      console.error("Upload failed:", error);
+    }
   } finally {
     setUploading(false);
   }
@@ -121,11 +128,15 @@ export default function RegisterPage() {
           </button>
 
           {imageUrl && (
-            <img
-              src={imageUrl}
-              alt="Uploaded"
-              className="w-24 h-24 rounded-full object-cover"
-            />
+            <div className="w-24 h-24 rounded-full overflow-hidden">
+              <Image
+                src={imageUrl}
+                alt="Uploaded"
+                width={96}
+                height={96}
+                className="rounded-full object-cover"
+              />
+            </div>
           )}
         </div>
 

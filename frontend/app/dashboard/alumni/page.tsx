@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
 import { Globe, Instagram, Linkedin } from "lucide-react";
-import { json } from "zod";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

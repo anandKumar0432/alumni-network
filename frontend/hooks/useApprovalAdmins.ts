@@ -10,11 +10,22 @@ export function useApprovalAdmins() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/admin/approval-admins`, { withCredentials: true })
-      .then((res) => setAdmins(res.data.data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    const fetchAdmins = async () => {
+      try {
+        const res = await axios.get<{ data: any[] }>(
+          `${BACKEND_URL}/admin/approval-admins`,
+          { withCredentials: true }
+        );
+
+        setAdmins(res.data.data);
+      } catch (err) {
+        console.error("Failed to load approval admins", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAdmins();
   }, []);
 
   return { admins, loading };

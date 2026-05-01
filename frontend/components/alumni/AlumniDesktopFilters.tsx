@@ -1,14 +1,10 @@
 "use client";
 
-type Filters = {
-  branch: string;
-  session: string;
-  year: string;
-};
+import { AlumniFilters, branchOptions } from "@/components/alumni/alumniFilters";
 
 type Props = {
-  filters: Filters;
-  onChange: (filters: Filters) => void;
+  filters: AlumniFilters;
+  onChange: (filters: AlumniFilters) => void;
   onResetPage: () => void;
 };
 
@@ -27,15 +23,11 @@ export default function AlumniDesktopFilters({
           onResetPage();
         }}
       >
-        <option value="">All Branches</option>
-        <option value="CSE">CSE</option>
-        <option value="IT">IT</option>
-        <option value="ECE">ECE</option>
-        <option value="ME">ME</option>
-        <option value="EEE">EEE</option>
-        <option value="CE">CE</option>
-        <option value="VLSI">VLSI</option>
-        <option value="FPP">FPP</option>
+        {branchOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
 
       <input

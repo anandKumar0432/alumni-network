@@ -18,7 +18,7 @@ export function useApprovalLogStats() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const res = await axios.get(`${API}/admin/logs/stats`, {
+                const res = await axios.get<LogStats>(`${API}/admin/logs/stats`, {
                     withCredentials: true,
                 });
                 setStats(res.data);

@@ -19,7 +19,7 @@ export default function VerifyEmailPage() {
       const res = await axios.get(`${BACKEND_URL}/auth/verify-email`);
 
       if(res.status !== 200){
-        setMessage("please verify your email by the link we have sent")
+        setMessage("please verify your email by the link we have sent");
       }
       setMessage("Verification email has been sent again.");
     } catch (error) {
