@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 import { Prisma, Status } from "../../generated/prisma/client.js";
+import ExcelJS from "exceljs";
 
 export const getApprovalAdmins = async (req: Request, res: Response) => {
   try {
@@ -128,5 +129,133 @@ export const getApprovalLogStats = async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Stats error:", err);
     return res.status(500).json({ message: "Failed to fetch stats" });
+  }
+};
+
+export const exportUsers = async (req: Request, res: Response) => {
+  try {
+    const { branch, year } = req.query;
+
+    const studentFilter: any = {
+      user: {
+        isActive: true,
+      },
+    };
+
+    if (branch) {
+      studentFilter.user.branch = branch;
+    }
+
+    if (year) {
+      studentFilter.currentYear = year;
+    }
+
+    const students = await prisma.student.findMany({
+      where: studentFilter,
+      include: {
+        user: true,
+      },
+    });
+
+    const alumni = await prisma.alumni.findMany({
+      where: studentFilter,
+      include: {
+        user: true,
+        job: {
+          orderBy: { startDate: "desc" },
+        },
+      },
+    });
+
+    const workbook = new ExcelJS.Workbook();
+
+    const studentSheet = workbook.addWorksheet("Students");
+
+    studentSheet.columns = [
+      { header: "Name", key: "name", width: 20 },
+      { header: "Email", key: "email", width: 25 },
+      { header: "Reg No", key: "regNo", width: 15 },
+      { header: "Branch", key: "branch", width: 15 },
+      { header: "Session", key: "session", width: 15 },
+      { header: "Current Year", key: "currentYear", width: 15 },
+      { header: "Interest", key: "interest", width: 25 },
+      { header: "Status", key: "status", width: 15 },
+      { header: "Phone", key: "phone", width: 15 },
+    ];
+
+    students.forEach((s) => {
+      studentSheet.addRow({
+        name: s.user.name,
+        email: s.user.email,
+        regNo: s.user.regNo,
+        branch: s.user.branch,
+        session: s.user.session,
+        currentYear: s.currentYear,
+        interest: s.interest,
+        status: s.status,
+        phone: s.user.phone,
+      });
+    });
+
+    const alumniSheet = workbook.addWorksheet("Alumni");
+
+    alumniSheet.columns = [
+      { header: "Name", key: "name", width: 20 },
+      { header: "Email", key: "email", width: 25 },
+      { header: "Reg No", key: "regNo", width: 15 },
+      { header: "Branch", key: "branch", width: 15 },
+      { header: "Session", key: "session", width: 15 },
+      { header: "Company", key: "company", width: 20 },
+      { header: "Role", key: "role", width: 20 },
+      { header: "Experience", key: "experience", width: 20 },
+      { header: "LinkedIn", key: "linkedIn", width: 30 },
+      { header: "Status", key: "status", width: 15 },
+      { header: "Phone", key: "phone", width: 15 },
+    ];
+
+    alumni.forEach((a) => {
+      const latestJob = a.job[0];
+
+      let experience = "";
+      if (latestJob?.startDate) {
+        const end = latestJob.isCurrent ? new Date() : latestJob.endDate;
+        if (end) {
+          const years =
+            (new Date(end).getTime() - new Date(latestJob.startDate).getTime()) /
+            (1000 * 60 * 60 * 24 * 365);
+          experience = years.toFixed(1) + " yrs";
+        }
+      }
+
+      alumniSheet.addRow({
+        name: a.user.name,
+        email: a.user.email,
+        regNo: a.user.regNo,
+        branch: a.user.branch,
+        session: a.user.session,
+        company: latestJob?.company || "",
+        role: latestJob?.role || "",
+        experience,
+        linkedIn: a.linkedIn,
+        status: a.status,
+        phone: a.user.phone,
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=filtered-users.xlsx"
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Export failed" });
   }
 };

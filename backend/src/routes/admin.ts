@@ -4,7 +4,7 @@ import { auth } from "../middleware/authMiddleware.js";
 import { requiredRole } from "../middleware/requiredRole.js";
 import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
 import { isActive } from "../middleware/isActiveMiddleware.js";
-import { getApprovalLogs, getApprovalAdmins, getApprovalLogStats } from "../controller/adminLogController.js";
+import { getApprovalLogs, getApprovalAdmins, getApprovalLogStats, exportUsers } from "../controller/adminLogController.js";
 
 const router : Router = express.Router();
 router.use(auth);
@@ -42,5 +42,7 @@ router.get("/bulk/student",findAllStudent);
 router.get("/bulk/alumni",findAllAlumni);
 
 router.put("/delete", deleteUser);
+
+router.get("/export", exportUsers);
 
 export default router;
