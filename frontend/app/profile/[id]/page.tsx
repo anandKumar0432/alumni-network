@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
 import { Globe, Instagram, Linkedin } from "lucide-react";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -20,21 +19,12 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (userId) {
-      fetchProfile();
-    }
-  }, [userId]);
-
   const fetchProfile = async () => {
     try {
-
-      const res = await axios.get<User>(`${BACKEND_URL}/auth/profile/${userId}`,
+      const res = await axios.get(`${BACKEND_URL}/common/profile/${userId}`,
         {withCredentials: true},
       )
       const user = res.data.user;
-
-      console.log(user);
 
       const formatted: Profile = {
         name: user.name,
@@ -44,7 +34,7 @@ export default function ProfilePage() {
         session: user.session,
         college: user.college,
         role: user.role,
-        status: user.status,
+        status: user.alumni?.status || user.student?.status || "",
 
         currentJob: user.alumni?.currentJob || "",
         currentCompany: user.alumni?.currentCompany || "",
@@ -66,6 +56,12 @@ export default function ProfilePage() {
 
     console.log(profile);
   };
+
+  useEffect(() => {
+    if (!userId) return;
+
+    fetchProfile();
+  }, [userId]);
 
   if (loading) {
     return <Loading />;
@@ -162,10 +158,6 @@ export default function ProfilePage() {
             <p><b>Interest:</b> {profile.interest || "—"}</p>
           </div>
         )}
-
-        <div className="flex justify-end">
-          <Button>Edit Profile</Button>
-        </div>
       </div>
     </main>
   );

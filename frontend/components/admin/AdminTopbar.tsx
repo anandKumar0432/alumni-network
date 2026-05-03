@@ -4,6 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { Bell, ChevronDown, LogOut, User, Menu } from "lucide-react";
 import { useState } from "react";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function AdminTopbar({
   onMenuClick,
 }: {
@@ -15,10 +17,13 @@ export default function AdminTopbar({
 
   const segments = pathname.split("/").filter(Boolean).slice(1);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    router.push("/login");
-  };
+  const logout = async () => {
+  await fetch(`${BACKEND_URL}/auth/logout`, {
+    method: "POST",
+  });
+
+  router.push("/login");
+};
 
   return (
     <header className="h-14 bg-white border-b flex items-center justify-between px-4 md:px-6 relative shrink-0">
@@ -61,7 +66,10 @@ export default function AdminTopbar({
 
           {open && (
             <div className="absolute right-0 mt-2 w-44 bg-white border rounded-lg shadow-lg py-1 z-50">
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+              <button 
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100"
+                onClick={()=>{router.push("/admin")}}  // this should be removed and set it as dynamic
+              >
                 <User size={16} /> My Profile
               </button>
 

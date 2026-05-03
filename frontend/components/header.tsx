@@ -154,15 +154,6 @@ export const Header = () => {
           </div>
         </Link>
 
-        {/* NAV */}
-        <nav className="hidden md:flex items-center gap-10 text-[15px] font-medium">
-          <NavLink id="home">Home</NavLink>
-          <NavLink id="features">Features</NavLink>
-          <NavLink id="how">How it works</NavLink>
-          <NavLink id="community">Community</NavLink>
-          <NavLink id="faq">FAQ</NavLink>
-        </nav>
-
         {/* RIGHT SIDE */}
         <div className="hidden md:flex items-center gap-3">
           {loading ? null : user ? (
@@ -260,11 +251,6 @@ export const Header = () => {
       {/* MOBILE MENU */}
       {isOpen && (
         <div className="md:hidden bg-white border-t shadow-lg px-6 py-6 space-y-6">
-          <a href="#home">Home</a>
-          <a href="#features">Features</a>
-          <a href="#how">How it works</a>
-          <a href="#community">Community</a>
-          <a href="#faq">FAQ</a>
 
           <div className="flex flex-col gap-3 pt-4 border-t">
             {user ? (
