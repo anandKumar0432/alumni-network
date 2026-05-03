@@ -43,3 +43,30 @@ export type User = {
     }
   }
 };
+
+export type Event = {
+  id: string;
+  title: string;
+  description: string | null;
+  startDateTime: string;
+  endDateTime: string;
+  venue: string | null;
+  formLink: string | null;
+  bannerUrl: string | null;
+};
+
+export type Student = {
+  id: string;
+  name: string;
+  email: string;
+  regNo: string;
+  branch: string;
+  session: string;
+  imageUrl: string | null;
+
+  student: {
+    currentYear: string;
+    interest: string;
+    status: string;
+  };
+};

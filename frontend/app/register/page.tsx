@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/validators/register.schema";
 import { z } from "zod";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 import Input2 from "@/components/input2";
 import SelectField from "@/components/selectField";
@@ -54,7 +54,7 @@ export default function RegisterPage() {
       router.push("/verify-email");
       console.log("FORM DATA", response.data);
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         console.error(error.response?.data || error.message);
       } else {
         console.error(error);
@@ -82,7 +82,7 @@ export default function RegisterPage() {
     );
     setImageUrl(res.data.imageUrl); // backend should return { url }
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       console.error("Upload failed:", error.response?.data || error.message);
     } else {
       console.error("Upload failed:", error);

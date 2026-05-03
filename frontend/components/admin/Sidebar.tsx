@@ -9,6 +9,7 @@ import {
   Menu,
   X,
   FileClock,
+  PlusIcon
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -17,6 +18,7 @@ const nav = [
   { name: "Students", href: "/admin/students", icon: Users },
   { name: "Alumni", href: "/admin/alumni", icon: GraduationCap },
   { name: "Approval Logs", href: "/admin/logs", icon: FileClock },
+  {name: "Create Events", href: "/admin/events", icon: PlusIcon},
 ];
 
 type Props = {

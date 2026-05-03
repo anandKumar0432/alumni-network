@@ -21,7 +21,7 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/common/profile/${userId}`,
+      const res = await axios.get<any>(`${BACKEND_URL}/common/profile/${userId}`,
         {withCredentials: true},
       )
       const user = res.data.user;
