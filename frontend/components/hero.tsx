@@ -37,6 +37,9 @@ export const Hero = () => {
               <Button size="lg" variant="outline" asChild>
                 <Link href="/alumni">Explore alumni</Link>
               </Button>
+              <Button size="lg" asChild>
+                <Link href="/events">Upcoming Events</Link>
+              </Button>
             </div>
 
             <div className="flex flex-wrap gap-6 pt-4 text-sm text-gray-600">

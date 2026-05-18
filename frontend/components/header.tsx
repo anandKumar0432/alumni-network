@@ -206,7 +206,7 @@ export const Header = () => {
 
                     <button
                       onClick={() => {
-                        router.push("/dashboard");
+                        router.push("/admin");
                         setDropdownOpen(false);
                       }}
                       className="flex items-center gap-3 px-4 py-2 w-full hover:bg-gray-100 text-sm"

@@ -46,6 +46,7 @@ model User {
   alumni          Alumni?
   student         Student?
   approvalLog     ApprovalLog[]
+  events          Event[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -113,4 +114,27 @@ model ApprovalLog {
   actionBy       User? @relation(fields: [actionById], references: [id], onDelete: SetNull)
 
   createdAt      DateTime @default(now())
+}
+
+model Event {
+  id            String    @id @default(uuid())
+
+  title         String
+  description   String?
+
+  startDateTime DateTime
+  endDateTime   DateTime
+
+  venue         String?
+  formLink      String?
+
+  bannerUrl     String?
+
+  createdById   String
+  createdBy     User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([startDateTime])
 }

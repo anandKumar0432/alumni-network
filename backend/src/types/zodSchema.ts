@@ -81,3 +81,34 @@ export const userUpdateShema = z.discriminatedUnion("role", [
         ...alumniUpdateSchema.shape,
     })
 ])
+
+export const createEventSchema = z.object({
+    title: z.string().trim().min(1, "Title is required"),
+
+    description: z.string().optional(),
+
+    startDateTime: z.coerce.date(),
+    endDateTime: z.coerce.date(),
+
+    venue: z.string().optional(),
+
+    formLink: z
+        .string()
+        .url("Invalid URL")
+        .optional(),
+
+    bannerUrl: z
+        .string()
+        .url("Invalid URL")
+        .optional(),
+})
+.superRefine((data, ctx) => {
+  // End must be after start
+    if (data.endDateTime <= data.startDateTime) {
+        ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "End date must be after start date",
+        path: ["endDateTime"],
+        });
+    }
+});

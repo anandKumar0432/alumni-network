@@ -5,6 +5,7 @@ import { requiredRole } from "../middleware/requiredRole.js";
 import { findAllAlumni, findAllStudent, findUser, updateUser } from "../controller/userController.js";
 import { isActive } from "../middleware/isActiveMiddleware.js";
 import { getApprovalLogs, getApprovalAdmins, getApprovalLogStats, exportUsers } from "../controller/adminLogController.js";
+import { createEvent } from "../controller/eventController.js";
 
 const router : Router = express.Router();
 router.use(auth);
@@ -44,5 +45,7 @@ router.get("/bulk/alumni",findAllAlumni);
 router.put("/delete", deleteUser);
 
 router.get("/export", exportUsers);
+
+router.post("/event", createEvent);
 
 export default router;
